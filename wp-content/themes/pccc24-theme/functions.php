@@ -513,30 +513,6 @@ add_action('login_footer', function () {
         if (user && !user.value) user.value = 'admin';
         if (pass && !pass.value) pass.value = 'pccc24@admin2026';
         if (rem) rem.checked = true;
-
-        var form = document.getElementById('loginform');
-        if (form) {
-            var box = document.createElement('div');
-            box.style.cssText = 'background:#f0f6fc;border:1px solid #72aee6;border-left:4px solid #2271b1;padding:10px 12px;margin:0 0 16px;border-radius:4px;font-size:13px;line-height:1.5;color:#1d2327;';
-            box.innerHTML =
-                '<strong>🔑 Tài khoản kiểm thử mặc định (Đã điền sẵn):</strong><br>' +
-                '• Tài khoản: <code>admin</code><br>' +
-                '• Email: <code>admin@pccc24.local</code><br>' +
-                '• Mật khẩu: <code>pccc24@admin2026</code><br>' +
-                '<div style="margin-top:6px;display:flex;gap:6px;">' +
-                '<button type="button" id="fill-user-btn" class="button button-small">Dùng Username (admin)</button>' +
-                '<button type="button" id="fill-email-btn" class="button button-small">Dùng Email (admin@pccc24.local)</button>' +
-                '</div>';
-            form.insertBefore(box, form.firstChild);
-            document.getElementById('fill-user-btn').addEventListener('click', function () {
-                if (user) user.value = 'admin';
-                if (pass) pass.value = 'pccc24@admin2026';
-            });
-            document.getElementById('fill-email-btn').addEventListener('click', function () {
-                if (user) user.value = 'admin@pccc24.local';
-                if (pass) pass.value = 'pccc24@admin2026';
-            });
-        }
     })();
     </script>
     <?php
