@@ -1,0 +1,25 @@
+# WordPress Core & Credentials
+/wp-admin/
+/wp-includes/
+/wp-*.php
+/index.php
+/license.txt
+/readme.html
+/xmlrpc.php
+
+# WP Content (chỉ giữ lại plugin pccc24-core và theme pccc24-theme)
+/wp-content/uploads/
+/wp-content/upgrade/
+/wp-content/cache/
+/wp-content/languages/
+/wp-content/plugins/*
+!/wp-content/plugins/pccc24-core/
+/wp-content/themes/*
+!/wp-content/themes/pccc24-theme/
+
+# Tools & Test Artifacts
+/tools/
+/node_modules/
+/playwright-report/
+/test-results/
+/.claude/

@@ -1,0 +1,398 @@
+<?php
+/**
+ * Plugin Name: PCCC24 Core
+ * Description: Data model (CPT/taxonomy), URL cũ của pccc24.com, REST API v1 và cài đặt chung.
+ * Version: 1.0.0
+ */
+
+defined('ABSPATH') || exit;
+
+const PCCC24_SETTING_KEYS = [
+    'phone' => 'Điện thoại', 'company' => 'Tên công ty', 'address' => 'Địa chỉ', 'email' => 'Email',
+    'gpkd' => 'GPKD', 'logo' => 'Logo', 'phone_technique' => 'ĐT kỹ thuật', 'phone_sale' => 'ĐT bán hàng',
+    'site_title' => 'Tiêu đề website', 'site_description' => 'Mô tả website', 'facebook' => 'Facebook',
+    'twitter' => 'Twitter', 'youtube' => 'Youtube', 'zalo' => 'Zalo', 'logo_seo' => 'Logo SEO',
+];
+
+/* ---------- Data model ---------- */
+
+add_action('init', function () {
+    $cpt = function ($type, $name, $icon, $extra = []) {
+        register_post_type($type, $extra + [
+            'label' => $name, 'public' => true, 'show_in_rest' => true, 'menu_icon' => $icon,
+            'has_archive' => false, 'rewrite' => false, 'query_var' => false,
+            'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields', 'page-attributes'],
+        ]);
+    };
+    $cpt('pccc_product', 'Sản phẩm', 'dashicons-cart');
+    $cpt('pccc_service', 'Dịch vụ', 'dashicons-hammer');
+    $cpt('pccc_slider', 'Slider', 'dashicons-images-alt2', ['public' => false, 'show_ui' => true]);
+    $cpt('pccc_policy', 'Chính sách', 'dashicons-shield', ['public' => false, 'show_ui' => true]);
+    $cpt('pccc_support', 'Hỗ trợ viên', 'dashicons-phone', ['public' => false, 'show_ui' => true]);
+    $cpt('pccc_order', 'Đơn hàng', 'dashicons-clipboard', [
+        'public' => false, 'show_ui' => true, 'show_in_rest' => false, 'supports' => ['title', 'custom-fields'],
+    ]);
+
+    $tax = fn($tax, $types, $name, $hier) => register_taxonomy($tax, $types, [
+        'label' => $name, 'public' => true, 'hierarchical' => $hier, 'show_in_rest' => true,
+        'show_admin_column' => true, 'rewrite' => false, 'query_var' => false,
+    ]);
+    $tax('pccc_product_cat', 'pccc_product', 'Danh mục sản phẩm', true);
+    $tax('pccc_service_type', 'pccc_service', 'Loại dịch vụ', false);
+    $tax('pccc_page_type', 'page', 'Nhóm trang', false);
+
+    pccc24_add_rewrites();
+});
+
+/* ---------- URL cũ (app/Config/Routes.php của bản CI4) ---------- */
+
+function pccc24_add_rewrites()
+{
+    $r = fn($re, $q) => add_rewrite_rule($re, 'index.php?' . $q, 'top');
+    $r('san-pham/?$', 'pccc_view=products');
+    $r('san-pham/tim-kiem/?$', 'pccc_view=search');
+    $r('san-pham/([^/]+)/([0-9]+)/?$', 'pccc_type=pccc_product&pccc_old_id=$matches[2]');
+    $r('san-pham/([^/]+)/?$', 'pccc_product_cat=$matches[1]');
+    $r('dich-vu/?$', 'pccc_view=services');
+    $r('dich-vu/([^/]+)/([0-9]+)/?$', 'pccc_type=pccc_service&pccc_old_id=$matches[2]');
+    $r('dich-vu/([^/]+)/?$', 'pccc_service_type=$matches[1]');
+    $r('tin-tuc/?$', 'pccc_view=articles');
+    $r('tin-tuc/page/([0-9]+)/?$', 'pccc_view=articles&paged=$matches[1]');
+    $r('tin-tuc/([^/]+)/([0-9]+)/?$', 'pccc_type=post&pccc_old_id=$matches[2]');
+    $r('pages/type/([^/]+)/?$', 'pccc_page_type=$matches[1]');
+    $r('pages/([^/]+)/?$', 'pagename=$matches[1]');
+    $r('contacts/?$', 'pccc_view=contacts');
+    // /{page-type-slug}: chỉ các slug nhóm trang đang có, tránh nuốt route khác của WP.
+    $slugs = get_terms(['taxonomy' => 'pccc_page_type', 'fields' => 'slugs', 'hide_empty' => false]);
+    if ($slugs && !is_wp_error($slugs)) {
+        $r('(' . implode('|', array_map('preg_quote', $slugs)) . ')/?$', 'pccc_page_type=$matches[1]');
+    }
+}
+
+add_filter('query_vars', fn($v) => array_merge($v, [
+    'pccc_view', 'pccc_type', 'pccc_old_id', 'pccc_product_cat', 'pccc_service_type', 'pccc_page_type',
+]));
+
+function pccc24_find_by_old_id($type, $old_id)
+{
+    $ids = get_posts([
+        'post_type' => $type, 'post_status' => 'publish', 'numberposts' => 1, 'fields' => 'ids',
+        'meta_key' => '_pccc_old_id', 'meta_value' => (int) $old_id,
+    ]);
+    return $ids[0] ?? 0;
+}
+
+// Dịch query var tuỳ biến sang truy vấn WP chuẩn để theme dùng is_singular()/is_tax()/have_posts().
+add_filter('request', function ($q) {
+    if (!empty($q['pccc_old_id'])) {
+        $id = pccc24_find_by_old_id($q['pccc_type'] ?? 'pccc_product', $q['pccc_old_id']);
+        return $id ? ['p' => $id, 'post_type' => $q['pccc_type']] : ['error' => '404'];
+    }
+    foreach (['pccc_product_cat', 'pccc_service_type', 'pccc_page_type'] as $tax) {
+        if (!empty($q[$tax])) {
+            return term_exists($q[$tax], $tax) ? ['taxonomy' => $tax, 'term' => $q[$tax]] + $q : ['error' => '404'];
+        }
+    }
+    $views = ['products' => 'pccc_product', 'search' => 'pccc_product', 'services' => 'pccc_service', 'articles' => 'post'];
+    if (isset($q['pccc_view'], $views[$q['pccc_view']])) {
+        $q['post_type'] = $views[$q['pccc_view']];
+        if ($q['pccc_view'] === 'search') {
+            $q['s'] = sanitize_text_field(wp_unslash($_GET['q'] ?? $_GET['s'] ?? ''));
+        }
+    }
+    return $q;
+});
+
+// /contacts không có post nào: tránh 404, theme render theo get_query_var('pccc_view').
+add_action('pre_get_posts', function ($wq) {
+    if ($wq->is_main_query() && $wq->get('pccc_view') === 'contacts') {
+        $wq->set('post_type', 'page');
+        $wq->set('posts_per_page', 1);
+        $wq->set('pagename', 'lien-he');
+    }
+    if (!$wq->is_main_query() || is_admin() || !($wq->is_tax() || $wq->get('pccc_view'))) {
+        return;
+    }
+    // Giống controller CI4: paginate(20), ?page=N, ?sorted=1..4 (tên/giá), mặc định sorted ASC + mới nhất.
+    $wq->set('posts_per_page', 20);
+    if (!empty($_GET['page'])) {
+        $wq->set('paged', max(1, (int) $_GET['page']));
+    }
+    $type = $wq->get('post_type') ?: ($wq->is_tax('pccc_service_type') ? 'pccc_service' : 'pccc_product');
+    if ($type === 'post') {
+        $wq->set('orderby', 'date');
+        return;
+    }
+    $sorted = (int) ($_GET['sorted'] ?? 0);
+    if ($sorted === 1 || $sorted === 2) {
+        $wq->set('orderby', ['title' => $sorted === 1 ? 'ASC' : 'DESC']);
+    } elseif ($sorted === 3 || $sorted === 4) {
+        $wq->set('meta_key', '_pccc_price');
+        $wq->set('orderby', ['meta_value_num' => $sorted === 3 ? 'ASC' : 'DESC']);
+    } else {
+        $wq->set('orderby', ['menu_order' => 'ASC', 'date' => 'DESC']);
+        if ($type === 'pccc_service') {
+            $wq->set('pccc_zero_last', 1);
+        }
+    }
+});
+// Dịch vụ: sorted = 0 xuống cuối (ServiceController gốc).
+add_filter('posts_orderby', function ($orderby, $wq) {
+    global $wpdb;
+    return $wq->get('pccc_zero_last') ? "{$wpdb->posts}.menu_order = 0 ASC, $orderby" : $orderby;
+}, 10, 2);
+
+// URL gốc không có "/" cuối; đừng để WP redirect các view tuỳ biến.
+add_filter('redirect_canonical', fn($url) => get_query_var('pccc_view') ? false : $url);
+
+// Template: theme có thể cung cấp file theo tên view (vd. contacts.php, products.php).
+add_filter('template_include', function ($tpl) {
+    $view = get_query_var('pccc_view');
+    return ($view && ($t = locate_template("$view.php"))) ? $t : $tpl;
+});
+
+function pccc24_old_id($post)
+{
+    return get_post_meta($post->ID, '_pccc_old_id', true) ?: $post->ID;
+}
+
+add_filter('post_type_link', function ($url, $post) {
+    $base = ['pccc_product' => 'san-pham', 'pccc_service' => 'dich-vu'][$post->post_type] ?? null;
+    return $base ? home_url("/$base/{$post->post_name}/" . pccc24_old_id($post)) : $url;
+}, 10, 2);
+add_filter('post_link', fn($url, $post) => $post->post_type === 'post'
+    ? home_url("/tin-tuc/{$post->post_name}/" . pccc24_old_id($post)) : $url, 10, 2);
+add_filter('page_link', fn($url, $id) => ($p = get_post($id)) && $p->post_name && (int) get_option('page_on_front') !== $id
+    ? home_url("/pages/{$p->post_name}") : $url, 10, 2);
+add_filter('term_link', function ($url, $term) {
+    $base = ['pccc_product_cat' => 'san-pham', 'pccc_service_type' => 'dich-vu', 'pccc_page_type' => 'pages/type'][$term->taxonomy] ?? null;
+    return $base ? home_url("/$base/{$term->slug}") : $url;
+}, 10, 2);
+
+// Sản phẩm/dịch vụ/bài mới tạo trong wp-admin: old_id = post ID (ID WP luôn lớn hơn ID cũ sau migrate).
+add_action('save_post', function ($id, $post) {
+    if (in_array($post->post_type, ['pccc_product', 'pccc_service', 'post'], true) && !get_post_meta($id, '_pccc_old_id', true)) {
+        update_post_meta($id, '_pccc_old_id', $id);
+    }
+}, 10, 2);
+
+register_activation_hook(__FILE__, function () {
+    do_action('init');
+    flush_rewrite_rules();
+});
+add_action('created_pccc_page_type', 'flush_rewrite_rules');
+
+/* ---------- REST API (tương đương /v1 của bản CI4) ---------- */
+
+function pccc24_product_json($post)
+{
+    $m = fn($k) => get_post_meta($post->ID, "_pccc_$k", true);
+    $cat = wp_get_post_terms($post->ID, 'pccc_product_cat');
+    return [
+        'id' => (int) pccc24_old_id($post), 'wp_id' => $post->ID, 'name' => $post->post_title,
+        'title' => $m('title'), 'slug' => $post->post_name, 'url' => get_permalink($post),
+        'category_id' => $cat ? (int) get_term_meta($cat[0]->term_id, '_pccc_old_id', true) : null,
+        'price' => (int) $m('price'), 'image_url' => get_the_post_thumbnail_url($post, 'full') ?: null,
+        'description' => $m('description'), 'content' => apply_filters('the_content', $post->post_content),
+        'small_content' => $post->post_excerpt, 'popular' => (int) $m('popular'), 'youtube_video' => $m('youtube_video'),
+        'point' => (float) $m('point'), 'catalog_url' => $m('catalog_url'), 'specs' => $m('specs') ?: [],
+    ];
+}
+
+add_action('rest_api_init', function () {
+    register_rest_route('pccc24/v1', '/categories', [
+        'methods' => 'GET', 'permission_callback' => '__return_true',
+        'callback' => fn() => ['categories' => array_map(fn($t) => [
+            'id' => (int) get_term_meta($t->term_id, '_pccc_old_id', true), 'name' => $t->name, 'slug' => $t->slug,
+            'parent_id' => $t->parent ? (int) get_term_meta($t->parent, '_pccc_old_id', true) : null,
+            'url' => get_term_link($t), 'count' => $t->count,
+        ], get_terms(['taxonomy' => 'pccc_product_cat', 'hide_empty' => false]))],
+    ]);
+    register_rest_route('pccc24/v1', '/products/(?P<id>\d+)', [
+        'methods' => 'GET', 'permission_callback' => '__return_true',
+        'callback' => function ($req) {
+            $id = pccc24_find_by_old_id('pccc_product', $req['id']);
+            return $id ? pccc24_product_json(get_post($id)) : new WP_Error('not_found', 'Không tìm thấy sản phẩm', ['status' => 404]);
+        },
+    ]);
+    register_rest_route('pccc24/v1', '/supports', [
+        'methods' => 'GET', 'permission_callback' => '__return_true',
+        'callback' => fn() => ['supports' => array_map(fn($p) => [
+            'id' => $p->ID, 'name' => $p->post_title, 'content' => get_post_meta($p->ID, '_pccc_content', true),
+            'support_type' => get_post_meta($p->ID, '_pccc_support_type', true),
+            'image_url' => get_the_post_thumbnail_url($p, 'full') ?: null, 'sorted' => $p->menu_order,
+        ], get_posts(['post_type' => 'pccc_support', 'numberposts' => -1, 'orderby' => 'menu_order', 'order' => 'ASC']))],
+    ]);
+    // Bản gốc khai báo POST v1/carts nhưng thiếu CartController; ở đây lưu đơn thành pccc_order.
+    foreach (['/orders', '/carts'] as $route) {
+        register_rest_route('pccc24/v1', $route, ['methods' => 'POST', 'permission_callback' => '__return_true', 'callback' => 'pccc24_create_order']);
+    }
+});
+
+function pccc24_create_order(WP_REST_Request $req)
+{
+    $name = sanitize_text_field($req['name'] ?? '');
+    $phone = sanitize_text_field($req['phone'] ?? '');
+    if ($name === '' || !preg_match('/^[0-9 +().-]{8,20}$/', $phone)) {
+        return new WP_Error('invalid', 'Vui lòng nhập họ tên và số điện thoại hợp lệ', ['status' => 400]);
+    }
+    // Giá lấy từ DB, không tin giá client gửi lên.
+    $items = [];
+    $total = 0;
+    foreach (array_slice((array) $req['items'], 0, 100) as $it) {
+        $pid = pccc24_find_by_old_id('pccc_product', (int) ($it['id'] ?? 0));
+        $qty = max(1, min(9999, (int) ($it['quantity'] ?? $it['qty'] ?? 1)));
+        if (!$pid) {
+            continue;
+        }
+        $price = (int) get_post_meta($pid, '_pccc_price', true);
+        $items[] = ['id' => (int) $it['id'], 'name' => get_the_title($pid), 'price' => $price, 'quantity' => $qty];
+        $total += $price * $qty;
+    }
+    $order = wp_insert_post([
+        'post_type' => 'pccc_order', 'post_status' => 'private',
+        'post_title' => sprintf('%s - %s', $name, $phone),
+        'meta_input' => [
+            '_pccc_name' => $name, '_pccc_phone' => $phone,
+            '_pccc_email' => sanitize_email($req['email'] ?? ''),
+            '_pccc_address' => sanitize_text_field($req['address'] ?? ''),
+            '_pccc_note' => sanitize_textarea_field($req['note'] ?? ''),
+            '_pccc_items' => $items, '_pccc_total' => $total,
+        ],
+    ], true);
+    if (is_wp_error($order)) {
+        return $order;
+    }
+    $to = pccc24_setting('email');
+    if ($to) {
+        wp_mail($to, "Đơn hàng mới #$order", "Khách: $name - $phone\nTổng: " . number_format($total) . "đ\n" . admin_url("post.php?post=$order&action=edit"));
+    }
+    return ['id' => $order, 'total' => $total, 'items' => $items, 'message' => 'Đặt hàng thành công'];
+}
+
+/* ---------- wp-admin: metabox các meta _pccc_* ---------- */
+
+const PCCC24_FIELDS = [
+    'pccc_product' => [
+        'price' => 'Giá (0 = Liên hệ)', 'popular' => 'Nổi bật (1/0)', 'title' => 'SEO title', 'description' => 'SEO description',
+        'youtube_video' => 'YouTube', 'catalog_url' => 'Catalog URL', 'policy_ids' => 'ID chính sách (vd. 1,2,3)',
+        'specs' => 'Thông số kỹ thuật (mỗi dòng: Tên | Giá trị)',
+    ],
+    'pccc_service' => ['title' => 'SEO title', 'description' => 'SEO description', 'canonical_url' => 'Canonical URL'],
+    'post' => ['title' => 'SEO title', 'description' => 'SEO description', 'popular' => 'Nổi bật (1/0)', 'video' => 'Video', 'canonical_url' => 'Canonical URL'],
+    'page' => ['url' => 'Link ngoài (để trống = trang thường)'],
+    'pccc_slider' => ['url' => 'Link', 'position' => 'Vị trí'],
+    'pccc_policy' => ['url' => 'Link', 'position' => 'Vị trí (1 = dải cam kết, 2 = banner)'],
+    'pccc_support' => ['content' => 'SĐT / Zalo / Email', 'support_type' => 'Loại (phone, zalo, email...)'],
+];
+
+// Nội dung migrate là HTML cũ: trình soạn thảo cổ điển hiển thị metabox ngay, không bị gói thành "Classic block".
+add_filter('use_block_editor_for_post_type', fn($use, $type) => isset(PCCC24_FIELDS[$type]) ? false : $use, 10, 2);
+
+add_action('add_meta_boxes', function () {
+    foreach (array_keys(PCCC24_FIELDS) as $type) {
+        add_meta_box('pccc24_fields', 'Thông tin PCCC24', 'pccc24_fields_box', $type, 'normal', 'high');
+    }
+    add_meta_box('pccc24_order', 'Chi tiết đơn hàng', 'pccc24_order_box', 'pccc_order', 'normal', 'high');
+});
+
+function pccc24_fields_box($post)
+{
+    wp_nonce_field('pccc24_fields', 'pccc24_nonce');
+    echo '<table class="form-table">';
+    foreach (PCCC24_FIELDS[$post->post_type] as $k => $label) {
+        $v = get_post_meta($post->ID, "_pccc_$k", true);
+        if ($k === 'specs') {
+            $v = implode("\n", array_map(fn($s) => "{$s['name']} | {$s['content']}", (array) $v));
+        } elseif ($k === 'policy_ids') {
+            $v = implode(',', (array) $v);
+        }
+        $input = $k === 'specs'
+            ? sprintf('<textarea name="pccc24[%s]" rows="8" class="large-text code">%s</textarea>', $k, esc_textarea($v))
+            : sprintf('<input name="pccc24[%s]" value="%s" class="large-text">', $k, esc_attr($v));
+        printf('<tr><th>%s</th><td>%s</td></tr>', esc_html($label), $input);
+    }
+    echo '</table>';
+}
+
+add_action('save_post', function ($id, $post) {
+    if (!isset(PCCC24_FIELDS[$post->post_type], $_POST['pccc24'], $_POST['pccc24_nonce'])
+        || !wp_verify_nonce($_POST['pccc24_nonce'], 'pccc24_fields')
+        || wp_is_post_autosave($id) || !current_user_can('edit_post', $id)) {
+        return;
+    }
+    $in = wp_unslash((array) $_POST['pccc24']);
+    foreach (array_keys(PCCC24_FIELDS[$post->post_type]) as $k) {
+        $v = (string) ($in[$k] ?? '');
+        $v = match (true) {
+            in_array($k, ['price', 'popular', 'position'], true) => (int) $v,
+            str_ends_with($k, 'url') || in_array($k, ['youtube_video', 'video'], true) => esc_url_raw($v),
+            $k === 'policy_ids' => array_values(array_filter(array_map('intval', explode(',', $v)))),
+            $k === 'specs' => array_values(array_filter(array_map(function ($line) {
+                [$name, $content] = array_map('trim', explode('|', $line, 2)) + [1 => ''];
+                return $name === '' ? null : ['name' => sanitize_text_field($name), 'content' => sanitize_text_field($content)];
+            }, explode("\n", $v)))),
+            default => sanitize_text_field($v),
+        };
+        update_post_meta($id, "_pccc_$k", $v);
+    }
+}, 10, 2);
+
+function pccc24_order_box($post)
+{
+    $m = fn($k) => get_post_meta($post->ID, "_pccc_$k", true);
+    echo '<table class="widefat striped"><tbody>';
+    foreach (['name' => 'Họ tên', 'phone' => 'Điện thoại', 'email' => 'Email', 'address' => 'Địa chỉ', 'note' => 'Ghi chú'] as $k => $label) {
+        printf('<tr><th style="width:140px">%s</th><td>%s</td></tr>', esc_html($label), nl2br(esc_html($m($k))));
+    }
+    echo '</tbody></table><h4>Sản phẩm</h4><table class="widefat striped"><thead><tr><th>ID</th><th>Sản phẩm</th><th>SL</th><th>Đơn giá</th></tr></thead><tbody>';
+    foreach ((array) $m('items') as $it) {
+        $pid = pccc24_find_by_old_id('pccc_product', $it['id']);
+        printf('<tr><td>%d</td><td>%s</td><td>%d</td><td>%s</td></tr>', $it['id'],
+            $pid ? sprintf('<a href="%s" target="_blank">%s</a>', esc_url(get_permalink($pid)), esc_html($it['name'])) : esc_html($it['name']),
+            $it['quantity'], $it['price'] ? number_format($it['price'], 0, ',', '.') . 'đ' : 'Liên hệ');
+    }
+    printf('</tbody><tfoot><tr><th colspan="3">Tổng</th><th>%s</th></tr></tfoot></table>', $m('total') ? number_format($m('total'), 0, ',', '.') . 'đ' : 'Liên hệ');
+}
+
+add_filter('manage_pccc_order_posts_columns', fn($c) => array_slice($c, 0, 2) + ['phone' => 'Điện thoại', 'items' => 'Số SP', 'total' => 'Tổng'] + $c);
+add_action('manage_pccc_order_posts_custom_column', function ($col, $id) {
+    $v = get_post_meta($id, "_pccc_$col", true);
+    echo esc_html(match ($col) {
+        'items' => (string) array_sum(array_column((array) $v, 'quantity')),
+        'total' => $v ? number_format($v, 0, ',', '.') . 'đ' : 'Liên hệ',
+        default => (string) $v,
+    });
+}, 10, 2);
+add_filter('manage_pccc_product_posts_columns', fn($c) => array_slice($c, 0, 2) + ['old_id' => 'ID cũ', 'price' => 'Giá'] + $c);
+add_action('manage_pccc_product_posts_custom_column', function ($col, $id) {
+    $v = (int) get_post_meta($id, "_pccc_$col", true);
+    echo esc_html($col === 'price' ? ($v ? number_format($v, 0, ',', '.') . 'đ' : 'Liên hệ') : (string) $v);
+}, 10, 2);
+
+/* ---------- Cài đặt chung (bảng settings cũ) ---------- */
+
+function pccc24_setting($key)
+{
+    return get_option('pccc24_settings', [])[$key] ?? '';
+}
+
+add_action('admin_menu', function () {
+    add_options_page('PCCC24', 'PCCC24', 'manage_options', 'pccc24', function () {
+        echo '<div class="wrap"><h1>Cài đặt PCCC24</h1><form method="post" action="options.php">';
+        settings_fields('pccc24');
+        $opt = get_option('pccc24_settings', []);
+        echo '<table class="form-table">';
+        foreach (PCCC24_SETTING_KEYS as $k => $label) {
+            printf('<tr><th><label for="pccc24_%1$s">%2$s</label></th><td><textarea id="pccc24_%1$s" name="pccc24_settings[%1$s]" rows="2" class="large-text">%3$s</textarea></td></tr>',
+                esc_attr($k), esc_html($label), esc_textarea($opt[$k] ?? ''));
+        }
+        echo '</table>';
+        submit_button();
+        echo '</form></div>';
+    });
+});
+add_action('admin_init', fn() => register_setting('pccc24', 'pccc24_settings', [
+    'type' => 'array',
+    'sanitize_callback' => fn($v) => array_map('wp_kses_post', array_intersect_key((array) $v, PCCC24_SETTING_KEYS)),
+]));
