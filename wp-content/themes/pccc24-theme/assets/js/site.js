@@ -95,15 +95,21 @@
   window.PCCC24_MOTION = { EASE_IN_OUT: EASE_IN_OUT, EASE_OUT: EASE_OUT, wave: wave, loop: loop, bell: bell, seg: seg, seeded: seeded, track: track, flow: flow };
 
   // Khởi tạo chuyển động cho các thẻ kiểm định [data-motion-tag]
+  // Chặng C: One-shot khi vào + Idle chạy êm 6.5s rồi nghỉ (tiết kiệm pin mobile), thức dậy khi hover/focus/chạm.
   var tags = [].slice.call(document.querySelectorAll('[data-motion-tag]'));
   if (tags.length) {
     var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var IDLE_DURATION = 6500;
     var scenes = tags.map(function (el, idx) {
       return {
         el: el,
+        rig: el.querySelector('.tag-rig'),
         seed: seeded(idx, 7),
         visible: true,
+        awake: true,
         elapsed: 0,
+        idleElapsed: 0,
+        wakeCount: 0,
         lastTick: 0,
         glow: el.querySelector('.rg-glow'),
         needle: el.querySelector('.rg-needle'),
@@ -114,33 +120,33 @@
       };
     });
 
-    function renderScene(sc, loopTime, oneShotTime) {
-      // 1. One-shot (nhịp vào) + Idle (nhịp thở tự nhiên)
+    function renderScene(sc, loopTime, oneShotTime, env) {
+      // 1. One-shot (nhịp vào) + Idle (nhịp thở tự nhiên nhân với envelope 0..1 để dừng êm không giật)
       var tagSettle = flow(Math.min(oneShotTime, 1400), [[0, -2.4], [620, 0.35], [1400, 0]]);
-      var tagSway   = wave(loopTime, 5200, sc.seed) * 0.45;
+      var tagSway   = wave(loopTime, 5200, sc.seed) * 0.45 * env;
       sc.el.style.transform = 'rotate(' + (tagSettle + tagSway).toFixed(3) + 'deg)';
 
       if (sc.needle) {
         var needleSweep = (1 - seg(oneShotTime, 60, 1100, EASE_OUT)) * -54;
-        var needleIdle  = wave(loopTime, 3600, sc.seed + 0.15) * 1.8;
+        var needleIdle  = wave(loopTime, 3600, sc.seed + 0.15) * 1.8 * env;
         sc.needle.style.transform = 'rotate(' + (needleSweep + needleIdle).toFixed(2) + 'deg)';
       }
       if (sc.lever) {
         var leverPress = (1 - seg(oneShotTime, 120, 900, EASE_OUT)) * -4;
-        var leverIdle  = wave(loopTime, 4800, sc.seed + 0.22) * 1.25;
+        var leverIdle  = wave(loopTime, 4800, sc.seed + 0.22) * 1.25 * env;
         sc.lever.style.transform = 'rotate(' + (leverPress + leverIdle).toFixed(2) + 'deg)';
       }
       if (sc.pin) {
         // Overlap & follow-through: chốt kẹp chì trễ pha hơn cần bóp van
-        var pinIdle = wave(loopTime, 4800, sc.seed + 0.38) * 2.4;
+        var pinIdle = wave(loopTime, 4800, sc.seed + 0.38) * 2.4 * env;
         sc.pin.style.transform = 'rotate(' + pinIdle.toFixed(2) + 'deg)';
       }
       if (sc.glow) {
-        var glowScale = 1 + wave(loopTime, 3200, sc.seed) * 0.04;
+        var glowScale = 1 + wave(loopTime, 3200, sc.seed) * 0.04 * env;
         sc.glow.style.transform = 'scale(' + glowScale.toFixed(3) + ')';
       }
       if (sc.led) {
-        var ledScale = 1 + wave(loopTime, 2800, sc.seed + 0.4) * 0.05;
+        var ledScale = 1 + wave(loopTime, 2800, sc.seed + 0.4) * 0.05 * env;
         sc.led.style.transform = 'scale(' + ledScale.toFixed(3) + ')';
       }
       for (var i = 0; i < sc.wisps.length; i++) {
@@ -154,46 +160,82 @@
         var dx     = (9 + seeded(i, 3) * 8) * p;
         var dy     = (-3.5 - seeded(i, 4) * 4.5) * p + wave(loopTime, 2400, phase) * 0.8;
         var scWisp = 0.75 + p * 0.45;
-        sc.wisps[i].style.opacity   = (bell(p) * 0.48).toFixed(3);
+        sc.wisps[i].style.opacity   = (bell(p) * 0.48 * env).toFixed(3);
         sc.wisps[i].style.transform = 'translate(' + dx.toFixed(2) + 'px,' + dy.toFixed(2) + 'px) scale(' + scWisp.toFixed(2) + ')';
       }
     }
 
     if (reducedMotion) {
       // Nguyên tắc 10: Reduced motion giữ nguyên loop ở frame 0 và one-shot ở frame cuối
-      scenes.forEach(function (sc) { renderScene(sc, 0, 2000); });
+      scenes.forEach(function (sc) { renderScene(sc, 0, 2000, 0); });
     } else {
       var rafId = 0;
       function updateClockState() {
-        var anyVisible = !document.hidden && scenes.some(function (s) { return s.visible; });
-        if (anyVisible && !rafId) {
+        var anyActive = !document.hidden && scenes.some(function (s) { return s.visible && s.awake; });
+        if (anyActive && !rafId) {
           var now = performance.now();
-          scenes.forEach(function (s) { if (s.visible) s.lastTick = now; });
+          scenes.forEach(function (s) { if (s.visible && s.awake) s.lastTick = now; });
           rafId = requestAnimationFrame(tick);
-        } else if (!anyVisible && rafId) {
+        } else if (!anyActive && rafId) {
           cancelAnimationFrame(rafId);
           rafId = 0;
+        }
+      }
+      function wakeScene(sc) {
+        if (!sc.awake) {
+          sc.awake = true;
+          sc.idleElapsed = 0;
+          sc.wakeCount++;
+          sc.lastTick = performance.now();
+          updateClockState();
+        } else if (sc.idleElapsed > 1500) {
+          sc.idleElapsed = 450; // gia hạn mượt khi đang chạy
         }
       }
       function tick(now) {
         rafId = 0;
         for (var i = 0; i < scenes.length; i++) {
           var sc = scenes[i];
-          if (!sc.visible) continue;
+          if (!sc.visible || !sc.awake) continue;
           var dt = sc.lastTick ? Math.min(64, now - sc.lastTick) : 16;
           sc.lastTick = now;
           sc.elapsed += dt;
-          renderScene(sc, sc.elapsed, sc.elapsed);
+          sc.idleElapsed += dt;
+          // Envelope: lần đầu vào trang = 1 rồi hạ êm từ 5.0s..6.5s; những lần thức dậy sau thì tăng êm 0..450ms rồi hạ 5.0s..6.5s
+          var fadeIn  = sc.wakeCount > 0 ? seg(sc.idleElapsed, 0, 450, EASE_OUT) : 1;
+          var fadeOut = 1 - seg(sc.idleElapsed, IDLE_DURATION - 1500, IDLE_DURATION, EASE_IN_OUT);
+          var env     = fadeIn * fadeOut;
+          renderScene(sc, sc.elapsed, sc.elapsed, env);
+          if (sc.idleElapsed >= IDLE_DURATION && sc.elapsed >= 1450) {
+            renderScene(sc, sc.elapsed, 2000, 0);
+            sc.awake = false;
+          }
         }
         updateClockState();
       }
+      scenes.forEach(function (sc) {
+        sc.el.addEventListener('pointerenter', function () { wakeScene(sc); });
+        sc.el.addEventListener('focusin', function () { wakeScene(sc); });
+        sc.el.addEventListener('touchstart', function () { wakeScene(sc); }, { passive: true });
+        // Ánh phản quang mặt kính đồng hồ (Liquid Glass specular trên .tag-rig khi di chuột desktop)
+        if (sc.rig && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          sc.el.addEventListener('pointermove', function (e) {
+            var r = sc.rig.getBoundingClientRect();
+            if (!r.width || !r.height) return;
+            var gx = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
+            var gy = Math.max(0, Math.min(100, ((e.clientY - r.top) / r.height) * 100));
+            sc.rig.style.setProperty('--gx', gx.toFixed(1) + '%');
+            sc.rig.style.setProperty('--gy', gy.toFixed(1) + '%');
+          });
+        }
+      });
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
             scenes.forEach(function (sc) {
               if (sc.el === entry.target) {
                 sc.visible = entry.isIntersecting;
-                if (sc.visible) sc.lastTick = performance.now();
+                if (sc.visible && sc.awake) sc.lastTick = performance.now();
               }
             });
           });

@@ -181,11 +181,14 @@
         });
     }
 
-    // 4. Nút nổi góc trái dưới mở nhanh trang Đăng nhập / WP-Admin Demo (đã điền sẵn tài khoản, email, mật khẩu)
+    // 4. Nút nổi góc trái dưới mở nhanh trang Đăng nhập / WP-Admin Demo (trên mobile tự đẩy lên bottom: 64px để không đè thanh .float-contact 52px)
+    var st = document.createElement("style");
+    st.textContent =
+      ".pccc24-demo-badge{position:fixed;left:16px;bottom:16px;z-index:1500;background:#1d2329;color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.25);display:flex;align-items:center;gap:6px;text-decoration:none;border:1px solid rgba(255,255,255,0.15);} .pccc24-demo-badge:hover{color:#f3c623;} @media(max-width:640px){.pccc24-demo-badge{bottom:64px;left:12px;font-size:12px;padding:6px 12px;}}";
+    document.head.appendChild(st);
     var badge = document.createElement("a");
+    badge.className = "pccc24-demo-badge";
     badge.href = PREFIX + "/wp-login/";
-    badge.style.cssText =
-      "position:fixed;left:16px;bottom:16px;z-index:1500;background:#1d2329;color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.25);display:flex;align-items:center;gap:6px;text-decoration:none;border:1px solid rgba(255,255,255,0.15);";
     badge.innerHTML =
       '<span style="width:8px;height:8px;border-radius:50%;background:#0b7a4b;display:inline-block;"></span>' +
       "<span>🔑 WP-Admin / Đăng nhập (Đã điền sẵn)</span>";
