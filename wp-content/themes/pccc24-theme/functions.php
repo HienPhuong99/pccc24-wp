@@ -585,7 +585,7 @@ add_action('admin_notices', function () {
                     <rect x="130" y="8" width="142" height="40" rx="10" fill="#ffffff" fill-opacity="0.72" stroke="#14161b" stroke-opacity="0.10" />
                     <circle class="v18-led" cx="142" cy="18" r="4" fill="#0b7a4b" />
                     <text x="151" y="21" fill="#14161b" font-size="8.5" font-weight="700" font-family="system-ui, sans-serif">TELEMETRY · 24/7</text>
-                    <text x="140" y="39" fill="#0b7a4b" font-size="8" font-weight="600" font-family="system-ui, sans-serif">385 SP · 100% ĐẠT</text>
+                    <text x="140" y="39" fill="#0b7a4b" font-size="8" font-weight="600" font-family="system-ui, sans-serif"><?= $prod_count ?> SP · 100% ĐẠT</text>
                     <rect class="v18-bar" x="218" y="24" width="6" height="18" rx="3" fill="#14161b" />
                     <rect class="v18-bar" x="228" y="19" width="6" height="23" rx="3" fill="#14161b" />
                     <rect class="v18-bar" x="238" y="15" width="6" height="27" rx="3" fill="#0b7a4b" />
