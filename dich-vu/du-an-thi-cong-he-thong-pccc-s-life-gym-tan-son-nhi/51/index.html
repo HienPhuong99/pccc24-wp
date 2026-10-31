@@ -212,56 +212,103 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 </header>
 <main id="main">
     <div class="wrap">
-<div class="flex gap-10 mt-4">
-    <div class="left-content md:block xs-s:hidden">
-        <div class="border-tab"></div>
-<div class="flex justify-between items-center">
-    <div class="w-full">
-        <label class="popular-label popular-label-icon w-full">
-            <i class="bx bx-cog"></i>
-            <span class="text">Dịch vụ</span>
-        </label>
-    </div>
+<div class="with-side">
+    <aside><div class="side-block">
+    <h2>Dịch vụ</h2>
+    <ul class="side-links">
+                    <li><a href="/pccc24-wp/dich-vu/thi-cong-lap-dat-he-thong-pccc">Thi Công Lắp Đặt Hệ Thống PCCC</a></li>
+                    <li><a href="/pccc24-wp/dich-vu/bao-tri-sua-chua-he-thong-pccc">Bảo Trì Sửa Chữa Hệ Thống PCCC</a></li>
+                    <li><a href="/pccc24-wp/dich-vu/du-an">Dự Án</a></li>
+            </ul>
 </div>
-<div class="mb-5 border p-2">
-            <a class="w-full flex gap-2 my-3" href="/pccc24-wp/dich-vu/thi-cong-lap-dat-he-thong-pccc">
-            <span class="limit-line limit-line-4 text-base">
-                Thi Công Lắp Đặt Hệ Thống PCCC            </span>
-        </a>
-            <a class="w-full flex gap-2 my-3" href="/pccc24-wp/dich-vu/bao-tri-sua-chua-he-thong-pccc">
-            <span class="limit-line limit-line-4 text-base">
-                Bảo Trì Sửa Chữa Hệ Thống PCCC            </span>
-        </a>
-            <a class="w-full flex gap-2 my-3" href="/pccc24-wp/dich-vu/du-an">
-            <span class="limit-line limit-line-4 text-base">
-                Dự Án            </span>
-        </a>
-    </div>
-    </div>
-    <div class="right-content w-full">
-        <div class="crumb-box sm:flex xs-s:grid gap-4 justify-between items-center">
-            <ul class="crumb">
-                <li>
-                    <a href="/pccc24-wp/">
-                        Trang chủ
-                    </a>
-                </li>
-                <li>
-                    <a href="/pccc24-wp/dich-vu">
-                        Dịch vụ
-                    </a>
-                </li>
-                                    <li>
-                        <a href="/pccc24-wp/dich-vu/du-an">
-                            Dự Án                        </a>
-                    </li>
-                            </ul>
-            <span class="text-sm text-gray-500">27/02/2026</span>
-        </div>
+<aside class="tag tag-swing" data-motion-tag aria-label="Liên hệ báo giá">
+    <div class="tag-rig" aria-hidden="true">
+        <svg class="tag-gauge-scene" viewBox="0 0 206 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Halo trạng thái đạt chuẩn (idle glow) -->
+            <circle class="rg-glow" cx="30" cy="27" r="21" fill="#0b7a4b" fill-opacity="0.16" />
 
-        <div class="content-body mt-2">
-            <h1 class="text-2xl mb-4 font-medium">DỰ ÁN THI CÔNG HỆ THỐNG PCCC S’ LIFE GYM TÂN SƠN NHÌ</h1>
-            <p><span style="font-family: arial, helvetica, sans-serif;">Trong các công trình dịch vụ &#8211; thương mại như phòng gym, trung tâm thể hình, hệ thống phòng cháy chữa cháy (PCCC) đóng vai trò đặc biệt quan trọng nhằm đảm bảo an toàn cho người tập luyện, nhân viên và toàn bộ tài sản trong quá trình vận hành.</span></p>
+            <!-- Mặt đồng hồ áp suất bình chữa cháy -->
+            <circle cx="30" cy="27" r="18.5" fill="#1d2329" stroke="#1d2329" stroke-width="2" />
+            <circle cx="30" cy="27" r="15.5" stroke="#eef0ee" stroke-opacity="0.22" stroke-width="1" />
+            <!-- Vùng cảnh báo đỏ (áp thấp / quá áp) -->
+            <path d="M17.5 34.5 A 14.5 14.5 0 0 1 21.5 15.2" stroke="#c8201a" stroke-width="3.2" stroke-linecap="round" />
+            <path d="M38.5 15.2 A 14.5 14.5 0 0 1 42.5 34.5" stroke="#c8201a" stroke-width="3.2" stroke-linecap="round" />
+            <!-- Vùng xanh ĐẠT CHUẨN ở đỉnh (12h) -->
+            <path d="M22.5 14.6 A 14.5 14.5 0 0 1 37.5 14.6" stroke="#19b36b" stroke-width="3.8" stroke-linecap="round" />
+            <!-- Vạch chia áp suất -->
+            <line x1="30" y1="10.5" x2="30" y2="13" stroke="#eef0ee" stroke-width="1.2" />
+            <line x1="20" y1="15.5" x2="21.5" y2="17.5" stroke="#eef0ee" stroke-width="1" />
+            <line x1="40" y1="15.5" x2="38.5" y2="17.5" stroke="#eef0ee" stroke-width="1" />
+            <text x="30" y="38.5" text-anchor="middle" fill="#c9d0d6" font-family="Barlow Condensed, sans-serif" font-size="6.5" font-weight="700" letter-spacing="0.5">BAR</text>
+
+            <!-- Kim đồng hồ áp suất (pivot tại tâm 30, 27) -->
+            <g class="rg-needle">
+                <line x1="30" y1="30" x2="30" y2="13.5" stroke="#f3c623" stroke-width="2" stroke-linecap="round" />
+                <polygon points="30,11.5 28.2,15.5 31.8,15.5" fill="#f3c623" />
+                <circle cx="30" cy="27" r="3" fill="#f3c623" stroke="#1d2329" stroke-width="1.2" />
+            </g>
+
+            <!-- Cụm cổ van + vòi phun bình chữa cháy -->
+            <rect x="66" y="34" width="22" height="10" rx="2" fill="#c8201a" stroke="#1d2329" stroke-width="1.5" />
+            <rect x="70" y="21" width="14" height="14" rx="1.5" fill="#d8ac0f" stroke="#1d2329" stroke-width="1.5" />
+            <!-- Tay cầm dưới cố định -->
+            <path d="M70 23 L54 25.5" stroke="#1d2329" stroke-width="3.2" stroke-linecap="round" />
+            <!-- Cần bóp van trên (pivot tại khớp 80, 21) -->
+            <g class="rg-lever">
+                <path d="M80 21 L55 15.5" stroke="#1d2329" stroke-width="3.2" stroke-linecap="round" />
+                <circle cx="80" cy="21" r="2" fill="#f3c623" />
+            </g>
+            <!-- Chốt kẹp chì an toàn (pivot tại 73, 23, follow-through) -->
+            <g class="rg-pin">
+                <line x1="73" y1="23" x2="68" y2="28" stroke="#1d2329" stroke-width="1.4" />
+                <circle cx="66.5" cy="31" r="4" fill="none" stroke="#1d2329" stroke-width="1.6" />
+            </g>
+            <!-- Loa phun PCCC -->
+            <path d="M84 25 L98 25 L112 19.5 L112 32.5 L98 28 L84 28 Z" fill="#1d2329" />
+
+            <!-- 3 hạt sương bảo vệ (seeded loops + bell opacity) -->
+            <circle class="rg-wisp" cx="118" cy="26" r="2.6" fill="#0b7a4b" opacity="0" />
+            <circle class="rg-wisp" cx="122" cy="23" r="2.1" fill="#0b7a4b" opacity="0" />
+            <circle class="rg-wisp" cx="120" cy="29" r="1.8" fill="#1d2329" opacity="0" />
+
+            <!-- Nhãn chứng nhận kiểm định -->
+            <rect x="136" y="13" width="64" height="28" rx="3" fill="#1d2329" />
+            <circle class="rg-led" cx="144" cy="22" r="2.6" fill="#19b36b" />
+            <text x="150" y="24.5" fill="#f3c623" font-family="Barlow Condensed, sans-serif" font-size="8.5" font-weight="700" letter-spacing="0.4">KIỂM ĐỊNH</text>
+            <text x="142" y="35" fill="#eef0ee" font-family="Be Vietnam Pro, sans-serif" font-size="6.5" font-weight="600">ĐẠT CHUẨN</text>
+        </svg>
+    </div>
+    <p class="tag-title">Khảo sát miễn phí</p>
+    <p>Kỹ thuật viên đến tận nơi khảo sát và lập phương án PCCC theo quy định hiện hành.</p>
+    <a class="btn btn-call" href="tel:0982765114"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> <span><small>Bán hàng</small>0982765114</span></a>
+    <a class="btn btn-call" href="tel:02866566422"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> <span><small>Kỹ thuật</small>02866566422</span></a>
+    <a class="btn btn-zalo" href="https://zalo.me/0982765114" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/></svg> Nhắn Zalo</a>
+    <ol class="tag-months" aria-hidden="true">
+                    <li>T1</li>
+                    <li>T2</li>
+                    <li>T3</li>
+                    <li>T4</li>
+                    <li>T5</li>
+                    <li>T6</li>
+                    <li>T7</li>
+                    <li>T8</li>
+                    <li>T9</li>
+                    <li class="punched">T10</li>
+                    <li>T11</li>
+                    <li>T12</li>
+            </ol>
+</aside>
+</aside>
+    <article>
+        <ol class="crumbs" aria-label="Đường dẫn">
+    <li><a href="/pccc24-wp/">Trang chủ</a></li>
+            <li><a href="/pccc24-wp/dich-vu">Dịch vụ</a></li>
+            <li><a href="/pccc24-wp/dich-vu/du-an">Dự Án</a></li>
+    </ol>
+        <div class="panel">
+            <h1>DỰ ÁN THI CÔNG HỆ THỐNG PCCC S’ LIFE GYM TÂN SƠN NHÌ</h1>
+                            <p class="entry-meta">Cập nhật <time datetime="2026-10-31T02:35:04+00:00">31/10/2026</time></p>
+                        <div class="prose"><p><span style="font-family: arial, helvetica, sans-serif;">Trong các công trình dịch vụ &#8211; thương mại như phòng gym, trung tâm thể hình, hệ thống phòng cháy chữa cháy (PCCC) đóng vai trò đặc biệt quan trọng nhằm đảm bảo an toàn cho người tập luyện, nhân viên và toàn bộ tài sản trong quá trình vận hành.</span></p>
 <p><span style="font-family: arial, helvetica, sans-serif;">Dự án S’ Life Gym Tân Sơn Nhì là một trong những công trình PCCC tiêu biểu do Hoàng Quân Phát trực tiếp tham gia thi công, đáp ứng đầy đủ các yêu cầu về an toàn cháy nổ, kỹ thuật và tiêu chuẩn PCCC hiện hành.</span></p>
 <h2 id="1__thong_tin_tong_quan_du_an"><span style="font-family: tahoma, arial, helvetica, sans-serif; color: #02007c;"><strong>1. Thông tin tổng quan dự án</strong></span></h2>
 <ul>
@@ -305,8 +352,9 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <h2 id="4__hoang_quan_phat_-_don_vi_thi_cong_he_thong_pccc_cho_du_an"><span style="color: #02007c; font-family: tahoma, arial, helvetica, sans-serif;"><strong>4. PCCC Hoàng Quân Phát &#8211; Đơn vị thi công hệ thống PCCC S’Life Gym Tân Sơn Nhì</strong></span></h2>
 <p><span style="font-family: arial, helvetica, sans-serif;">Dự án S’Life Gym Tân Sơn Nhì là công trình do Hoàng Quân Phát trực tiếp thi công hệ thống PCCC, từ khâu khảo sát, tư vấn giải pháp đến triển khai lắp đặt và hoàn thiện.</span></p>
 <p><span style="font-family: arial, helvetica, sans-serif;">Với kinh nghiệm thi công nhiều công trình PCCC cho nhà xưởng, tòa nhà và công trình dịch vụ, Hoàng Quân Phát cam kết mang đến giải pháp an toàn &#8211; đúng tiêu chuẩn &#8211; tối ưu cho từng loại hình công trình.</span></p>
+</div>
         </div>
-    </div>
+    </article>
 </div>
     </div>
 </main>

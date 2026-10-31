@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng nhập ‹ PCCC24 — WordPress</title>
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { margin: 0; background: #f0f0f1; color: #3c434a; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .login-card { width: 100%; max-width: 380px; background: #fff; border: 1px solid #c3c4c7; padding: 26px 24px; box-shadow: 0 1px 3px rgba(0,0,0,.04); border-radius: 4px; }
+        .logo-wrap { text-align: center; margin-bottom: 18px; }
+        .logo-wrap img { max-height: 56px; }
+        .prefill-box { background: #f0f6fc; border: 1px solid #72aee6; border-left: 4px solid #2271b1; padding: 10px 12px; margin-bottom: 16px; border-radius: 4px; font-size: 13px; line-height: 1.55; color: #1d2327; }
+        .prefill-box code { background: #e5eff8; padding: 1px 5px; border-radius: 3px; font-weight: 600; }
+        .switch-btns { display: flex; gap: 6px; margin-top: 8px; }
+        .switch-btns button { flex: 1; background: #f6f7f7; border: 1px solid #2271b1; color: #2271b1; padding: 5px 8px; border-radius: 3px; cursor: pointer; font-size: 12px; font-weight: 500; }
+        .switch-btns button:hover { background: #2271b1; color: #fff; }
+        .field { margin-bottom: 16px; }
+        .field label { display: block; font-size: 14px; margin-bottom: 5px; color: #1d2327; font-weight: 500; }
+        .field input { width: 100%; padding: 8px 12px; font-size: 16px; border: 1px solid #8c8f94; border-radius: 4px; }
+        .actions { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; }
+        .btn-submit { background: #2271b1; color: #fff; border: 1px solid #2271b1; padding: 8px 18px; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .btn-submit:hover { background: #135e96; }
+        .back-link { margin-top: 16px; font-size: 13px; }
+        .back-link a { color: #50575e; text-decoration: none; }
+        .back-link a:hover { color: #2271b1; }
+    </style>
+</head>
+<body>
+    <div class="logo-wrap">
+        <a href="/pccc24-wp/"><img src="/pccc24-wp/wp-content/themes/pccc24-theme/assets/images/logo.png" alt="PCCC24"></a>
+    </div>
+    <div class="login-card">
+        <div class="prefill-box">
+            <strong>🔑 Tài khoản mặc định (Đã điền sẵn):</strong><br>
+            • Tài khoản: <code>admin</code><br>
+            • Email: <code>admin@pccc24.local</code><br>
+            • Mật khẩu: <code>pccc24@admin2026</code>
+            <div class="switch-btns">
+                <button type="button" onclick="fillCreds('admin')">Điền Username</button>
+                <button type="button" onclick="fillCreds('admin@pccc24.local')">Điền Email</button>
+            </div>
+        </div>
+        <form onsubmit="event.preventDefault(); window.location.href='/pccc24-wp/wp-admin/';">
+            <div class="field">
+                <label for="user_login">Tên người dùng hoặc Địa chỉ Email</label>
+                <input type="text" id="user_login" name="log" value="admin" required>
+            </div>
+            <div class="field">
+                <label for="user_pass">Email quản trị</label>
+                <input type="email" id="user_email" name="email" value="admin@pccc24.local" required>
+            </div>
+            <div class="field">
+                <label for="user_pass_input">Mật khẩu</label>
+                <input type="text" id="user_pass_input" name="pwd" value="pccc24@admin2026" required>
+            </div>
+            <div class="actions">
+                <label style="font-size:13px;display:flex;align-items:center;gap:6px;">
+                    <input type="checkbox" checked> Tự động đăng nhập
+                </label>
+                <button type="submit" id="wp-submit" class="btn-submit">Đăng nhập &rarr;</button>
+            </div>
+        </form>
+    </div>
+    <div class="back-link">
+        <a href="/pccc24-wp/">&larr; Quay lại PCCC24</a>
+    </div>
+    <script>
+        function fillCreds(loginVal) {
+            document.getElementById('user_login').value = loginVal;
+            document.getElementById('user_email').value = 'admin@pccc24.local';
+            document.getElementById('user_pass_input').value = 'pccc24@admin2026';
+        }
+    </script>
+</body>
+</html>

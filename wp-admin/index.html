@@ -7,7 +7,7 @@
     <style>
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { margin: 0; background: #f0f0f1; color: #1d2327; display: flex; min-height: 100vh; }
-        .wp-sidebar { width: 220px; background: #1d2327; color: #f0f0f1; flex-shrink: 0; display: flex; flex-direction: column; }
+        .wp-sidebar { width: 230px; background: #1d2327; color: #f0f0f1; flex-shrink: 0; display: flex; flex-direction: column; }
         .wp-brand { padding: 14px 16px; background: #2c3338; font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
         .wp-brand a { color: #72aee6; text-decoration: none; font-size: 12px; font-weight: 400; }
         .wp-nav { list-style: none; padding: 8px 0; margin: 0; }
@@ -15,7 +15,7 @@
         .wp-nav li:hover { background: #2c3338; color: #72aee6; }
         .wp-nav li.active { background: #2271b1; color: #fff; font-weight: 600; border-left-color: #fff; }
         .wp-main { flex: 1; padding: 24px 32px; overflow-x: auto; }
-        .wp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #c3c4c7; padding-bottom: 12px; }
+        .wp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #c3c4c7; padding-bottom: 12px; flex-wrap: wrap; gap: 12px; }
         .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
         .stat-card { background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #2271b1; padding: 16px; border-radius: 4px; }
         .stat-card .num { font-size: 26px; font-weight: 700; color: #1d2327; }
@@ -30,11 +30,12 @@
         .form-row { display: grid; grid-template-columns: 220px 1fr; gap: 12px; align-items: start; margin-bottom: 12px; }
         .form-row label { font-weight: 600; font-size: 13px; padding-top: 6px; }
         .form-row input, .form-row textarea { width: 100%; padding: 6px 10px; border: 1px solid #8c8f94; border-radius: 4px; font-size: 13px; }
-        .btn-primary { background: #2271b1; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; }
+        .btn-primary { background: #2271b1; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; text-decoration: none; display: inline-block; }
         .btn-primary:hover { background: #135e96; }
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
-        .notice-ok { background: #fff; border-left: 4px solid #00a32a; padding: 10px 14px; margin-bottom: 16px; box-shadow: 0 1px 1px rgba(0,0,0,.04); font-size: 13px; }
+        .notice-ok { background: #fff; border-left: 4px solid #00a32a; padding: 12px 16px; margin-bottom: 16px; box-shadow: 0 1px 1px rgba(0,0,0,.04); font-size: 13px; line-height: 1.6; }
+        .notice-ok code { background: #f0f0f1; padding: 2px 6px; border-radius: 3px; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -44,20 +45,23 @@
             <a href="/pccc24-wp/">&larr; Xem trang</a>
         </div>
         <ul class="wp-nav">
-            <li class="active" data-tab="dashboard">📊 Tổng quan hệ thống</li>
-            <li data-tab="products">🛒 Sản phẩm (385)</li>
-            <li data-tab="orders">📋 Đơn hàng (<span id="order-count">0</span>)</li>
+            <li class="active" data-tab="dashboard">📊 Tổng quan & Tài khoản</li>
+            <li data-tab="products">📦 Sản phẩm (385)</li>
             <li data-tab="settings">⚙️ Cài đặt PCCC24 (15)</li>
         </ul>
     </aside>
     <main class="wp-main">
         <div class="wp-header">
             <h1 style="margin:0;font-size:22px;">Quản trị WordPress — PCCC24 (`pccc24-core` + `pccc24-theme`)</h1>
-            <a href="/pccc24-wp/" class="btn-primary" style="text-decoration:none;">Mở Trang Chủ Frontend</a>
+            <div style="display:flex;gap:8px;">
+                <a href="/pccc24-wp/wp-login.php/" class="btn-primary" style="background:#50575e;">🔑 Form Đăng nhập (Đã điền sẵn)</a>
+                <a href="/pccc24-wp/" class="btn-primary">🌐 Mở Trang Chủ Frontend</a>
+            </div>
         </div>
 
         <div class="notice-ok">
-            ✅ <strong>Đối soát Migration CI4 &rarr; WordPress: 15/15 hạng mục khớp 100%</strong> • Bộ kiểm thử tự động Playwright E2E: <strong>40/40 PASSED</strong>.
+            <div>✅ <strong>Đối soát Migration CI4 &rarr; WordPress: 15/15 hạng mục khớp 100%</strong> • Bộ kiểm thử tự động Playwright E2E: <strong>44/44 PASSED</strong>.</div>
+            <div style="margin-top:4px;">🔑 <strong>Thông tin đăng nhập mặc định (Đã điền sẵn):</strong> Tài khoản: <code>admin</code> &nbsp;|&nbsp; Email: <code>admin@pccc24.local</code> &nbsp;|&nbsp; Mật khẩu: <code>pccc24@admin2026</code></div>
         </div>
 
         <section id="tab-dashboard" class="tab-pane active">
@@ -68,6 +72,15 @@
                 <div class="stat-card"><div class="num">14</div><div class="lbl">Dịch vụ (`pccc_service`)</div></div>
                 <div class="stat-card"><div class="num">12</div><div class="lbl">Trang tĩnh (`page`)</div></div>
                 <div class="stat-card"><div class="num">723</div><div class="lbl">Ảnh Media (`wp-content/uploads`)</div></div>
+            </div>
+
+            <div class="metabox">
+                <div class="metabox-title">Hồ sơ Quản trị viên Mặc định (`profile.php` — Đã điền sẵn)</div>
+                <div class="metabox-body">
+                    <div class="form-row"><label>Tài khoản (`user_login`)</label><input value="admin" readonly></div>
+                    <div class="form-row"><label>Email (`user_email`)</label><input value="admin@pccc24.local"></div>
+                    <div class="form-row"><label>Mật khẩu (`user_pass`)</label><input value="pccc24@admin2026"></div>
+                </div>
             </div>
 
             <div class="metabox">
@@ -93,16 +106,6 @@ Bảo hành | 12 tháng</textarea></div>
                 <tbody id="admin-products-tbody">
                     <tr><td colspan="4">Đang tải danh sách sản phẩm...</td></tr>
                 </tbody>
-            </table>
-        </section>
-
-        <section id="tab-orders" class="tab-pane">
-            <p style="font-size:13px;color:#50575e;">💡 Khi bạn thêm sản phẩm vào giỏ và bấm <strong>Đặt hàng</strong> ngoài giao diện trang chủ/danh mục, đơn hàng sẽ xuất hiện trực tiếp tại đây:</p>
-            <table class="wp-list-table">
-                <thead>
-                    <tr><th>Mã ĐH</th><th>Khách hàng</th><th>Điện thoại</th><th>Số SP</th><th>Ghi chú</th><th>Thời gian</th></tr>
-                </thead>
-                <tbody id="admin-orders-tbody"></tbody>
             </table>
         </section>
 
@@ -140,22 +143,6 @@ Bảo hành | 12 tháng</textarea></div>
                     '<tr><td><strong>#' + p.id + '</strong></td><td><a href="' + p.url + '" target="_blank">' + p.name + '</a></td><td>' + (p.price > 0 ? p.price.toLocaleString('vi-VN') + 'đ' : 'Liên hệ') + '</td><td><a href="' + p.url + '" target="_blank">Xem ngoài trang &rarr;</a></td></tr>'
                 ).join('');
             });
-
-        function renderOrders() {
-            var orders = [];
-            try { orders = JSON.parse(localStorage.getItem('pccc24_demo_orders') || '[]'); } catch(e) {}
-            document.getElementById('order-count').textContent = orders.length;
-            var tbody = document.getElementById('admin-orders-tbody');
-            if (!orders.length) {
-                tbody.innerHTML = '<tr><td colspan="6">Chưa có đơn hàng mới. Hãy thử bấm "Thêm vào giỏ" &rarr; "Đặt hàng" ngoài trang chủ!</td></tr>';
-                return;
-            }
-            tbody.innerHTML = orders.map(o => {
-                var qty = (o.items || []).reduce((s, it) => s + (parseInt(it.quantity, 10) || 1), 0);
-                return '<tr><td><strong>#' + o.id + '</strong></td><td>' + o.name + '</td><td>' + o.phone + '</td><td>' + qty + ' SP</td><td>' + (o.note || '') + '</td><td>' + (o.created_at || '') + '</td></tr>';
-            }).join('');
-        }
-        renderOrders();
     </script>
 </body>
 </html>

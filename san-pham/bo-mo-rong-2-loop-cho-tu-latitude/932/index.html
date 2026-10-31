@@ -212,212 +212,109 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 </header>
 <main id="main">
     <div class="wrap">
-<style>
-    /* Ép tất cả các bảng trong khu vực nội dung thành màu xám nhạt */
-    .content-body table, 
-    .content-body table * {
-        background-color: #f8fafc !important; 
-    }
-</style>
-<div class="flex gap-10 mt-4">
-    <div class="left-content md:block xs-s:hidden">
-        <div class="side-block">
-    <h2>Danh mục</h2>
-    <ul class="cat-list">
-            <li>
-            <a href="/pccc24-wp/san-pham/binh-chua-chay">
-                <span>Bình chữa cháy</span>
-                <span class="count">8</span>            </a>
-                            <ul>
-                                            <li><a href="/pccc24-wp/san-pham/binh-bot-chua-chay-bot-abc">Bình bột chữa cháy bột ABC</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/binh-cau-chua-chay-tu-dong">Bình cầu chữa cháy tự động</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/binh-chua-chay-faucon">Bình chữa cháy FAUCON</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/binh-chua-chay-foam">Bình chữa cháy FOAM</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/binh-chua-chay-khac">Bình chữa cháy khác</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/binh-co2-chua-chay">Bình CO2 chữa cháy</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/binh-chua-chay-goc-nuoc">Bình chữa cháy gốc nước</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/binh-chua-chay-pin-lithium">Bình chữa cháy pin lithium</a></li>
-                                    </ul>
-                    </li>
-            <li>
-            <a href="/pccc24-wp/san-pham/thiet-bi-bao-chay">
-                <span>Thiết bị báo cháy</span>
-                <span class="count">5</span>            </a>
-                            <ul>
-                                            <li><a href="/pccc24-wp/san-pham/bao-chay-thuong-horing">Báo cháy thường Horing</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/bao-chay-dia-chi-horing">Báo cháy địa chỉ Horing</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/bao-chay-thuong-hochiki">Báo cháy thường Hochiki</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/bao-chay-dia-chi-hochiki">Báo cháy địa chỉ Hochiki</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/bao-chay-khac">Báo cháy khác</a></li>
-                                    </ul>
-                    </li>
-            <li>
-            <a href="/pccc24-wp/san-pham/den-thoat-hiem">
-                <span>Đèn thoát hiểm</span>
-                <span class="count">3</span>            </a>
-                            <ul>
-                                            <li><a href="/pccc24-wp/san-pham/kentom">KENTOM</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/trung-quoc">Trung Quốc</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/paragon">PARAGON</a></li>
-                                    </ul>
-                    </li>
-            <li>
-            <a href="/pccc24-wp/san-pham/may-bom-chua-chay">
-                <span>Máy bơm chữa cháy</span>
-                <span class="count">3</span>            </a>
-                            <ul>
-                                            <li><a href="/pccc24-wp/san-pham/may-bom-vn-fire">Máy bơm VN FIRE</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/may-bom-windy">MÁY BƠM WINDY</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/may-bom-versar-malaysia">MÁY BƠM VERSAR ( MALAYSIA)</a></li>
-                                    </ul>
-                    </li>
-            <li>
-            <a href="/pccc24-wp/san-pham/thiet-bi-pccc">
-                <span>Thiết bị PCCC</span>
-                <span class="count">8</span>            </a>
-                            <ul>
-                                            <li><a href="/pccc24-wp/san-pham/voi-chua-chay">Vòi chữa cháy</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/lang-phun-chua-chay">Lăng phun chữa cháy</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/van-khoa">Van khóa</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/tru-hong-nuoc-chua-chay">Trụ họng nước chữa cháy</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/van-goc-chua-chay">Van góc chữa cháy</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/van-cong-chua-chay">Van cổng chữa cháy</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/khop-noi-chua-chay">Khớp nối chữa cháy</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/dau-phun-chua-chay">Đầu phun chữa cháy</a></li>
-                                    </ul>
-                    </li>
-            <li>
-            <a href="/pccc24-wp/san-pham/tu-ke-pccc">
-                <span>Tủ, kệ PCCC</span>
-                            </a>
-                    </li>
-            <li>
-            <a href="/pccc24-wp/san-pham/dung-cu-bao-ho">
-                <span>Dụng cụ bảo hộ</span>
-                <span class="count">3</span>            </a>
-                            <ul>
-                                            <li><a href="/pccc24-wp/san-pham/mat-na">Mặt nạ</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/quan-ao-bao-ho">Quần áo bảo hộ</a></li>
-                                            <li><a href="/pccc24-wp/san-pham/dung-cu-pha-do">Dụng cụ phá dỡ</a></li>
-                                    </ul>
-                    </li>
-            <li>
-            <a href="/pccc24-wp/san-pham/thiet-bi-pccc-khac">
-                <span>Thiết bị PCCC khác</span>
-                            </a>
-                    </li>
-            <li>
-            <a href="/pccc24-wp/san-pham/kim-chong-set">
-                <span>Kim chống sét</span>
-                            </a>
-                    </li>
-            <li>
-            <a href="/pccc24-wp/san-pham/bien-bao-an-toan">
-                <span>Biển báo an toàn</span>
-                            </a>
-                    </li>
-    </ul>
-</div>
-<div class="side-block side-products">
-    <h2>Sản phẩm nổi bật</h2>
-            <a href="/pccc24-wp/san-pham/binh-chua-chay-xe-day-goc-nuoc-35-lit-dolphin-dpa-t35l-bo-cong-an/732"><img src="https://pccc24.com/uploads/_b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-xe-%C4%91%E1%BA%A9y-g%E1%BB%91c-n%C6%B0%E1%BB%9Bc-35-l%C3%ADt-dolphin-dpa-t35l-b%E1%BB%99-c%C3%B4ng-an1779430729.png" alt="" loading="lazy"><span>Bình chữa cháy xe đẩy gốc nước 35 Lít Dolphin DPA-T35L (Bộ Công An)</span></a>
-            <a href="/pccc24-wp/san-pham/binh-chua-chay-xe-day-bot-abc-35kg-dolphin-dpa-abc35-bo-cong-an/731"><img src="https://pccc24.com/uploads/b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-35kg-dolphin-dpa-abc351778895753.png" alt="" loading="lazy"><span>Bình chữa cháy xe đẩy bột ABC 35kg Dolphin DPA-ABC35 (Bộ Công An)</span></a>
-            <a href="/pccc24-wp/san-pham/binh-chua-chay-bot-abc-8kg-dolphin-dpa-abc8-bo-cong-an/730"><img src="https://pccc24.com/uploads/b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-8kg-dolphin-dpa-abc81778896533.png" alt="" loading="lazy"><span>Bình chữa cháy bột ABC 8kg Dolphin DPA-ABC8 (Bộ Công An)</span></a>
-            <a href="/pccc24-wp/san-pham/binh-chua-chay-bot-abc-4kg-dolphin-dpa-abc4-bo-cong-an/729"><img src="https://pccc24.com/uploads/b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-4kg-dolphin-dpa-abc41778896811.png" alt="" loading="lazy"><span>Bình chữa cháy bột ABC 4kg Dolphin DPA-ABC4 (Bộ Công An)</span></a>
-    </div>
-    </div>
-    <div class="right-content w-full">
-        <div class="crumb-box flex h-10 items-center">
-            <ul class="crumb">
-                <li>
-                    <a href="/pccc24-wp/">
-                        Trang chủ
-                    </a>
-                </li>
-                                    <li>
-                        <a href="/pccc24-wp/san-pham/thiet-bi-bao-chay">
-                            Thiết bị báo cháy                        </a>
-                    </li>
-                                                    <li>
-                        <a href="/pccc24-wp/san-pham/bao-chay-dia-chi-hochiki">
-                            Báo cháy địa chỉ Hochiki                        </a>
-                    </li>
-                            </ul>
-        </div>
 
-        <div class="grid md:grid-cols-4 xs-s:grid-cols-1 mt-4">
-            <div class="col-span-2">
-                <div class="md:pr-5 xs-s:pr-0">
-                    <div class="max-h-[360px] flex items-center justify-center bg-white relative rounded shadow">
-                        <img data-id="lightbox-932"
-                             src="https://pccc24.com/uploads/bo-m%E1%BB%9F-r%E1%BB%99ng-2-loop-cho-t%E1%BB%A7-latitude-11780022503.png"
-                             alt="Bo mở rộng 2 loop cho tủ Latitude"
-                             class="img-product-responsive max-h-[360px] lightbox cursor-pointer"
-                             data-href="https://pccc24.com/uploads/bo-m%E1%BB%9F-r%E1%BB%99ng-2-loop-cho-t%E1%BB%A7-latitude-11780022503.png">
-                    </div>
-                </div>
-            </div>
-            <div class="col-span-2 md:mt-0 xs-s:mt-5">
-                <h1 class="text-2xl">Bo mở rộng 2 loop cho tủ Latitude</h1>
-                <div class="my-3">
-                    <span class="text-2xl text-red-600">
-                                                    <span>Liên hệ</span>
-                                            </span>
-                </div>
-                <div class="my-3">
-                    
-                    <div class="flex items-center gap-1">
-                        <span class="text-base text-gray-600">Hỗ trợ bán hàng</span>
-                        <span class="lg:text-xl md:text-lg xs-s:text-base text-red-pccc">
-                            0982765114                        </span>
-                    </div>
-                    <div class="mt-2 flex items-center gap-1">
-                        <span class="text-base text-gray-600">Hỗ trợ kỹ thuật</span>
-                        <span class="lg:text-xl md:text-lg xs-s:text-base text-red-pccc">
-                            02866566422                        </span>
-                    </div>
-                </div>
+<ol class="crumbs" aria-label="Đường dẫn">
+    <li><a href="/pccc24-wp/">Trang chủ</a></li>
+            <li><a href="/pccc24-wp/san-pham">Sản phẩm</a></li>
+            <li><a href="/pccc24-wp/san-pham/thiet-bi-bao-chay">Thiết bị báo cháy</a></li>
+            <li><a href="/pccc24-wp/san-pham/bao-chay-dia-chi-hochiki">Báo cháy địa chỉ Hochiki</a></li>
+    </ol>
 
-                
-                <div class="mt-5 flex gap-4 items-center social">
-                    <span>Chia sẻ:</span>
-                    <a class="mr-3"
-                       href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A8080%2Fsan-pham%2Fbo-mo-rong-2-loop-cho-tu-latitude%2F932"
-                       target="_blank" title="Share Facebook" rel="nofollow">
-                        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                            <rect fill="#1877f2" height="512" rx="15%" width="512" />
-                            <path d="m355.6 330 11.4-74h-71v-48c0-20.2 9.9-40 41.7-40h32.3v-63s-29.3-5-57.3-5c-58.5 0-96.7 35.4-96.7 99.6v56.4h-65v74h65v182h80v-182z" fill="#fff" />
-                        </svg>
-                    </a>
-
-                    <a class="mr-3"
-                       href="https://twitter.com/share?url=http%3A%2F%2Flocalhost%3A8080%2Fsan-pham%2Fbo-mo-rong-2-loop-cho-tu-latitude%2F932"
-                       target="_blank" title="Share Twitter" rel="nofollow">
-                        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                            <rect fill="#1da1f2" height="512" rx="15%" width="512" />
-                            <path d="m437 152a72 72 0 0 1 -40 12 72 72 0 0 0 32-40 72 72 0 0 1 -45 17 72 72 0 0 0 -122 65 200 200 0 0 1 -145-74 72 72 0 0 0 22 94 72 72 0 0 1 -32-7 72 72 0 0 0 56 69 72 72 0 0 1 -32 1 72 72 0 0 0 67 50 200 200 0 0 1 -105 29 200 200 0 0 0 309-179 200 200 0 0 0 35-37" fill="#fff" />
-                        </svg>
-                    </a>
-
-                    <a class="mr-3"
-                       href="https://www.linkedin.com/sharing/share-offsite/?url=http%3A%2F%2Flocalhost%3A8080%2Fsan-pham%2Fbo-mo-rong-2-loop-cho-tu-latitude%2F932"
-                       target="_blank" title="Share Linkedin" rel="nofollow">
-                        <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-                            <path d="m116 3h-104a8.91 8.91 0 0 0 -9 8.8v104.42a8.91 8.91 0 0 0 9 8.78h104a8.93 8.93 0 0 0 9-8.81v-104.42a8.93 8.93 0 0 0 -9-8.77z" fill="#0076b2" />
-                            <g fill="#fff">
-                                <path d="m21.06 48.73h18.11v58.27h-18.11zm9.06-29a10.5 10.5 0 1 1 -10.5 10.49 10.5 10.5 0 0 1 10.5-10.49" />
-                                <path d="m50.53 48.73h17.36v8h.24c2.42-4.58 8.32-9.41 17.13-9.41 18.34-.04 21.74 12.03 21.74 27.68v32h-18.11v-28.35c0-6.75-.12-15.44-9.41-15.44s-10.87 7.36-10.87 15v28.79h-18.08z" />
-                            </g>
-                        </svg>
-                    </a>
-                </div>
+<article>
+    <div class="product-detail">
+        <div class="main-img"><img src="https://pccc24.com/uploads/bo-m%E1%BB%9F-r%E1%BB%99ng-2-loop-cho-t%E1%BB%A7-latitude-11780022503.png" alt="Bo mở rộng 2 loop cho tủ Latitude"></div>
+        <div>
+            <h1>Bo mở rộng 2 loop cho tủ Latitude</h1>
+            <p class="product-price">Giá: liên hệ để nhận báo giá theo số lượng</p>
+                                                <div class="share">
+                Chia sẻ
+                <a href="https://www.facebook.com/sharer.php?u=http%3A%2F%2Flocalhost%3A8080%2Fsan-pham%2Fbo-mo-rong-2-loop-cho-tu-latitude%2F932" target="_blank" rel="nofollow noopener">Facebook</a>
+                <a href="https://zalo.me/share?url=http%3A%2F%2Flocalhost%3A8080%2Fsan-pham%2Fbo-mo-rong-2-loop-cho-tu-latitude%2F932" target="_blank" rel="nofollow noopener">Zalo</a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=http%3A%2F%2Flocalhost%3A8080%2Fsan-pham%2Fbo-mo-rong-2-loop-cho-tu-latitude%2F932" target="_blank" rel="nofollow noopener">LinkedIn</a>
             </div>
         </div>
+        <aside class="tag tag-swing" data-motion-tag aria-label="Liên hệ báo giá">
+    <div class="tag-rig" aria-hidden="true">
+        <svg class="tag-gauge-scene" viewBox="0 0 206 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Halo trạng thái đạt chuẩn (idle glow) -->
+            <circle class="rg-glow" cx="30" cy="27" r="21" fill="#0b7a4b" fill-opacity="0.16" />
 
-        <div class="mt-5 border-t pt-4">
-            <h2 class="text-2xl">Thông tin sản phẩm</h2>
-            <div class="content-body">
-                <p><strong>Mã sản phẩm:</strong><span style="font-weight: 400;"> S758-HA</span></p>
+            <!-- Mặt đồng hồ áp suất bình chữa cháy -->
+            <circle cx="30" cy="27" r="18.5" fill="#1d2329" stroke="#1d2329" stroke-width="2" />
+            <circle cx="30" cy="27" r="15.5" stroke="#eef0ee" stroke-opacity="0.22" stroke-width="1" />
+            <!-- Vùng cảnh báo đỏ (áp thấp / quá áp) -->
+            <path d="M17.5 34.5 A 14.5 14.5 0 0 1 21.5 15.2" stroke="#c8201a" stroke-width="3.2" stroke-linecap="round" />
+            <path d="M38.5 15.2 A 14.5 14.5 0 0 1 42.5 34.5" stroke="#c8201a" stroke-width="3.2" stroke-linecap="round" />
+            <!-- Vùng xanh ĐẠT CHUẨN ở đỉnh (12h) -->
+            <path d="M22.5 14.6 A 14.5 14.5 0 0 1 37.5 14.6" stroke="#19b36b" stroke-width="3.8" stroke-linecap="round" />
+            <!-- Vạch chia áp suất -->
+            <line x1="30" y1="10.5" x2="30" y2="13" stroke="#eef0ee" stroke-width="1.2" />
+            <line x1="20" y1="15.5" x2="21.5" y2="17.5" stroke="#eef0ee" stroke-width="1" />
+            <line x1="40" y1="15.5" x2="38.5" y2="17.5" stroke="#eef0ee" stroke-width="1" />
+            <text x="30" y="38.5" text-anchor="middle" fill="#c9d0d6" font-family="Barlow Condensed, sans-serif" font-size="6.5" font-weight="700" letter-spacing="0.5">BAR</text>
+
+            <!-- Kim đồng hồ áp suất (pivot tại tâm 30, 27) -->
+            <g class="rg-needle">
+                <line x1="30" y1="30" x2="30" y2="13.5" stroke="#f3c623" stroke-width="2" stroke-linecap="round" />
+                <polygon points="30,11.5 28.2,15.5 31.8,15.5" fill="#f3c623" />
+                <circle cx="30" cy="27" r="3" fill="#f3c623" stroke="#1d2329" stroke-width="1.2" />
+            </g>
+
+            <!-- Cụm cổ van + vòi phun bình chữa cháy -->
+            <rect x="66" y="34" width="22" height="10" rx="2" fill="#c8201a" stroke="#1d2329" stroke-width="1.5" />
+            <rect x="70" y="21" width="14" height="14" rx="1.5" fill="#d8ac0f" stroke="#1d2329" stroke-width="1.5" />
+            <!-- Tay cầm dưới cố định -->
+            <path d="M70 23 L54 25.5" stroke="#1d2329" stroke-width="3.2" stroke-linecap="round" />
+            <!-- Cần bóp van trên (pivot tại khớp 80, 21) -->
+            <g class="rg-lever">
+                <path d="M80 21 L55 15.5" stroke="#1d2329" stroke-width="3.2" stroke-linecap="round" />
+                <circle cx="80" cy="21" r="2" fill="#f3c623" />
+            </g>
+            <!-- Chốt kẹp chì an toàn (pivot tại 73, 23, follow-through) -->
+            <g class="rg-pin">
+                <line x1="73" y1="23" x2="68" y2="28" stroke="#1d2329" stroke-width="1.4" />
+                <circle cx="66.5" cy="31" r="4" fill="none" stroke="#1d2329" stroke-width="1.6" />
+            </g>
+            <!-- Loa phun PCCC -->
+            <path d="M84 25 L98 25 L112 19.5 L112 32.5 L98 28 L84 28 Z" fill="#1d2329" />
+
+            <!-- 3 hạt sương bảo vệ (seeded loops + bell opacity) -->
+            <circle class="rg-wisp" cx="118" cy="26" r="2.6" fill="#0b7a4b" opacity="0" />
+            <circle class="rg-wisp" cx="122" cy="23" r="2.1" fill="#0b7a4b" opacity="0" />
+            <circle class="rg-wisp" cx="120" cy="29" r="1.8" fill="#1d2329" opacity="0" />
+
+            <!-- Nhãn chứng nhận kiểm định -->
+            <rect x="136" y="13" width="64" height="28" rx="3" fill="#1d2329" />
+            <circle class="rg-led" cx="144" cy="22" r="2.6" fill="#19b36b" />
+            <text x="150" y="24.5" fill="#f3c623" font-family="Barlow Condensed, sans-serif" font-size="8.5" font-weight="700" letter-spacing="0.4">KIỂM ĐỊNH</text>
+            <text x="142" y="35" fill="#eef0ee" font-family="Be Vietnam Pro, sans-serif" font-size="6.5" font-weight="600">ĐẠT CHUẨN</text>
+        </svg>
+    </div>
+    <p class="tag-title">Báo giá sản phẩm này</p>
+    <p>Báo mã “Bo mở rộng 2 loop cho tủ Latitude” khi gọi để được giá sỉ, thời gian giao và chứng từ kiểm định.</p>
+    <a class="btn btn-call" href="tel:0982765114"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> <span><small>Bán hàng</small>0982765114</span></a>
+    <a class="btn btn-call" href="tel:02866566422"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> <span><small>Kỹ thuật</small>02866566422</span></a>
+    <a class="btn btn-zalo" href="https://zalo.me/0982765114" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/></svg> Nhắn Zalo</a>
+    <ol class="tag-months" aria-hidden="true">
+                    <li>T1</li>
+                    <li>T2</li>
+                    <li>T3</li>
+                    <li>T4</li>
+                    <li>T5</li>
+                    <li>T6</li>
+                    <li>T7</li>
+                    <li>T8</li>
+                    <li>T9</li>
+                    <li class="punched">T10</li>
+                    <li>T11</li>
+                    <li>T12</li>
+            </ol>
+</aside>
+    </div>
+
+    <div class="product-body panel">
+        <h2>Thông tin sản phẩm</h2>
+                <div class="prose"><p><strong>Mã sản phẩm:</strong><span style="font-weight: 400;"> S758-HA</span></p>
 <p><strong>Hãng sản xuất:</strong><span style="font-weight: 400;"> Hochiki</span></p>
 <p><strong>Xuất xứ:</strong><span style="font-weight: 400;"> Anh</span></p>
 <p><span style="font-weight: 400;">Bo mở rộng 2 loop S758-HA cho phép kết nối dữ liệu các trung tâm với nhau tạo thành một hệ thống các tủ trung</span><span style="font-weight: 400;"> tâm. </span></p>
@@ -428,10 +325,10 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 <p><span style="font-weight: 400;">◾PCCC Hoàng Quân Phát (Quang Phát): Công Ty TNHH MTV Hoàng Quân Phát.</span></p>
 <p><span style="font-weight: 400;">◾Địa chỉ: 262 Đỗ Mười, Phường Tam Bình, Thành phố Hồ Chí Minh.</span></p>
 <p><span style="font-weight: 400;">◾Điện thoại: 0982765114 &#8211; 0888357114. </span></p>
-            </div>
-        </div>
-    </div>
 </div>
+    </div>
+</article>
+
     </div>
 </main>
 
