@@ -349,7 +349,7 @@ $adapter_js = <<<'JS'
 
     // 4. Nút nổi góc trái dưới mở nhanh trang Đăng nhập / WP-Admin Demo (đã điền sẵn tài khoản, email, mật khẩu)
     var badge = document.createElement("a");
-    badge.href = PREFIX + "/wp-login.php/";
+    badge.href = PREFIX + "/wp-login/";
     badge.style.cssText =
       "position:fixed;left:16px;bottom:16px;z-index:1500;background:#1d2329;color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.25);display:flex;align-items:center;gap:6px;text-decoration:none;border:1px solid rgba(255,255,255,0.15);";
     badge.innerHTML =
@@ -442,6 +442,7 @@ $login_html = <<<'HTML'
 </html>
 HTML;
 
+pccc24_write_dist('wp-login/index.html', $login_html);
 pccc24_write_dist('wp-login.php/index.html', $login_html);
 
 // 5. Tạo trang /wp-admin/index.html mô phỏng trực quan trình quản trị WordPress PCCC24
@@ -502,7 +503,7 @@ $admin_html = <<<'HTML'
         <div class="wp-header">
             <h1 style="margin:0;font-size:22px;">Quản trị WordPress — PCCC24 (`pccc24-core` + `pccc24-theme`)</h1>
             <div style="display:flex;gap:8px;">
-                <a href="/pccc24-wp/wp-login.php/" class="btn-primary" style="background:#50575e;">🔑 Form Đăng nhập (Đã điền sẵn)</a>
+                <a href="/pccc24-wp/wp-login/" class="btn-primary" style="background:#50575e;">🔑 Form Đăng nhập (Đã điền sẵn)</a>
                 <a href="/pccc24-wp/" class="btn-primary">🌐 Mở Trang Chủ Frontend</a>
             </div>
         </div>
