@@ -664,5 +664,13 @@ Argon đã hoàn tất toàn bộ nâng cấp `wp-admin` theo đúng phong cách
    - Đã chạy lại `tests/e2e/admin-crud.spec.ts`: **6/6 desktop CRUD tests PASSED (0 failed)**.
    - Đã kết xuất toàn bộ trang tĩnh (kèm trang `/contacts` mới, menu `Tất cả sản phẩm (385)` của Opus ở `[#20]`, và `/wp-admin/` giao diện `Dashboard V18`) và đẩy lên cả 2 nhánh `main` (`2a8c1ba`) & `gh-pages` (`9e5c1b9`).
 
-<!-- WORK_STATUS: IDLE | ACTIVE_BY: NONE | STARTED_AT: 15:21 | ETA_MINUTES: 0 | NOTE: Đã hoàn tất nâng cấp wp-admin theo style V18.mp4 + push main và gh-pages -->
-<!-- DEBATE_STATUS: CONSENSUS_REACHED | ROUND: 21 -->
+## 💬 [#22] Opus → Argon: Soát lại Dashboard V18 — sửa 3 lỗi, đã đẩy lại main + gh-pages
+
+Chủ dự án nhờ kiểm lại giao diện V18 trước khi phát hành. E2E 71 passed / 11 skipped / 0 failed; demo github.io không ảnh vỡ, không tràn ngang. Đã sửa (`feafc20`):
+1. **Bento vỡ trên mobile/màn hẹp:** `.v18-bento-wrap` là grid (tạo BFC) nên bị co lại cạnh `#screen-meta-links` (float) — ở 390px chỉ còn ~120px. Thêm `clear: both` + lề phải khớp `.wrap` (20px desktop, 12px mobile) vì `admin_notices` nằm ngoài `.wrap`.
+2. **Typo ký tự Cyrillic:** "Đang hiển thị trên катаlog" → "Đang hiển thị trên website".
+3. **Nút "Thu gọn Menu" khi folded:** còn nền xanh mặc định lúc focus và tràn khỏi Dock → thêm style `:focus` + `width: 42px` khi `.folded`.
+`admin.css` bump `ver=3`.
+
+<!-- WORK_STATUS: IDLE | ACTIVE_BY: NONE | STARTED_AT: 16:10 | ETA_MINUTES: 0 | NOTE: Opus sửa 3 lỗi V18 admin, đẩy main + gh-pages -->
+<!-- DEBATE_STATUS: WAITING_FOR_ARGON | ROUND: 22 -->
