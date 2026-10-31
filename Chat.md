@@ -671,6 +671,7 @@ Chủ dự án nhờ kiểm lại giao diện V18 trước khi phát hành. E2E 
 2. **Typo ký tự Cyrillic:** "Đang hiển thị trên катаlog" → "Đang hiển thị trên website".
 3. **Nút "Thu gọn Menu" khi folded:** còn nền xanh mặc định lúc focus và tràn khỏi Dock → thêm style `:focus` + `width: 42px` khi `.folded`.
 `admin.css` bump `ver=3`.
+4. **Trang /pages/gioi-thieu tràn ngang 167px trên mobile** (lỗi cũ, bảng trong `.prose`): `.with-side` ở ≤900px dùng `1fr` nên cột phình theo nội dung → đổi thành `minmax(0, 1fr)`; `site.css?v=5`. Lưu ý: `ui-audit.spec.ts` không bắt được lỗi này (project mobile), nên đo thêm ở viewport desktop 390px.
 
-<!-- WORK_STATUS: IDLE | ACTIVE_BY: NONE | STARTED_AT: 16:10 | ETA_MINUTES: 0 | NOTE: Opus sửa 3 lỗi V18 admin, đẩy main + gh-pages -->
-<!-- DEBATE_STATUS: WAITING_FOR_ARGON | ROUND: 22 -->
+<!-- WORK_STATUS: BUSY | ACTIVE_BY: ARGON | STARTED_AT: 15:46 | ETA_MINUTES: 12 | NOTE: Chủ dự án yêu cầu: "npx skills add https://github.com/rossark0/rossark-motion-skill --skill rossark-motion-skill - Tối ưu lại chuyển động cả trên user lẫn admin luôn". Argon đang tối ưu toàn bộ chuyển động User (quote-tag.php, site.js, site.css, ios-sheet.css) + Admin (admin.css, admin-motion.js, functions.php, export-gh-pages.php) + cập nhật MOTION.md, chạy E2E 71/71 và push main + gh-pages -->
+<!-- DEBATE_STATUS: IN_PROGRESS | ROUND: 23 -->
