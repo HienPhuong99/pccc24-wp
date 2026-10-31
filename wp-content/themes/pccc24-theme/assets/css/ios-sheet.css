@@ -1,0 +1,175 @@
+/* Chặng B: iOS Bottom Sheet báo giá (không dùng backdrop-filter blur, dùng màu/chữ công nghiệp hiện tại) */
+:root {
+  --ios-curve: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+dialog.ios-sheet {
+  margin: auto 0 0 0;
+  width: 100%;
+  max-width: 100%;
+  max-height: 90vh;
+  border: 0;
+  border-top: 3px solid var(--red);
+  border-radius: 16px 16px 0 0;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 0;
+  overscroll-behavior: contain;
+  box-shadow: 0 -12px 32px rgba(29, 35, 41, .28);
+  touch-action: pan-y;
+}
+
+@media (min-width: 641px) {
+  dialog.ios-sheet {
+    margin: auto;
+    max-width: 480px;
+    border-radius: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog.ios-sheet[open] {
+    animation: ios-sheet-in 320ms var(--ios-curve) both;
+  }
+  @keyframes ios-sheet-in {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+}
+
+.ios-sheet-handle {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0 6px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.ios-sheet-pill {
+  width: 40px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.ios-sheet-body {
+  padding: 4px 20px 24px;
+  overflow-y: auto;
+  max-height: calc(90vh - 28px);
+  overscroll-behavior: contain;
+}
+
+.ios-sheet-title {
+  font-size: 1.65rem;
+  margin: 0 0 4px;
+  padding-right: 32px;
+}
+
+.ios-sheet-sub {
+  margin: 0 0 12px;
+  font-size: .9rem;
+  color: var(--ink-soft);
+}
+
+.ios-sheet-direct {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.ios-sheet-direct .btn-zalo {
+  grid-column: 1 / -1;
+  justify-content: center;
+}
+
+.ios-sheet-direct .btn small {
+  display: block;
+  font-weight: 400;
+  font-size: .72rem;
+  opacity: .88;
+}
+
+.ios-sheet-divider {
+  position: relative;
+  text-align: center;
+  margin: 18px 0 14px;
+  font-size: .82rem;
+  color: var(--ink-soft);
+}
+
+.ios-sheet-divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 1px solid var(--line);
+}
+
+.ios-sheet-divider span {
+  position: relative;
+  background: var(--paper);
+  padding: 0 10px;
+  font-weight: 600;
+}
+
+.ios-sheet-row {
+  margin-bottom: 12px;
+}
+
+.ios-sheet-row label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.ios-sheet-row input,
+.ios-sheet-row select {
+  width: 100%;
+  padding: .62em .8em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font: inherit;
+  font-size: .95rem;
+  background: #fff;
+  color: var(--ink);
+}
+
+.ios-sheet-row input:focus,
+.ios-sheet-row select:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+.ios-sheet-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+  padding: .8em 1.2em;
+}
+
+.ios-sheet-submit:active {
+  transform: scale(0.97);
+}
+
+.ios-sheet-msg {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  font-size: .88rem;
+  font-weight: 500;
+}
+
+.ios-sheet-msg.ok {
+  background: #e6f4ed;
+  color: var(--exit-dark);
+  border: 1px solid #a3d9be;
+}
+
+.ios-sheet-msg.err {
+  background: #fce8e6;
+  color: var(--red-dark);
+  border: 1px solid #f5b7b1;
+}

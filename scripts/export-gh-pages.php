@@ -101,11 +101,32 @@ function pccc24_copy_dir(string $src, string $dst): void
     }
 }
 
-// 1. Copy toàn bộ theme assets
+// 1. Copy toàn bộ theme assets + đồng bộ các file ảnh WebP mới trong uploads/pccc24
 $theme_assets_src = get_stylesheet_directory() . '/assets';
 $theme_assets_dst = $dist_dir . '/wp-content/themes/pccc24-theme/assets';
 pccc24_copy_dir($theme_assets_src, $theme_assets_dst);
-WP_CLI::log('Copied theme assets.');
+$uploads_src = ABSPATH . 'wp-content/uploads/pccc24';
+$uploads_dst = $dist_dir . '/wp-content/uploads/pccc24';
+if (is_dir($uploads_src)) {
+    $uit = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($uploads_src, RecursiveDirectoryIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::SELF_FIRST
+    );
+    foreach ($uit as $uitem) {
+        $utarget = $uploads_dst . DIRECTORY_SEPARATOR . $uit->getSubPathName();
+        if ($uitem->isDir()) {
+            if (!is_dir($utarget)) {
+                mkdir($utarget, 0777, true);
+            }
+        } elseif (!is_file($utarget)) {
+            if (!is_dir(dirname($utarget))) {
+                mkdir(dirname($utarget), 0777, true);
+            }
+            copy($uitem->getPathname(), $utarget);
+        }
+    }
+}
+WP_CLI::log('Copied theme assets and synced WebP uploads.');
 
 // 2. Xuất dữ liệu JSON tĩnh cho REST API (/wp-json/pccc24/v1/...)
 $products_all = [];

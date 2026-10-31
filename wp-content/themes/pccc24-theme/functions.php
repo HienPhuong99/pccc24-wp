@@ -28,9 +28,9 @@ function pccc24_no_image_url(): string
 }
 
 /**
- * Lấy URL ảnh đại diện của post (sản phẩm, bài viết, dịch vụ, slider, chính sách)
+ * Lấy URL ảnh đại diện của post (ưu tiên bản nén nhẹ -card.webp / -hero.webp / -detail.webp nếu có)
  */
-function pccc24_post_image_url($post = null): string
+function pccc24_post_image_url($post = null, string $variant = 'card'): string
 {
     $post = get_post($post);
     if (!$post) {
@@ -39,6 +39,16 @@ function pccc24_post_image_url($post = null): string
     $url = get_the_post_thumbnail_url($post, 'full');
     if (!$url) {
         return pccc24_no_image_url();
+    }
+    $thumb_id = (int) get_post_thumbnail_id($post->ID);
+    if ($thumb_id && ($file = get_attached_file($thumb_id))) {
+        $suffix = $post->post_type === 'pccc_slider' || $variant === 'hero'
+            ? 'hero'
+            : ($variant === 'detail' ? 'detail' : 'card');
+        $webp_file = preg_replace('/\.[^.]+$/', '-' . $suffix . '.webp', $file);
+        if ($webp_file && is_file($webp_file)) {
+            return preg_replace('/\.[^.]+$/', '-' . $suffix . '.webp', $url);
+        }
     }
     return $url;
 }

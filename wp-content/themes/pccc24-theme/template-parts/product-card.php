@@ -10,7 +10,7 @@ if (!$prod) {
 $price = (int) get_post_meta($prod->ID, '_pccc_price', true);
 ?>
 <article class="product">
-    <div class="product-img"><img src="<?= esc_url(pccc24_post_image_url($prod)) ?>" alt="" loading="lazy"></div>
+    <div class="product-img"><img src="<?= esc_url(pccc24_post_image_url($prod, 'card')) ?>" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
     <a href="<?= esc_url(get_permalink($prod)) ?>"><h3><?= esc_html($prod->post_title) ?></h3></a>
     <div class="product-foot">
         <span class="product-price"><?= $price > 0 ? esc_html(pccc24_price_format($price)) . 'đ' : 'Liên hệ' ?></span>

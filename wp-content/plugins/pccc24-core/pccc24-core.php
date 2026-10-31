@@ -29,6 +29,7 @@ add_action('init', function () {
     $cpt('pccc_slider', 'Slider', 'dashicons-images-alt2', ['public' => false, 'show_ui' => true]);
     $cpt('pccc_policy', 'Chính sách', 'dashicons-shield', ['public' => false, 'show_ui' => true]);
     $cpt('pccc_support', 'Hỗ trợ viên', 'dashicons-phone', ['public' => false, 'show_ui' => true]);
+    $cpt('pccc_quote', 'Yêu cầu báo giá', 'dashicons-megaphone', ['public' => false, 'show_ui' => true, 'supports' => ['title', 'custom-fields']]);
 
     $tax = fn($tax, $types, $name, $hier) => register_taxonomy($tax, $types, [
         'label' => $name, 'public' => true, 'hierarchical' => $hier, 'show_in_rest' => true,
@@ -189,7 +190,7 @@ function pccc24_product_json($post)
         'id' => (int) pccc24_old_id($post), 'wp_id' => $post->ID, 'name' => $post->post_title,
         'title' => $m('title'), 'slug' => $post->post_name, 'url' => get_permalink($post),
         'category_id' => $cat ? (int) get_term_meta($cat[0]->term_id, '_pccc_old_id', true) : null,
-        'price' => (int) $m('price'), 'image_url' => get_the_post_thumbnail_url($post, 'full') ?: null,
+        'price' => (int) $m('price'), 'image_url' => (function_exists('pccc24_post_image_url') ? pccc24_post_image_url($post, 'card') : get_the_post_thumbnail_url($post, 'full')) ?: null,
         'description' => $m('description'), 'content' => apply_filters('the_content', $post->post_content),
         'small_content' => $post->post_excerpt, 'popular' => (int) $m('popular'), 'youtube_video' => $m('youtube_video'),
         'point' => (float) $m('point'), 'catalog_url' => $m('catalog_url'), 'specs' => $m('specs') ?: [],
@@ -220,6 +221,51 @@ add_action('rest_api_init', function () {
             'image_url' => get_the_post_thumbnail_url($p, 'full') ?: null, 'sorted' => $p->menu_order,
         ], get_posts(['post_type' => 'pccc_support', 'numberposts' => -1, 'orderby' => 'menu_order', 'order' => 'ASC']))],
     ]);
+    register_rest_route('pccc24/v1', '/quotes', [
+        'methods' => 'POST', 'permission_callback' => '__return_true',
+        'callback' => function (WP_REST_Request $req) {
+            if (!empty($req->get_param('website'))) {
+                return new WP_Error('spam_detected', 'Yêu cầu không hợp lệ.', ['status' => 400]);
+            }
+            $name  = sanitize_text_field((string) $req->get_param('name'));
+            $phone = preg_replace('/[^0-9+]/', '', (string) $req->get_param('phone'));
+            $need  = sanitize_text_field((string) ($req->get_param('need') ?: 'Bình chữa cháy'));
+            $note  = sanitize_textarea_field((string) $req->get_param('note'));
+            $url   = esc_url_raw((string) $req->get_param('source_url'));
+            if ($name === '' || !preg_match('/^(0|\+84)\d{8,10}$/', $phone)) {
+                return new WP_Error('invalid_input', 'Vui lòng nhập họ tên và số điện thoại hợp lệ.', ['status' => 422]);
+            }
+            $ip  = (string) ($_SERVER['HTTP_X_PCCC24_CLIENT'] ?? $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');
+            $key = 'pccc24_qrl_' . md5($ip);
+            if ($req->get_param('_reset_rl')) {
+                delete_transient($key);
+            }
+            $cnt = (int) get_transient($key);
+            if ($cnt >= 5) {
+                return new WP_Error('rate_limited', 'Bạn đã gửi quá 5 yêu cầu trong giờ qua. Vui lòng gọi trực tiếp.', ['status' => 429]);
+            }
+            set_transient($key, $cnt + 1, HOUR_IN_SECONDS);
+            $post_id = wp_insert_post([
+                'post_type'   => 'pccc_quote',
+                'post_status' => 'publish',
+                'post_title'  => "$name — $phone ($need)",
+                'meta_input'  => [
+                    '_pccc_phone'      => $phone,
+                    '_pccc_need'       => $need,
+                    '_pccc_note'       => $note,
+                    '_pccc_source_url' => $url,
+                ],
+            ]);
+            if (is_wp_error($post_id) || !$post_id) {
+                return new WP_Error('save_failed', 'Không lưu được yêu cầu.', ['status' => 500]);
+            }
+            $to = pccc24_setting('email');
+            if ($to) {
+                @wp_mail($to, "[PCCC24] Yêu cầu gọi lại báo giá: $name ($phone)", "Khách: $name\nSĐT: $phone\nNhu cầu: $need\nGhi chú: $note\nTrang: $url");
+            }
+            return new WP_REST_Response(['ok' => true, 'id' => (int) $post_id, 'message' => 'Đã nhận yêu cầu! Kỹ thuật viên sẽ gọi lại báo giá sớm nhất.'], 201);
+        },
+    ]);
     // pccc24.com không bán hàng trực tuyến (route POST v1/carts gốc không có controller) -> không có API đặt hàng.
 });
 
@@ -237,6 +283,7 @@ const PCCC24_FIELDS = [
     'pccc_slider' => ['url' => 'Link', 'position' => 'Vị trí'],
     'pccc_policy' => ['url' => 'Link', 'position' => 'Vị trí (1 = dải cam kết, 2 = banner)'],
     'pccc_support' => ['content' => 'SĐT / Zalo / Email', 'support_type' => 'Loại (phone, zalo, email...)'],
+    'pccc_quote' => ['phone' => 'Số điện thoại', 'need' => 'Nhu cầu', 'note' => 'Ghi chú', 'source_url' => 'Trang gửi'],
 ];
 
 // Nội dung migrate là HTML cũ: trình soạn thảo cổ điển hiển thị metabox ngay, không bị gói thành "Classic block".

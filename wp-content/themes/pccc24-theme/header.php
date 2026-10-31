@@ -141,8 +141,10 @@ $service_types = pccc24_get_service_types();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="<?= esc_url(pccc24_theme_asset('css/site.css')) ?>?v=2" rel="stylesheet">
+    <link href="<?= esc_url(pccc24_theme_asset('css/ios-sheet.css')) ?>?v=1" rel="stylesheet">
     <script>window.PCCC24_CONFIG = <?= wp_json_encode(['restUrl' => untrailingslashit(rest_url('pccc24/v1')), 'noImageUrl' => pccc24_no_image_url()]) ?>;</script>
     <script src="<?= esc_url(pccc24_theme_asset('js/site.js')) ?>?v=2" defer></script>
+    <script src="<?= esc_url(pccc24_theme_asset('js/ios-sheet.js')) ?>?v=1" defer></script>
     <?php wp_head(); ?>
 </head>
 

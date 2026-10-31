@@ -28,9 +28,10 @@ $lead     = array_shift($articles);
     <?php get_template_part('template-parts/cat-list'); ?>
     <div>
         <div class="slides" tabindex="0" aria-label="Chương trình nổi bật">
-            <?php foreach ($sliders as $s) :
-                $url = trim((string) get_post_meta($s->ID, '_pccc_url', true));
-                $img = '<img src="' . esc_url(pccc24_post_image_url($s)) . '" alt="' . esc_attr($s->post_title) . '">';
+            <?php foreach ($sliders as $i => $s) :
+                $url  = trim((string) get_post_meta($s->ID, '_pccc_url', true));
+                $prio = $i === 0 ? 'fetchpriority="high"' : 'loading="lazy"';
+                $img  = '<img src="' . esc_url(pccc24_post_image_url($s, 'hero')) . '" alt="' . esc_attr($s->post_title) . '" width="1100" height="400" ' . $prio . '>';
                 echo $url ? '<a href="' . esc_url($url) . '">' . $img . '</a>' : '<div>' . $img . '</div>';
             endforeach; ?>
         </div>

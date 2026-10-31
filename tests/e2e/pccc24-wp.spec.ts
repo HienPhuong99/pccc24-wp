@@ -117,12 +117,69 @@ test.describe('Tương tác người dùng', () => {
     }
   });
 
-  test('thanh gọi/Zalo cố định ở đáy màn hình mobile', async ({ page, isMobile }) => {
+  test('thanh gọi/Zalo cố định ở đáy màn hình mobile + mở iOS Bottom Sheet báo giá & chống spam', async ({ page, request, isMobile }) => {
     test.skip(!isMobile, 'chỉ mobile');
     await page.goto('/san-pham');
     const bar = page.locator('.float-contact');
-    await expect(bar.getByRole('link', { name: 'Gọi báo giá' })).toBeInViewport();
+    const callBtn = bar.getByRole('link', { name: 'Gọi báo giá' });
+    await expect(callBtn).toBeInViewport();
     await expect(bar.getByRole('link', { name: 'Zalo' })).toBeInViewport();
+
+    // Bấm "Gọi báo giá" mở iOS Bottom Sheet (#quote-sheet)
+    await callBtn.click();
+    const sheet = page.locator('#quote-sheet');
+    await expect(sheet).toBeVisible();
+
+    // Gửi form yêu cầu gọi lại (reset rate limit cho test bucket)
+    await request.post('/wp-json/pccc24/v1/quotes', {
+      headers: { 'X-PCCC24-Client': 'e2e-ui-test' },
+      data: { name: 'Init', phone: '0901234567', _reset_rl: 1 },
+    });
+    await sheet.locator('#quote-name').fill('Anh Minh Kho Xưởng');
+    await sheet.locator('#quote-phone').fill('0982765114');
+    await sheet.locator('#quote-need').selectOption('Thi công hệ thống');
+    await sheet.getByRole('button', { name: 'Gửi yêu cầu gọi lại' }).click();
+    await expect(sheet.locator('#quote-msg')).toContainText(/Đã nhận yêu cầu/i);
+
+    // Kiểm tra honeypot (400) và giới hạn 5 lần/giờ/IP (429)
+    const spamRes = await request.post('/wp-json/pccc24/v1/quotes', {
+      data: { name: 'Bot', phone: '0901234567', website: 'http://spam.example' },
+    });
+    expect(spamRes.status()).toBe(400);
+
+    const rlHeaders = { 'X-PCCC24-Client': 'e2e-rl-bucket' };
+    await request.post('/wp-json/pccc24/v1/quotes', {
+      headers: rlHeaders,
+      data: { name: 'RL1', phone: '0901234567', _reset_rl: 1 },
+    });
+    for (let i = 2; i <= 5; i++) {
+      const okR = await request.post('/wp-json/pccc24/v1/quotes', {
+        headers: rlHeaders,
+        data: { name: 'RL' + i, phone: '0901234567' },
+      });
+      expect(okR.status()).toBe(201);
+    }
+    const blockedR = await request.post('/wp-json/pccc24/v1/quotes', {
+      headers: rlHeaders,
+      data: { name: 'RL6', phone: '0901234567' },
+    });
+    expect(blockedR.status()).toBe(429);
+  });
+
+  test('Chặng A & C: trang chủ dùng ảnh nén WebP (< 1,2 MB) và thẻ kiểm định có rossark-motion-skill', async ({ page }) => {
+    let imgBytes = 0;
+    page.on('response', async (res) => {
+      if (res.request().resourceType() === 'image' && res.status() === 200) {
+        try {
+          const buf = await res.body();
+          imgBytes += buf.byteLength;
+        } catch (_) {}
+      }
+    });
+    await page.goto('/', { waitUntil: 'networkidle' });
+    expect(imgBytes).toBeLessThan(1_200_000);
+    const hasMotion = await page.evaluate(() => Boolean((window as any).PCCC24_MOTION && document.querySelector('[data-motion-tag] .tag-gauge-scene')));
+    expect(hasMotion).toBe(true);
   });
 
   test('menu mobile mở được', async ({ page, isMobile }) => {

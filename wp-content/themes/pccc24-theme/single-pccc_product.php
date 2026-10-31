@@ -33,7 +33,7 @@ $share = rawurlencode(get_permalink());
 
 <article>
     <div class="product-detail">
-        <div class="main-img"><img src="<?= esc_url(pccc24_post_image_url($id)) ?>" alt="<?= esc_attr(get_the_title()) ?>"></div>
+        <div class="main-img"><img src="<?= esc_url(pccc24_post_image_url($id, 'detail')) ?>" alt="<?= esc_attr(get_the_title()) ?>" width="600" height="600" fetchpriority="high"></div>
         <div>
             <h1><?php the_title(); ?></h1>
             <p class="product-price"><?= $price > 0 ? esc_html(pccc24_price_format($price)) . 'đ' : 'Giá: liên hệ để nhận báo giá theo số lượng' ?></p>

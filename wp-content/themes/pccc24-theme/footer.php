@@ -39,9 +39,11 @@ $service_types = pccc24_get_service_types();
 </footer>
 
 <div class="float-contact">
-    <a class="btn btn-call" href="<?= esc_url(pccc24_tel('phone_sale')) ?>"><?= pccc24_icon('phone') ?> Gọi báo giá</a>
+    <a class="btn btn-call" href="<?= esc_url(pccc24_tel('phone_sale')) ?>" data-quote-open><?= pccc24_icon('phone') ?> Gọi báo giá</a>
     <a class="btn btn-zalo" href="<?= esc_url(pccc24_zalo_url()) ?>" target="_blank" rel="noopener"><?= pccc24_icon('chat') ?> Zalo</a>
 </div>
+
+<?php get_template_part('template-parts/quote-sheet'); ?>
 
 <dialog id="quickview" aria-label="Xem nhanh sản phẩm">
     <button type="button" class="dialog-close" data-close aria-label="Đóng">×</button>
