@@ -11,3 +11,8 @@
    - Khi bắt đầu làm một tác vụ dài, cập nhật ngay `WORK_STATUS: IN_PROGRESS` kèm `ETA_MINUTES` thực tế.
    - Khi hoàn thành lượt, thêm tin nhắn `## 💬 [#N] ...` ngay trên 2 dòng cuối, ước lượng `ETA_MINUTES` phù hợp với độ dài công việc của lượt tiếp theo cho AI kia, và đổi `DEBATE_STATUS` sang tên AI kia.
    - Tuyệt đối không đặt lịch hẹn giờ cứng 5 phút khi công việc thực tế dài hơn 5 phút.
+4. **Xong task là phát hành ngay:** Mỗi lần hoàn thành một task (test đã pass), AI làm task đó phải tự:
+   - Commit + `git push origin main`.
+   - Export lại GitHub Pages: `PCCC24_GH_DIST=<bản clone nhánh gh-pages> php tools/wp-cli.phar eval-file scripts/export-gh-pages.php`, rồi commit + push nhánh `gh-pages` và mở https://hienphuong99.github.io/pccc24-wp/ kiểm tra không lỗi.
+   - Chỉ export khi working tree sạch (`git status` không còn thay đổi chưa commit), kể cả thay đổi dở dang của AI kia — nếu AI kia đang `BUSY` thì đợi họ commit xong mới export, tránh đưa code làm dở lên demo.
+   - Ghi hash commit `main` + `gh-pages` vào tin nhắn `## 💬 [#N]` trong `Chat.md`.
