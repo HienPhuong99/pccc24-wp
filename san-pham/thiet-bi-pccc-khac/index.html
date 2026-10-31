@@ -24,12 +24,12 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-    <link href="/pccc24-wp/wp-content/themes/pccc24-theme/assets/css/site.css?v=2" rel="stylesheet">
-    <link href="/pccc24-wp/wp-content/themes/pccc24-theme/assets/css/ios-sheet.css?v=1" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/pccc24-wp/wp-content/themes/pccc24-theme/assets/css/site.css?v=3" rel="stylesheet">
+    <link href="/pccc24-wp/wp-content/themes/pccc24-theme/assets/css/ios-sheet.css?v=3" rel="stylesheet">
     <script>window.PCCC24_CONFIG = {"restUrl":"\/pccc24-wp\/wp-json\/pccc24\/v1","noImageUrl":"\/pccc24-wp\/wp-content\/themes\/pccc24-theme\/assets\/images\/no-image.png"};</script>
-    <script src="/pccc24-wp/wp-content/themes/pccc24-theme/assets/js/site.js?v=2" defer></script>
-    <script src="/pccc24-wp/wp-content/themes/pccc24-theme/assets/js/ios-sheet.js?v=1" defer></script>
+    <script src="/pccc24-wp/wp-content/themes/pccc24-theme/assets/js/site.js?v=3" defer></script>
+    <script src="/pccc24-wp/wp-content/themes/pccc24-theme/assets/js/ios-sheet.js?v=3" defer></script>
     <title>Thiết bị PCCC khác &#8211; PCCC24</title>
 <meta name='robots' content='max-image-preview:large' />
 <link rel="alternate" type="application/rss+xml" title="Nguồn cấp PCCC24 &raquo; Thiết bị PCCC khác Danh mục sản phẩm" href="/pccc24-wp/san-pham/thiet-bi-pccc-khac/feed" />
@@ -59,37 +59,19 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 
 <body>
 <a class="sr-only" href="#main">Bỏ qua menu</a>
-<header>
-    <div class="topbar">
-        <div class="wrap">
-            <span class="topbar-company">CÔNG TY TNHH MTV HOÀNG QUÂN PHÁT  · GPKD 3701888205</span>
-            <span class="topbar-phones">
-                <span>Bán hàng <a href="tel:0982765114">0982765114</a></span>
-                <span>Kỹ thuật <a href="tel:02866566422">02866566422</a></span>
-            </span>
+<header class="ios-header">
+    <div class="ios-header-inner">
+        <div class="ios-brand-group">
+            <button type="button" class="menu-btn" data-open="drawer" aria-label="Mở menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <a class="logo" href="/pccc24-wp/">
+                <img data-fb="1" src="https://pccc24.com/uploads/template-2-2026-03-24t1404074301774335857.png" alt="PCCC24 - Hoàng Quân Phát" width="145" height="40">
+                <span class="logo-fallback"><b class="logo-fb-red">PCCC24</b><span class="logo-fb-sub">Hoàng Quân Phát</span></span>
+            </a>
         </div>
-    </div>
-    <div class="masthead">
-        <div class="wrap">
-            <div style="display:flex;align-items:center;gap:4px">
-                <button type="button" class="menu-btn" data-open="drawer" aria-label="Mở menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-                <a class="logo" href="/pccc24-wp/"><img src="https://pccc24.com/uploads/template-2-2026-03-24t1404074301774335857.png" alt="PCCC24 - Hoàng Quân Phát" width="160" height="56"></a>
-            </div>
-            <form class="search" action="/pccc24-wp/san-pham/tim-kiem" method="get" role="search">
-                <label class="sr-only" for="q">Tìm thiết bị</label>
-                <input id="q" type="search" name="q" value="" placeholder="Tìm bình chữa cháy, đầu báo khói, vòi chữa cháy…">
-                <button type="submit" aria-label="Tìm kiếm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
-            </form>
-            <div class="masthead-quote">
-                Gửi yêu cầu báo giá
-                <a href="mailto:hoangquanphat@gmail.com">hoangquanphat@gmail.com</a>
-            </div>
-        </div>
-    </div>
-    <nav class="nav" aria-label="Menu chính">
-        <div class="wrap">
+
+        <nav class="ios-nav" aria-label="Menu chính">
             <details class="nav-cats">
-                <summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg> Sản phẩm</summary>
+                <summary class="nav-pill active">Sản phẩm</summary>
                 <ul class="cat-list">
             <li>
             <a href="/pccc24-wp/san-pham/binh-chua-chay">
@@ -185,14 +167,22 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                     </li>
     </ul>
             </details>
-                            <a href="/pccc24-wp/dich-vu/thi-cong-lap-dat-he-thong-pccc">Thi Công Lắp Đặt Hệ Thống PCCC</a>
-                            <a href="/pccc24-wp/dich-vu/bao-tri-sua-chua-he-thong-pccc">Bảo Trì Sửa Chữa Hệ Thống PCCC</a>
-                            <a href="/pccc24-wp/dich-vu/du-an">Dự Án</a>
-                        <a href="/pccc24-wp/tin-tuc">Tin tức</a>
-            <a href="/pccc24-wp/pages/gioi-thieu">Về chúng tôi</a>
-            <a href="/pccc24-wp/contacts">Liên hệ</a>
+            <a class="nav-pill" href="/pccc24-wp/dich-vu/thi-cong-lap-dat-he-thong-pccc">Thi công</a>
+            <a class="nav-pill" href="/pccc24-wp/dich-vu/bao-tri-sua-chua-he-thong-pccc">Bảo trì</a>
+            <a class="nav-pill" href="/pccc24-wp/dich-vu/du-an">Dự án</a>
+            <a class="nav-pill" href="/pccc24-wp/tin-tuc">Tin tức</a>
+            <a class="nav-pill" href="/pccc24-wp/contacts">Liên hệ</a>
+        </nav>
+
+        <div class="ios-header-actions">
+        <form class="search" action="/pccc24-wp/san-pham/tim-kiem" method="get" role="search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>            <label class="sr-only" for="q">Tìm thiết bị</label>
+            <input id="q" type="search" name="q" value="" placeholder="Tìm thiết bị">
+        </form>
+
+        <button type="button" class="btn-quote-pill" data-quote-open>Báo giá</button>
         </div>
-    </nav>
+    </div>
 </header>
 <main id="main">
     <div class="wrap">
@@ -296,10 +286,10 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 </div>
 <div class="side-block side-products">
     <h2>Sản phẩm nổi bật</h2>
-            <a href="/pccc24-wp/san-pham/binh-chua-chay-xe-day-goc-nuoc-35-lit-dolphin-dpa-t35l-bo-cong-an/732"><img src="https://pccc24.com/uploads/_b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-xe-%C4%91%E1%BA%A9y-g%E1%BB%91c-n%C6%B0%E1%BB%9Bc-35-l%C3%ADt-dolphin-dpa-t35l-b%E1%BB%99-c%C3%B4ng-an1779430729-card.webp" alt="" loading="lazy"><span>Bình chữa cháy xe đẩy gốc nước 35 Lít Dolphin DPA-T35L (Bộ Công An)</span></a>
-            <a href="/pccc24-wp/san-pham/binh-chua-chay-xe-day-bot-abc-35kg-dolphin-dpa-abc35-bo-cong-an/731"><img src="https://pccc24.com/uploads/b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-35kg-dolphin-dpa-abc351778895753-card.webp" alt="" loading="lazy"><span>Bình chữa cháy xe đẩy bột ABC 35kg Dolphin DPA-ABC35 (Bộ Công An)</span></a>
-            <a href="/pccc24-wp/san-pham/binh-chua-chay-bot-abc-8kg-dolphin-dpa-abc8-bo-cong-an/730"><img src="https://pccc24.com/uploads/b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-8kg-dolphin-dpa-abc81778896533-card.webp" alt="" loading="lazy"><span>Bình chữa cháy bột ABC 8kg Dolphin DPA-ABC8 (Bộ Công An)</span></a>
-            <a href="/pccc24-wp/san-pham/binh-chua-chay-bot-abc-4kg-dolphin-dpa-abc4-bo-cong-an/729"><img src="https://pccc24.com/uploads/b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-4kg-dolphin-dpa-abc41778896811-card.webp" alt="" loading="lazy"><span>Bình chữa cháy bột ABC 4kg Dolphin DPA-ABC4 (Bộ Công An)</span></a>
+            <a href="/pccc24-wp/san-pham/binh-chua-chay-xe-day-goc-nuoc-35-lit-dolphin-dpa-t35l-bo-cong-an/732"><img src="/pccc24-wp/wp-content/uploads/pccc24/_b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-xe-%C4%91%E1%BA%A9y-g%E1%BB%91c-n%C6%B0%E1%BB%9Bc-35-l%C3%ADt-dolphin-dpa-t35l-b%E1%BB%99-c%C3%B4ng-an1779430729-card.webp" alt="" loading="lazy"><span>Bình chữa cháy xe đẩy gốc nước 35 Lít Dolphin DPA-T35L (Bộ Công An)</span></a>
+            <a href="/pccc24-wp/san-pham/binh-chua-chay-xe-day-bot-abc-35kg-dolphin-dpa-abc35-bo-cong-an/731"><img src="/pccc24-wp/wp-content/uploads/pccc24/b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-35kg-dolphin-dpa-abc351778895753-card.webp" alt="" loading="lazy"><span>Bình chữa cháy xe đẩy bột ABC 35kg Dolphin DPA-ABC35 (Bộ Công An)</span></a>
+            <a href="/pccc24-wp/san-pham/binh-chua-chay-bot-abc-8kg-dolphin-dpa-abc8-bo-cong-an/730"><img src="/pccc24-wp/wp-content/uploads/pccc24/b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-8kg-dolphin-dpa-abc81778896533-card.webp" alt="" loading="lazy"><span>Bình chữa cháy bột ABC 8kg Dolphin DPA-ABC8 (Bộ Công An)</span></a>
+            <a href="/pccc24-wp/san-pham/binh-chua-chay-bot-abc-4kg-dolphin-dpa-abc4-bo-cong-an/729"><img src="/pccc24-wp/wp-content/uploads/pccc24/b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-4kg-dolphin-dpa-abc41778896811-card.webp" alt="" loading="lazy"><span>Bình chữa cháy bột ABC 4kg Dolphin DPA-ABC4 (Bộ Công An)</span></a>
     </div>
 </aside>
     <div>
@@ -324,8 +314,13 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                     </div>
                     <div class="grid-products">
                 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/370981845461-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/bien-bao-cam-lua-cam-thuoc/419"><h3>Biển
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/370981845461-card.webp" alt="Biển
+   báo cấm lửa cấm thuốc" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Biển
+   báo cấm lửa cấm thuốc</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/bien-bao-cam-lua-cam-thuoc/419"><h3>Biển
    báo cấm lửa cấm thuốc</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
@@ -333,24 +328,35 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/029232015631-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/thang-day-thoat-nan-viet-nam/423"><h3>Thang   dây thoát nạn Việt Nam</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/029232015631-card.webp" alt="Thang   dây thoát nạn Việt Nam" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Thang   dây thoát nạn Việt Nam</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/thang-day-thoat-nan-viet-nam/423"><h3>Thang   dây thoát nạn Việt Nam</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="423">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/833849985372-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/thang-inox-viet-nam/424"><h3>Thang inox Việt Nam</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/833849985372-card.webp" alt="Thang inox Việt Nam" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Thang inox Việt Nam</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/thang-inox-viet-nam/424"><h3>Thang inox Việt Nam</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="424">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/627201058583-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/thang-day-thoat-nan-khan-cap/425"><h3>Thang
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/627201058583-card.webp" alt="Thang
+   dây thoát nạn khẩn cấp" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Thang
+   dây thoát nạn khẩn cấp</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/thang-day-thoat-nan-khan-cap/425"><h3>Thang
    dây thoát nạn khẩn cấp</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
@@ -358,8 +364,13 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/061540100503-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/dau-phun-sprinkler-huong-len/431"><h3>Đầu phun sprinkler hướng
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/061540100503-card.webp" alt="Đầu phun sprinkler hướng
+   lên" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Đầu phun sprinkler hướng
+   lên</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/dau-phun-sprinkler-huong-len/431"><h3>Đầu phun sprinkler hướng
    lên</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
@@ -367,32 +378,46 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/060083799415-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/dau-phun-srpinkler-xuong/432"><h3>Đầu phun srpinkler xuống</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/060083799415-card.webp" alt="Đầu phun srpinkler xuống" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Đầu phun srpinkler xuống</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/dau-phun-srpinkler-xuong/432"><h3>Đầu phun srpinkler xuống</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="432">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/011668173134-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/dau-phun-sprinkler-ngang/433"><h3>Đầu phun sprinkler ngang</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/011668173134-card.webp" alt="Đầu phun sprinkler ngang" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Đầu phun sprinkler ngang</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/dau-phun-sprinkler-ngang/433"><h3>Đầu phun sprinkler ngang</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="433">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/808640687254-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/dau-phun-sprinkler-ho-tron/434"><h3>Đầu phun sprinkler hở tròn</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/808640687254-card.webp" alt="Đầu phun sprinkler hở tròn" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Đầu phun sprinkler hở tròn</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/dau-phun-sprinkler-ho-tron/434"><h3>Đầu phun sprinkler hở tròn</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="434">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/749986474495-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/cap-thoat-set-dac-duval-messien-12-7/462"><h3>Cáp thoát sét đặc Duval-
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/749986474495-card.webp" alt="Cáp thoát sét đặc Duval-
+   Messien 12.7" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Cáp thoát sét đặc Duval-
+   Messien 12.7</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/cap-thoat-set-dac-duval-messien-12-7/462"><h3>Cáp thoát sét đặc Duval-
    Messien 12.7</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
@@ -400,16 +425,24 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/352293985036-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/hop-kiem-tra-dien-tro-dat-length-t/464"><h3>Hộp kiểm tra điện trở đất LENGTH-T</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/352293985036-card.webp" alt="Hộp kiểm tra điện trở đất LENGTH-T" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Hộp kiểm tra điện trở đất LENGTH-T</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/hop-kiem-tra-dien-tro-dat-length-t/464"><h3>Hộp kiểm tra điện trở đất LENGTH-T</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="464">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/228774345088-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/cap-thoat-set-chuyen-dung-duval-messien-50mm/467"><h3>Cáp thoát sét
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/228774345088-card.webp" alt="Cáp thoát sét
+   chuyên dụng Duval MESSIEN 50mm" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Cáp thoát sét
+   chuyên dụng Duval MESSIEN 50mm</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/cap-thoat-set-chuyen-dung-duval-messien-50mm/467"><h3>Cáp thoát sét
    chuyên dụng Duval MESSIEN 50mm</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
@@ -417,8 +450,13 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/815787976699-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/dau-phun-mang-luoi-foam/469"><h3>ĐẦU
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/815787976699-card.webp" alt="ĐẦU
+   PHUN MÀNG LƯỚI (FOAM)" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>ĐẦU
+   PHUN MÀNG LƯỚI (FOAM)</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/dau-phun-mang-luoi-foam/469"><h3>ĐẦU
    PHUN MÀNG LƯỚI (FOAM)</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
@@ -426,8 +464,13 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/tyco-fire-sprinkler-down-03-08-05-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/dau-phun-sprinkler-tyco/470"><h3>Đầu
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/tyco-fire-sprinkler-down-03-08-05-card.webp" alt="Đầu
+   phun SPRINKLER Tyco" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Đầu
+   phun SPRINKLER Tyco</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/dau-phun-sprinkler-tyco/470"><h3>Đầu
    phun SPRINKLER Tyco</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
@@ -435,8 +478,13 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/258523463850-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/chup-dau-phun-sprinkler-inox/472"><h3>CHỤP
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/258523463850-card.webp" alt="CHỤP
+   ĐẦU PHUN SPRINKLER (INOX)" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>CHỤP
+   ĐẦU PHUN SPRINKLER (INOX)</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/chup-dau-phun-sprinkler-inox/472"><h3>CHỤP
    ĐẦU PHUN SPRINKLER (INOX)</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
@@ -444,48 +492,66 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/nap-ngam-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/nap-day-ngam-van/589"><h3>NẮP ĐẬY NGÀM VAN</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/nap-ngam-card.webp" alt="NẮP ĐẬY NGÀM VAN" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>NẮP ĐẬY NGÀM VAN</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/nap-day-ngam-van/589"><h3>NẮP ĐẬY NGÀM VAN</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="589">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/ngam-dn50-dn65-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/ngam-van-rang-trong-bang-hop-kim-nhom-dn50-dn65/590"><h3>Ngàm van răng trong bằng hợp kim nhôm   DN50 DN65</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/ngam-dn50-dn65-card.webp" alt="Ngàm van răng trong bằng hợp kim nhôm   DN50 DN65" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Ngàm van răng trong bằng hợp kim nhôm   DN50 DN65</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/ngam-van-rang-trong-bang-hop-kim-nhom-dn50-dn65/590"><h3>Ngàm van răng trong bằng hợp kim nhôm   DN50 DN65</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="590">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/172959922559-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/de-dung-binh-chua-chay-don-doi/619"><h3>Đế đựng bình chữa cháy đơn đôi</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/172959922559-card.webp" alt="Đế đựng bình chữa cháy đơn đôi" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Đế đựng bình chữa cháy đơn đôi</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/de-dung-binh-chua-chay-don-doi/619"><h3>Đế đựng bình chữa cháy đơn đôi</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="619">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/559068373907-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/van-xa-binh-chua-chay/626"><h3>Van xả bình chữa cháy</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/559068373907-card.webp" alt="Van xả bình chữa cháy" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Van xả bình chữa cháy</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/van-xa-binh-chua-chay/626"><h3>Van xả bình chữa cháy</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="626">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/qua-tao-khoi-mau-cam---mau-xanh-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/binh-tao-khoi-mau-cam/639"><h3>Bình tạo khói màu cam</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/qua-tao-khoi-mau-cam---mau-xanh-card.webp" alt="Bình tạo khói màu cam" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Bình tạo khói màu cam</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/binh-tao-khoi-mau-cam/639"><h3>Bình tạo khói màu cam</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="639">Xem nhanh</button>
     </div>
 </article>
 <article class="product">
-    <div class="product-img"><img src="https://pccc24.com/uploads/260212251381-card.webp" alt="" loading="lazy" decoding="async" width="300" height="300"></div>
-    <a href="/pccc24-wp/san-pham/tieu-lenh-noi-quy-pccc/643"><h3>Tiêu lệnh nội quy pccc</h3></a>
+    <div class="product-img">
+        <img src="/pccc24-wp/wp-content/uploads/pccc24/260212251381-card.webp" alt="Tiêu lệnh nội quy pccc" loading="lazy" decoding="async" width="300" height="300" data-fb="1">
+        <span class="img-fb"><span>Tiêu lệnh nội quy pccc</span></span>
+    </div>
+    <a class="product-link" href="/pccc24-wp/san-pham/tieu-lenh-noi-quy-pccc/643"><h3>Tiêu lệnh nội quy pccc</h3></a>
     <div class="product-foot">
         <span class="product-price">Liên hệ</span>
         <button type="button" class="quick" data-quick="643">Xem nhanh</button>
@@ -498,50 +564,149 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
 </main>
 
 <footer class="footer">
-    <div class="wrap">
-        <div class="footer-cols">
-            <div class="footer-company">
-                <b>CÔNG TY TNHH MTV HOÀNG QUÂN PHÁT </b>
-                <p>262 Đỗ Mười, Phường Tam Bình, Thành phố Hồ Chí Minh 
-<p>Trụ sở chính: Số 16, Đường N4, khu nhà ở TM DV Phú Mỹ, khu 5, phường Bình Dương, Thành phố Hồ Chí Minh </p></p>
-                <p>Điện thoại <a href="tel:0982765114">0982765114</a> · Email <a href="mailto:hoangquanphat@gmail.com">hoangquanphat@gmail.com</a></p>
-                <p>GPKD 3701888205</p>
-                <p>
-                    <a href="https://www.facebook.com/pccc24" target="_blank" rel="noopener">Facebook</a> ·
-                    <a href="https://www.youtube.com/c/Pccc24HQP" target="_blank" rel="noopener">Youtube</a> ·
-                    <a href="https://zalo.me/0982765114" target="_blank" rel="noopener">Zalo</a>
-                </p>
+    <h2 class="footer-heading">Thông tin liên hệ</h2>
+
+    <div class="footer-top-grid">
+        <div class="footer-info-col">
+            <div class="footer-company-title">CÔNG TY TNHH MTV HOÀNG QUÂN PHÁT </div>
+            <div class="ios-group-card">
+                <div class="ios-group-row">
+                    <span class="ios-row-label">Văn phòng đại diện</span>
+                    <span class="ios-row-val">262 Đỗ Mười, Phường Tam Bình, Thành phố Hồ Chí Minh</span>
+                </div>
+                <div class="ios-group-row">
+                    <span class="ios-row-label">Trụ sở chính</span>
+                    <span class="ios-row-val">Số 16, Đường N4, khu nhà ở TM DV Phú Mỹ, khu 5, phường Bình Dương, Thành phố Hồ Chí Minh</span>
+                </div>
+                <div class="ios-group-row">
+                    <span class="ios-row-label">Điện thoại</span>
+                    <a class="ios-row-link" href="tel:0982765114">0982765114</a>
+                </div>
+                <div class="ios-group-row">
+                    <span class="ios-row-label">Email</span>
+                    <a class="ios-row-link" href="mailto:hoangquanphat@gmail.com">hoangquanphat@gmail.com</a>
+                </div>
+                <div class="ios-group-row">
+                    <span class="ios-row-label">GPKD</span>
+                    <span class="ios-row-val">3701888205</span>
+                </div>
             </div>
-                            <div>
-                    <h2>Giới thiệu công ty</h2>
-                    <ul>
-                                                    <li><a href="/pccc24-wp/pages/gioi-thieu">Giới thiệu</a></li>
-                                                    <li><a href="/pccc24-wp/contacts">Liên hệ</a></li>
-                                                    <li><a href="/pccc24-wp/tin-tuc">Tin tức</a></li>
-                                            </ul>
+        </div>
+
+        <div class="footer-map-card">
+            <iframe
+                title="Bản đồ PCCC Hoàng Quân Phát"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=262%20%C4%90%E1%BB%97%20M%C6%B0%E1%BB%9Di%2C%20Tam%20B%C3%ACnh%2C%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%2C%20H%E1%BB%93%20Ch%C3%AD%20Minh&amp;output=embed"
+            ></iframe>
+            <div class="footer-map-bar">
+                <div class="footer-map-text">
+                    <b>Văn phòng đại diện</b>
+                    <span>262 Đỗ Mười, P. Tam Bình, TP.HCM</span>
                 </div>
-                            <div>
-                    <h2>Chính sách</h2>
-                    <ul>
-                                                    <li><a href="/pccc24-wp/pages/chinh-sach-van-chuyen-giao-nhan">Chính sách vận chuyển-giao nhận</a></li>
-                                                    <li><a href="/pccc24-wp/pages/chinh-sach-doi-tra-hang">Chính sách đổi trả hàng</a></li>
-                                                    <li><a href="/pccc24-wp/pages/chinh-sach-bao-mat">Chính sách bảo mật</a></li>
-                                            </ul>
-                </div>
-                            <div>
-                    <h2>Quy định</h2>
-                    <ul>
-                                                    <li><a href="/pccc24-wp/pages/dieu-khoan-hoat-dong">Điều khoản hoạt động</a></li>
-                                                    <li><a href="/pccc24-wp/pages/quy-dinh-bao-hanh">Quy định bảo hành</a></li>
-                                                    <li><a href="/pccc24-wp/pages/dieu-kien-su-dung">Điều kiện sử dụng</a></li>
-                                            </ul>
-                </div>
-                    </div>
-        <p class="footer-bottom">© 2026 PCCC24 — Thiết bị phòng cháy chữa cháy Hoàng Quân Phát.</p>
+                <a
+                    class="btn-map-dir"
+                    href="https://www.google.com/maps/dir/?api=1&amp;destination=262%20%C4%90%E1%BB%97%20M%C6%B0%E1%BB%9Di%2C%20Tam%20B%C3%ACnh%2C%20TP.HCM"
+                    target="_blank"
+                    rel="noopener"
+                >Chỉ đường</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-links-grid">
+                    <div class="footer-link-col">
+                <div class="footer-group-label">Giới thiệu công ty</div>
+                <ul class="ios-link-group">
+                                            <li>
+                            <a href="/pccc24-wp/pages/gioi-thieu">
+                                <span>Giới thiệu</span>
+                                <span class="chev" aria-hidden="true">›</span>
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="/pccc24-wp/contacts">
+                                <span>Liên hệ</span>
+                                <span class="chev" aria-hidden="true">›</span>
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="/pccc24-wp/tin-tuc">
+                                <span>Tin tức</span>
+                                <span class="chev" aria-hidden="true">›</span>
+                            </a>
+                        </li>
+                                    </ul>
+            </div>
+                    <div class="footer-link-col">
+                <div class="footer-group-label">Chính sách</div>
+                <ul class="ios-link-group">
+                                            <li>
+                            <a href="/pccc24-wp/pages/chinh-sach-van-chuyen-giao-nhan">
+                                <span>Chính sách vận chuyển-giao nhận</span>
+                                <span class="chev" aria-hidden="true">›</span>
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="/pccc24-wp/pages/chinh-sach-doi-tra-hang">
+                                <span>Chính sách đổi trả hàng</span>
+                                <span class="chev" aria-hidden="true">›</span>
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="/pccc24-wp/pages/chinh-sach-bao-mat">
+                                <span>Chính sách bảo mật</span>
+                                <span class="chev" aria-hidden="true">›</span>
+                            </a>
+                        </li>
+                                    </ul>
+            </div>
+                    <div class="footer-link-col">
+                <div class="footer-group-label">Quy định</div>
+                <ul class="ios-link-group">
+                                            <li>
+                            <a href="/pccc24-wp/pages/dieu-khoan-hoat-dong">
+                                <span>Điều khoản hoạt động</span>
+                                <span class="chev" aria-hidden="true">›</span>
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="/pccc24-wp/pages/quy-dinh-bao-hanh">
+                                <span>Quy định bảo hành</span>
+                                <span class="chev" aria-hidden="true">›</span>
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="/pccc24-wp/pages/dieu-kien-su-dung">
+                                <span>Điều kiện sử dụng</span>
+                                <span class="chev" aria-hidden="true">›</span>
+                            </a>
+                        </li>
+                                    </ul>
+            </div>
+            </div>
+
+    <div class="footer-bottom-bar">
+        <span>© 2026 PCCC24 — Công ty TNHH MTV Hoàng Quân Phát.</span>
+        <div class="footer-socials">
+            <a class="social-pill" href="https://www.facebook.com/pccc24" target="_blank" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <span>Facebook</span>
+            </a>
+            <a class="social-pill" href="https://www.youtube.com/c/Pccc24HQP" target="_blank" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>Youtube</span>
+            </a>
+            <a class="social-pill" href="https://zalo.me/0982765114" target="_blank" rel="noopener">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#0068FF" aria-hidden="true"><circle cx="12" cy="12" r="12"/><path fill="#fff" d="M7.2 7.5h9.6v1.6L10.3 15h6.5v1.7H7v-1.6l6.5-5.9H7.2V7.5z"/></svg>
+                <span>Zalo</span>
+            </a>
+        </div>
     </div>
 </footer>
 
-<div class="float-contact">
+<div class="float-contact" role="region" aria-label="Liên hệ nhanh">
     <a class="btn btn-call" href="tel:0982765114" data-quote-open><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg> Gọi báo giá</a>
     <a class="btn btn-zalo" href="https://zalo.me/0982765114" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/></svg> Zalo</a>
 </div>
@@ -550,26 +715,30 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
     <div class="ios-sheet-handle" data-sheet-drag aria-hidden="true">
         <span class="ios-sheet-pill"></span>
     </div>
-    <button type="button" class="dialog-close" data-close aria-label="Đóng">×</button>
+
+    <div class="ios-sheet-head">
+        <h2 class="ios-sheet-title">Báo giá &amp; Tư vấn PCCC</h2>
+        <button type="button" class="dialog-close" data-close aria-label="Đóng">✕</button>
+    </div>
 
     <div class="ios-sheet-body">
-        <h2 class="ios-sheet-title">Báo giá &amp; Tư vấn PCCC</h2>
-        <p class="ios-sheet-sub">Gọi hoặc nhắn Zalo để nhận báo giá ngay lập tức:</p>
-
-        <div class="ios-sheet-direct">
-            <a class="btn btn-call" href="tel:0982765114">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>                <span><small>Bán hàng</small>0982765114</span>
+        <div class="ios-sheet-group">
+            <a class="ios-sheet-call-row" href="tel:0982765114">
+                <span>Bán hàng (vật tư, bình chữa cháy)</span>
+                <b>0982765114</b>
             </a>
-            <a class="btn btn-call" href="tel:02866566422">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>                <span><small>Kỹ thuật</small>02866566422</span>
+            <a class="ios-sheet-call-row" href="tel:02866566422">
+                <span>Kỹ thuật (thi công, bảo trì)</span>
+                <b>02866566422</b>
             </a>
-            <a class="btn btn-zalo" href="https://zalo.me/0982765114" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/></svg>                <span><small>Phản hồi nhanh</small>Nhắn Zalo</span>
+            <a class="ios-sheet-call-row ios-sheet-zalo-row" href="https://zalo.me/0982765114" target="_blank" rel="noopener">
+                <span>Phản hồi nhanh qua Zalo</span>
+                <b>Nhắn Zalo ›</b>
             </a>
         </div>
 
         <form id="quote-form" class="ios-sheet-form" novalidate>
-            <p class="ios-sheet-divider"><span>Hoặc để lại SĐT — Kỹ thuật viên gọi lại</span></p>
+            <div class="ios-sheet-section-label">ĐỂ LẠI SỐ ĐIỆN THOẠI — GỌI LẠI TRONG 15 PHÚT</div>
 
             <!-- Honeypot chống spam -->
             <div class="sr-only" aria-hidden="true">
@@ -577,44 +746,47 @@ img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
                 <input type="text" id="quote-website" name="website" tabindex="-1" autocomplete="off">
             </div>
 
-            <div class="ios-sheet-row">
-                <label for="quote-name">Tên của bạn *</label>
-                <input type="text" id="quote-name" name="name" required placeholder="Ví dụ: Anh Minh (Kho xưởng Thủ Đức)">
+            <div class="ios-sheet-group ios-sheet-inputs">
+                <div class="ios-input-row">
+                    <label for="quote-name">Tên của bạn *</label>
+                    <input type="text" id="quote-name" name="name" required placeholder="Họ và tên hoặc tên đơn vị">
+                </div>
+                <div class="ios-input-row">
+                    <label for="quote-phone">Số điện thoại *</label>
+                    <input type="tel" id="quote-phone" name="phone" required inputmode="tel" placeholder="09xxxxxxxx">
+                </div>
+                <div class="ios-input-row">
+                    <label for="quote-need">Nhu cầu tư vấn</label>
+                    <select id="quote-need" name="need">
+                        <option value="Bình chữa cháy">Bình chữa cháy</option>
+                        <option value="Thi công hệ thống">Thi công hệ thống</option>
+                        <option value="Bảo trì">Bảo trì</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+                <div class="ios-input-row">
+                    <label for="quote-note">Thiết bị / nội dung cần báo giá</label>
+                    <input type="text" id="quote-note" name="note" placeholder="Số lượng dự kiến, tên thiết bị cần báo giá…">
+                </div>
             </div>
 
-            <div class="ios-sheet-row">
-                <label for="quote-phone">Số điện thoại *</label>
-                <input type="tel" id="quote-phone" name="phone" required inputmode="tel" placeholder="09xxxxxxxx">
-            </div>
-
-            <div class="ios-sheet-row">
-                <label for="quote-need">Nhu cầu tư vấn</label>
-                <select id="quote-need" name="need">
-                    <option value="Bình chữa cháy">Bình chữa cháy</option>
-                    <option value="Thi công hệ thống">Thi công hệ thống</option>
-                    <option value="Bảo trì">Bảo trì</option>
-                    <option value="Khác">Khác</option>
-                </select>
-            </div>
-
-            <div class="ios-sheet-row">
-                <label for="quote-note">Ghi chú thêm (tuỳ chọn)</label>
-                <input type="text" id="quote-note" name="note" placeholder="Số lượng dự kiến, tên thiết bị cần báo giá…">
-            </div>
-
-            <button type="submit" class="btn btn-call ios-sheet-submit">Gửi yêu cầu gọi lại</button>
+            <button type="submit" class="btn ios-sheet-submit">Gửi yêu cầu gọi lại</button>
             <p class="ios-sheet-msg" id="quote-msg" role="status" aria-live="polite" hidden></p>
         </form>
     </div>
 </dialog>
 
-<dialog id="quickview" aria-label="Xem nhanh sản phẩm">
-    <button type="button" class="dialog-close" data-close aria-label="Đóng">×</button>
-    <div class="quickview"></div>
+<dialog id="quickview" class="ios-sheet" aria-label="Xem nhanh sản phẩm">
+    <div class="ios-sheet-handle" aria-hidden="true"><span class="ios-sheet-pill"></span></div>
+    <div class="ios-sheet-head">
+        <span class="ios-sheet-head-title">Xem nhanh thiết bị</span>
+        <button type="button" class="dialog-close" data-close aria-label="Đóng">✕</button>
+    </div>
+    <div class="quickview ios-sheet-body"></div>
 </dialog>
 
 <dialog id="drawer" class="drawer" aria-label="Menu">
-    <button type="button" class="dialog-close" data-close aria-label="Đóng">×</button>
+    <button type="button" class="dialog-close" data-close aria-label="Đóng">✕</button>
     <nav>
         <details>
             <summary>Sản phẩm</summary>

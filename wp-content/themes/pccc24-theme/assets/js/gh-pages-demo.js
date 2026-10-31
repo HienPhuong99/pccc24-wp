@@ -141,7 +141,7 @@
                     '<div class="product-img"><img src="' +
                     esc(p.image_url || noImg) +
                     '" alt="" loading="lazy"></div>' +
-                    '<a href="' +
+                    '<a class="product-link" href="' +
                     esc(p.url) +
                     '"><h3>' +
                     esc(p.name) +
@@ -191,6 +191,5 @@
           }
         });
     }
-
   });
 })();

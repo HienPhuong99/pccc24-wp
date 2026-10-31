@@ -1,4 +1,4 @@
-// PCCC24: menu mobile, slider trang chủ, popup xem nhanh + rossark-motion-skill living illustration engine.
+// PCCC24 iOS Handoff: menu, segmented control, slider translateX, image fallback, quickview + rossark-motion-skill engine.
 (function () {
   var CFG = window.PCCC24_CONFIG || {};
   var esc = function (s) { var d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; };
@@ -95,7 +95,6 @@
   window.PCCC24_MOTION = { EASE_IN_OUT: EASE_IN_OUT, EASE_OUT: EASE_OUT, wave: wave, loop: loop, bell: bell, seg: seg, seeded: seeded, track: track, flow: flow };
 
   // Khởi tạo chuyển động cho các thẻ kiểm định [data-motion-tag]
-  // Chặng C: One-shot khi vào + Idle chạy êm 6.5s rồi nghỉ (tiết kiệm pin mobile), thức dậy khi hover/focus/chạm.
   var tags = [].slice.call(document.querySelectorAll('[data-motion-tag]'));
   if (tags.length) {
     var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -121,11 +120,6 @@
     });
 
     function renderScene(sc, loopTime, oneShotTime, env) {
-      // 1. One-shot (nhịp vào) + Idle (nhịp thở tự nhiên nhân với envelope 0..1 để dừng êm không giật)
-      var tagSettle = flow(Math.min(oneShotTime, 1400), [[0, -2.4], [620, 0.35], [1400, 0]]);
-      var tagSway   = wave(loopTime, 5200, sc.seed) * 0.45 * env;
-      sc.el.style.transform = 'rotate(' + (tagSettle + tagSway).toFixed(3) + 'deg)';
-
       if (sc.needle) {
         var needleSweep = (1 - seg(oneShotTime, 60, 1100, EASE_OUT)) * -54;
         var needleIdle  = wave(loopTime, 3600, sc.seed + 0.15) * 1.8 * env;
@@ -137,7 +131,6 @@
         sc.lever.style.transform = 'rotate(' + (leverPress + leverIdle).toFixed(2) + 'deg)';
       }
       if (sc.pin) {
-        // Overlap & follow-through: chốt kẹp chì trễ pha hơn cần bóp van
         var pinIdle = wave(loopTime, 4800, sc.seed + 0.38) * 2.4 * env;
         sc.pin.style.transform = 'rotate(' + pinIdle.toFixed(2) + 'deg)';
       }
@@ -166,7 +159,6 @@
     }
 
     if (reducedMotion) {
-      // Nguyên tắc 10: Reduced motion giữ nguyên loop ở frame 0 và one-shot ở frame cuối
       scenes.forEach(function (sc) { renderScene(sc, 0, 2000, 0); });
     } else {
       var rafId = 0;
@@ -189,7 +181,7 @@
           sc.lastTick = performance.now();
           updateClockState();
         } else if (sc.idleElapsed > 1500) {
-          sc.idleElapsed = 450; // gia hạn mượt khi đang chạy
+          sc.idleElapsed = 450;
         }
       }
       function tick(now) {
@@ -201,7 +193,6 @@
           sc.lastTick = now;
           sc.elapsed += dt;
           sc.idleElapsed += dt;
-          // Envelope: lần đầu vào trang = 1 rồi hạ êm từ 5.0s..6.5s; những lần thức dậy sau thì tăng êm 0..450ms rồi hạ 5.0s..6.5s
           var fadeIn  = sc.wakeCount > 0 ? seg(sc.idleElapsed, 0, 450, EASE_OUT) : 1;
           var fadeOut = 1 - seg(sc.idleElapsed, IDLE_DURATION - 1500, IDLE_DURATION, EASE_IN_OUT);
           var env     = fadeIn * fadeOut;
@@ -217,17 +208,6 @@
         sc.el.addEventListener('pointerenter', function () { wakeScene(sc); });
         sc.el.addEventListener('focusin', function () { wakeScene(sc); });
         sc.el.addEventListener('touchstart', function () { wakeScene(sc); }, { passive: true });
-        // Ánh phản quang mặt kính đồng hồ (Liquid Glass specular trên .tag-rig khi di chuột desktop)
-        if (sc.rig && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-          sc.el.addEventListener('pointermove', function (e) {
-            var r = sc.rig.getBoundingClientRect();
-            if (!r.width || !r.height) return;
-            var gx = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
-            var gy = Math.max(0, Math.min(100, ((e.clientY - r.top) / r.height) * 100));
-            sc.rig.style.setProperty('--gx', gx.toFixed(1) + '%');
-            sc.rig.style.setProperty('--gy', gy.toFixed(1) + '%');
-          });
-        }
       });
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
@@ -249,16 +229,55 @@
   }
 
   // =========================================================================
-  // 2. GIAO DIỆN TƯƠNG TÁC (Menu, Dropdown, Slider, Quickview)
+  // 2. IMAGE FALLBACK (Section 12: striped industrial placeholder on error)
+  // =========================================================================
+  function bindImageFallbacks() {
+    document.querySelectorAll('img[data-fb]').forEach(function (img) {
+      if (img.dataset.fbBound) return;
+      img.dataset.fbBound = '1';
+      function onErr() { img.classList.add('is-broken'); }
+      img.addEventListener('error', onErr);
+      if (img.complete && img.naturalWidth === 0) onErr();
+    });
+  }
+  bindImageFallbacks();
+
+  // =========================================================================
+  // 3. GIAO DIỆN TƯƠNG TÁC (Menu, Dropdown, Segmented Control, Slider, Quickview)
   // =========================================================================
   document.addEventListener('click', function (e) {
     var open = e.target.closest('[data-open]');
     if (open) document.getElementById(open.dataset.open).showModal();
     var close = e.target.closest('[data-close]');
     if (close) close.closest('dialog').close();
-    if (e.target.tagName === 'DIALOG') e.target.close(); // bấm ra ngoài
+    if (e.target.tagName === 'DIALOG') e.target.close();
     var quick = e.target.closest('[data-quick]');
     if (quick) quickView(quick.dataset.quick);
+
+    // iOS Segmented Control: chuyển tab "Sản phẩm nổi bật" không tải lại trang
+    var segBtn = e.target.closest('[data-seg-tab]');
+    if (segBtn) {
+      var targetId = segBtn.dataset.segTab;
+      var group = segBtn.closest('.seg-control');
+      if (group) {
+        group.querySelectorAll('.seg-btn').forEach(function (b) {
+          var active = b === segBtn;
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+      }
+      document.querySelectorAll('.featured-pane').forEach(function (pane) {
+        if (pane.id === targetId) {
+          pane.removeAttribute('hidden');
+        } else {
+          pane.setAttribute('hidden', '');
+        }
+      });
+      var moreLink  = document.getElementById('featured-more-link');
+      var moreCount = document.getElementById('featured-more-count');
+      if (moreLink && segBtn.dataset.moreUrl) moreLink.href = segBtn.dataset.moreUrl;
+      if (moreCount && segBtn.dataset.moreCount) moreCount.textContent = segBtn.dataset.moreCount;
+    }
   });
 
   // Đóng dropdown "Sản phẩm" khi bấm ra ngoài.
@@ -268,7 +287,7 @@
     });
   });
 
-  // Slider: scroll-snap gốc của trình duyệt, chỉ thêm chấm điều hướng + tự chuyển.
+  // Slider Hero: translateX(-N*100%) + chấm điều hướng kính mờ
   var slides = document.querySelector('.slides');
   if (slides && slides.children.length > 1) {
     var dots = document.querySelector('.slide-dots');
@@ -276,17 +295,26 @@
     for (var i = 0; i < n; i++) {
       dots.insertAdjacentHTML('beforeend', '<button type="button" aria-label="Ảnh ' + (i + 1) + '"></button>');
     }
-    var go = function (i) { slides.scrollTo({ left: i * slides.clientWidth, behavior: 'smooth' }); };
     var mark = function () {
-      cur = Math.round(slides.scrollLeft / slides.clientWidth);
-      [].forEach.call(dots.children, function (b, i) { b.setAttribute('aria-current', i === cur); });
+      slides.style.transform = 'translateX(-' + (cur * 100) + '%)';
+      [].forEach.call(dots.children, function (b, idx) {
+        b.setAttribute('aria-current', idx === cur ? 'true' : 'false');
+      });
     };
-    dots.addEventListener('click', function (e) { var i = [].indexOf.call(dots.children, e.target); if (i >= 0) go(i); });
-    slides.addEventListener('scroll', function () { clearTimeout(slides._t); slides._t = setTimeout(mark, 80); });
+    var go = function (idx) {
+      cur = ((idx % n) + n) % n;
+      mark();
+    };
+    dots.addEventListener('click', function (e) {
+      var btn = e.target.closest('button');
+      if (!btn) return;
+      var idx = [].indexOf.call(dots.children, btn);
+      if (idx >= 0) go(idx);
+    });
     mark();
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      var timer = setInterval(function () { go((cur + 1) % n); }, 5000);
-      slides.addEventListener('pointerdown', function () { clearInterval(timer); }, { once: true });
+      var timer = setInterval(function () { go(cur + 1); }, 5000);
+      slides.parentElement.addEventListener('pointerdown', function () { clearInterval(timer); }, { once: true });
     }
   }
 
