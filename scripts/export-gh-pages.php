@@ -6,22 +6,12 @@
 
 defined('ABSPATH') || exit;
 
+global $dist_dir;
 $base_prefix = '/pccc24-wp';
 $dist_dir    = getenv('PCCC24_GH_DIST') ?: (sys_get_temp_dir() . '/pccc24-gh-pages');
+$GLOBALS['dist_dir'] = $dist_dir;
 
-if (is_dir($dist_dir)) {
-    // Xóa nội dung cũ (trừ .git nếu có)
-    $it = new RecursiveIteratorIterator(
-        new RecursiveDirectoryIterator($dist_dir, RecursiveDirectoryIterator::SKIP_DOTS),
-        RecursiveIteratorIterator::CHILD_FIRST
-    );
-    foreach ($it as $file) {
-        if (str_contains($file->getPathname(), DIRECTORY_SEPARATOR . '.git')) {
-            continue;
-        }
-        $file->isDir() ? @rmdir($file->getPathname()) : @unlink($file->getPathname());
-    }
-} else {
+if (!is_dir($dist_dir)) {
     mkdir($dist_dir, 0777, true);
 }
 
@@ -577,9 +567,22 @@ curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
 $count = 0;
 foreach ($routes as $url_path => $out_file) {
-    curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080' . $url_path);
-    $raw_html = curl_exec($ch);
-    $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $full_out = $dist_dir . '/' . ltrim($out_file, '/');
+    if (is_file($full_out) && filesize($full_out) > 1000) {
+        $count++;
+        continue;
+    }
+    $raw_html = '';
+    $status   = 0;
+    for ($attempt = 1; $attempt <= 3; $attempt++) {
+        curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080' . $url_path);
+        $raw_html = curl_exec($ch);
+        $status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($status === 200 && $raw_html) {
+            break;
+        }
+        usleep(200000);
+    }
     if ($status === 200 && $raw_html) {
         $transformed = pccc24_transform_for_gh_pages($raw_html, $base_prefix);
         pccc24_write_dist($out_file, $transformed);
