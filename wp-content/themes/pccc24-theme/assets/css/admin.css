@@ -243,14 +243,21 @@ ul#adminmenu > li.current > a.current::after,
   margin: 4px 10px !important;
   border-radius: 12px !important;
 }
-#collapse-button:hover {
+#collapse-button:hover,
+#collapse-button:focus {
   background: rgba(255, 255, 255, .10) !important;
   color: #fff !important;
+  box-shadow: none !important;
+}
+.folded #collapse-button {
+  width: 42px !important;
+  margin: 4px auto !important;
 }
 
 /* ---------- 3. Bento Grid Dashboard V18 (Hero + Stat Cards whileHover y:-5) ---------- */
 .v18-bento-wrap {
-  margin: 16px 0 22px;
+  clear: both; /* grid tạo BFC nên bị co lại cạnh #screen-meta-links (float) nếu không clear */
+  margin: 16px 20px 22px 0; /* admin_notices nằm ngoài .wrap nên tự chừa lề phải như .wrap */
   display: grid;
   grid-template-columns: 1.35fr 1fr 1fr;
   gap: 16px;
@@ -263,6 +270,7 @@ ul#adminmenu > li.current > a.current::after,
 }
 @media (max-width: 782px) {
   .v18-bento-wrap {
+    margin-right: 12px;
     grid-template-columns: 1fr;
   }
 }

@@ -523,9 +523,9 @@ remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
 
 // wp-admin + trang đăng nhập dùng phong cách Dashboard V18 (V18.mp4) trong assets/css/admin.css.
-add_action('admin_enqueue_scripts', fn() => wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '2'));
+add_action('admin_enqueue_scripts', fn() => wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '3'));
 add_action('login_enqueue_scripts', function () {
-    wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '2');
+    wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '3');
     wp_add_inline_style('pccc24-admin', '.login h1 a{background-image:url(' . esc_url(pccc24_get_setting('logo', false)) . ')}');
 });
 add_filter('login_headerurl', fn() => home_url('/'));
@@ -563,7 +563,7 @@ add_action('admin_notices', function () {
                 <span class="v18-stat-icon">🧯</span>
             </div>
             <div class="v18-stat-value"><?= $prod_count ?></div>
-            <div class="v18-stat-trend">↗ Đang hiển thị trên катаlog</div>
+            <div class="v18-stat-trend">↗ Đang hiển thị trên website</div>
         </a>
 
         <a class="v18-stat-card" href="<?= esc_url(admin_url('edit.php?post_type=pccc_quote')) ?>">
