@@ -20,6 +20,8 @@ add_action('init', function () {
     $cpt = function ($type, $name, $icon, $extra = []) {
         register_post_type($type, $extra + [
             'label' => $name, 'public' => true, 'show_in_rest' => true, 'menu_icon' => $icon,
+            'labels' => ['name' => $name, 'singular_name' => $name, 'add_new' => 'Thêm mới', 'add_new_item' => "Thêm $name",
+                'edit_item' => "Sửa $name", 'search_items' => "Tìm $name", 'not_found' => 'Chưa có mục nào', 'all_items' => "Tất cả $name"],
             'has_archive' => false, 'rewrite' => false, 'query_var' => false,
             'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields', 'page-attributes'],
         ]);
@@ -29,7 +31,7 @@ add_action('init', function () {
     $cpt('pccc_slider', 'Slider', 'dashicons-images-alt2', ['public' => false, 'show_ui' => true]);
     $cpt('pccc_policy', 'Chính sách', 'dashicons-shield', ['public' => false, 'show_ui' => true]);
     $cpt('pccc_support', 'Hỗ trợ viên', 'dashicons-phone', ['public' => false, 'show_ui' => true]);
-    $cpt('pccc_quote', 'Yêu cầu báo giá', 'dashicons-megaphone', ['public' => false, 'show_ui' => true, 'supports' => ['title', 'custom-fields']]);
+    $cpt('pccc_quote', 'Yêu cầu báo giá', 'dashicons-megaphone', ['public' => false, 'show_ui' => true, 'show_in_rest' => false, 'supports' => ['title', 'custom-fields']]);
 
     $tax = fn($tax, $types, $name, $hier) => register_taxonomy($tax, $types, [
         'label' => $name, 'public' => true, 'hierarchical' => $hier, 'show_in_rest' => true,
@@ -227,19 +229,16 @@ add_action('rest_api_init', function () {
             if (!empty($req->get_param('website'))) {
                 return new WP_Error('spam_detected', 'Yêu cầu không hợp lệ.', ['status' => 400]);
             }
-            $name  = sanitize_text_field((string) $req->get_param('name'));
+            $name  = mb_substr(sanitize_text_field((string) $req->get_param('name')), 0, 100);
             $phone = preg_replace('/[^0-9+]/', '', (string) $req->get_param('phone'));
             $need  = sanitize_text_field((string) ($req->get_param('need') ?: 'Bình chữa cháy'));
-            $note  = sanitize_textarea_field((string) $req->get_param('note'));
+            $note  = mb_substr(sanitize_textarea_field((string) $req->get_param('note')), 0, 1000);
             $url   = esc_url_raw((string) $req->get_param('source_url'));
             if ($name === '' || !preg_match('/^(0|\+84)\d{8,10}$/', $phone)) {
                 return new WP_Error('invalid_input', 'Vui lòng nhập họ tên và số điện thoại hợp lệ.', ['status' => 422]);
             }
-            $ip  = (string) ($_SERVER['HTTP_X_PCCC24_CLIENT'] ?? $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1');
+            $ip  = (string) ($_SERVER['REMOTE_ADDR'] ?? ''); // không tin header client gửi lên: giả được để né giới hạn
             $key = 'pccc24_qrl_' . md5($ip);
-            if ($req->get_param('_reset_rl')) {
-                delete_transient($key);
-            }
             $cnt = (int) get_transient($key);
             if ($cnt >= 5) {
                 return new WP_Error('rate_limited', 'Bạn đã gửi quá 5 yêu cầu trong giờ qua. Vui lòng gọi trực tiếp.', ['status' => 429]);
@@ -247,7 +246,7 @@ add_action('rest_api_init', function () {
             set_transient($key, $cnt + 1, HOUR_IN_SECONDS);
             $post_id = wp_insert_post([
                 'post_type'   => 'pccc_quote',
-                'post_status' => 'publish',
+                'post_status' => 'private',
                 'post_title'  => "$name — $phone ($need)",
                 'meta_input'  => [
                     '_pccc_phone'      => $phone,
@@ -302,7 +301,8 @@ function pccc24_fields_box($post)
     foreach (PCCC24_FIELDS[$post->post_type] as $k => $label) {
         $v = get_post_meta($post->ID, "_pccc_$k", true);
         if ($k === 'specs') {
-            $v = implode("\n", array_map(fn($s) => "{$s['name']} | {$s['content']}", (array) $v));
+            // Bài mới: meta rỗng '' -> (array) thành [''] -> phải lọc, không thì đọc $s['name'] trên chuỗi = Fatal error.
+            $v = implode("\n", array_map(fn($s) => ($s['name'] ?? '') . ' | ' . ($s['content'] ?? ''), array_filter((array) $v, 'is_array')));
         } elseif ($k === 'policy_ids') {
             $v = implode(',', (array) $v);
         }

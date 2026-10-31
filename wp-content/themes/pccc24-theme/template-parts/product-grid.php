@@ -36,7 +36,7 @@ $sorts  = [0 => 'Mặc định', 1 => 'Tên A → Z', 2 => 'Tên Z → A', 3 => 
             <div class="panel"><?= esc_html($args['empty'] ?? 'Chưa có sản phẩm.') ?> Gọi <a href="<?= esc_url(pccc24_tel('phone_sale')) ?>"><?= pccc24_get_setting('phone_sale') ?></a> để được tư vấn thiết bị phù hợp.</div>
         <?php endif; ?>
         <?php if (!empty($args['after'])) : ?>
-            <div class="panel prose" style="margin-top:32px;max-width:none"><?= wp_kses_post($args['after']) ?></div>
+            <div class="panel prose" style="margin-top:32px;max-width:none"><?= preg_replace('/<img(?![^>]*\bloading=)/i', '<img loading="lazy" decoding="async"', wp_kses_post($args['after'])) ?></div>
         <?php endif; ?>
     </div>
 </div>

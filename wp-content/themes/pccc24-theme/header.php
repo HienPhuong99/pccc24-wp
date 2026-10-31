@@ -1,6 +1,6 @@
 <?php
 /**
- * Header: SEO meta (giữ từ bản gốc) + thanh liên hệ, tìm kiếm, menu.
+ * Header: SEO meta (giữ từ bản gốc) + Thanh điều hướng kính mờ phong cách iOS (design_handoff_pccc24_ios).
  */
 defined('ABSPATH') || exit;
 
@@ -74,8 +74,7 @@ if (is_front_page() || is_home()) {
     }
 }
 
-$category_tree = pccc24_get_category_tree();
-$service_types = pccc24_get_service_types();
+$cur_view = get_query_var('pccc_view');
 ?>
 <!doctype html>
 <html lang="vi">
@@ -139,58 +138,49 @@ $service_types = pccc24_get_service_types();
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-    <link href="<?= esc_url(pccc24_theme_asset('css/site.css')) ?>?v=2" rel="stylesheet">
-    <link href="<?= esc_url(pccc24_theme_asset('css/ios-sheet.css')) ?>?v=1" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="<?= esc_url(pccc24_theme_asset('css/site.css')) ?>?v=3" rel="stylesheet">
+    <link href="<?= esc_url(pccc24_theme_asset('css/ios-sheet.css')) ?>?v=3" rel="stylesheet">
     <script>window.PCCC24_CONFIG = <?= wp_json_encode(['restUrl' => untrailingslashit(rest_url('pccc24/v1')), 'noImageUrl' => pccc24_no_image_url()]) ?>;</script>
-    <script src="<?= esc_url(pccc24_theme_asset('js/site.js')) ?>?v=2" defer></script>
-    <script src="<?= esc_url(pccc24_theme_asset('js/ios-sheet.js')) ?>?v=1" defer></script>
+    <script src="<?= esc_url(pccc24_theme_asset('js/site.js')) ?>?v=3" defer></script>
+    <script src="<?= esc_url(pccc24_theme_asset('js/ios-sheet.js')) ?>?v=3" defer></script>
     <?php wp_head(); ?>
 </head>
 
 <body>
 <a class="sr-only" href="#main">Bỏ qua menu</a>
-<header>
-    <div class="topbar">
-        <div class="wrap">
-            <span class="topbar-company"><?= pccc24_get_setting('company') ?> · GPKD <?= pccc24_get_setting('gpkd') ?></span>
-            <span class="topbar-phones">
-                <span>Bán hàng <a href="<?= esc_url(pccc24_tel('phone_sale')) ?>"><?= pccc24_get_setting('phone_sale') ?></a></span>
-                <span>Kỹ thuật <a href="<?= esc_url(pccc24_tel('phone_technique')) ?>"><?= pccc24_get_setting('phone_technique') ?></a></span>
-            </span>
+<header class="ios-header">
+    <div class="ios-header-inner">
+        <div class="ios-brand-group">
+            <button type="button" class="menu-btn" data-open="drawer" aria-label="Mở menu"><?= pccc24_icon('menu') ?></button>
+            <a class="logo" href="<?= esc_url(home_url('/')) ?>">
+                <img data-fb="1" src="<?= esc_url(pccc24_get_setting('logo', false)) ?>" alt="PCCC24 - Hoàng Quân Phát" width="145" height="40">
+                <span class="logo-fallback"><b class="logo-fb-red">PCCC24</b><span class="logo-fb-sub">Hoàng Quân Phát</span></span>
+            </a>
         </div>
-    </div>
-    <div class="masthead">
-        <div class="wrap">
-            <div style="display:flex;align-items:center;gap:4px">
-                <button type="button" class="menu-btn" data-open="drawer" aria-label="Mở menu"><?= pccc24_icon('menu') ?></button>
-                <a class="logo" href="<?= esc_url(home_url('/')) ?>"><img src="<?= esc_url(pccc24_get_setting('logo', false)) ?>" alt="PCCC24 - Hoàng Quân Phát" width="160" height="56"></a>
-            </div>
-            <form class="search" action="<?= esc_url(home_url('/san-pham/tim-kiem')) ?>" method="get" role="search">
-                <label class="sr-only" for="q">Tìm thiết bị</label>
-                <input id="q" type="search" name="q" value="<?= esc_attr(wp_unslash($_GET['q'] ?? '')) ?>" placeholder="Tìm bình chữa cháy, đầu báo khói, vòi chữa cháy…">
-                <button type="submit" aria-label="Tìm kiếm"><?= pccc24_icon('search') ?></button>
-            </form>
-            <div class="masthead-quote">
-                Gửi yêu cầu báo giá
-                <a href="mailto:<?= esc_attr(pccc24_get_setting('email', false)) ?>"><?= pccc24_get_setting('email') ?></a>
-            </div>
-        </div>
-    </div>
-    <nav class="nav" aria-label="Menu chính">
-        <div class="wrap">
+
+        <nav class="ios-nav" aria-label="Menu chính">
             <details class="nav-cats">
-                <summary><?= pccc24_icon('menu') ?> Sản phẩm</summary>
+                <summary class="nav-pill<?= (is_front_page() || $cur_view === 'products' || is_tax('pccc_product_cat') || is_singular('pccc_product')) ? ' active' : '' ?>">Sản phẩm</summary>
                 <?php get_template_part('template-parts/cat-list'); ?>
             </details>
-            <?php foreach ($service_types as $st) : ?>
-                <a href="<?= esc_url($st->url) ?>"><?= esc_html($st->name) ?></a>
-            <?php endforeach; ?>
-            <a href="<?= esc_url(home_url('/tin-tuc')) ?>">Tin tức</a>
-            <a href="<?= esc_url(home_url('/pages/gioi-thieu')) ?>">Về chúng tôi</a>
-            <a href="<?= esc_url(home_url('/contacts')) ?>">Liên hệ</a>
+            <a class="nav-pill<?= is_tax('pccc_service_type', 'thi-cong-lap-dat-he-thong-pccc') ? ' active' : '' ?>" href="<?= esc_url(home_url('/dich-vu/thi-cong-lap-dat-he-thong-pccc')) ?>">Thi công</a>
+            <a class="nav-pill<?= is_tax('pccc_service_type', 'bao-tri-sua-chua-he-thong-pccc') ? ' active' : '' ?>" href="<?= esc_url(home_url('/dich-vu/bao-tri-sua-chua-he-thong-pccc')) ?>">Bảo trì</a>
+            <a class="nav-pill<?= is_tax('pccc_service_type', 'du-an') ? ' active' : '' ?>" href="<?= esc_url(home_url('/dich-vu/du-an')) ?>">Dự án</a>
+            <a class="nav-pill<?= ($cur_view === 'articles' || is_singular('post')) ? ' active' : '' ?>" href="<?= esc_url(home_url('/tin-tuc')) ?>">Tin tức</a>
+            <a class="nav-pill<?= $cur_view === 'contacts' ? ' active' : '' ?>" href="<?= esc_url(home_url('/contacts')) ?>">Liên hệ</a>
+        </nav>
+
+        <div class="ios-header-actions">
+        <form class="search" action="<?= esc_url(home_url('/san-pham/tim-kiem')) ?>" method="get" role="search">
+            <?= pccc24_icon('search') ?>
+            <label class="sr-only" for="q">Tìm thiết bị</label>
+            <input id="q" type="search" name="q" value="<?= esc_attr(wp_unslash($_GET['q'] ?? '')) ?>" placeholder="Tìm thiết bị">
+        </form>
+
+        <button type="button" class="btn-quote-pill" data-quote-open>Báo giá</button>
         </div>
-    </nav>
+    </div>
 </header>
 <main id="main">
     <div class="wrap">

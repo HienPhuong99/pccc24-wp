@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#eef0ee;color:#1d2329;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Be Vietnam Pro",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}a:hover{color:#c8201a}
+*{box-sizing:border-box}
+::-webkit-scrollbar{height:0;width:0}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+</style>
+</helmet>
+<div style="min-height:100vh;padding-bottom:110px">
+
+<header style="position:sticky;top:0;z-index:20;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(29,35,41,.08)">
+  <div style="max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:16px">
+    <a href="#" style="display:flex;align-items:center;flex:none"><img data-fb="1" src="https://pccc24.com/uploads/template-2-2026-03-24t1404074301774335857.png" alt="PCCC24 - Hoàng Quân Phát" style="height:40px;width:auto;display:block"><span style="display:none;align-items:baseline;gap:6px;height:40px;align-items:center"><b style="font-size:22px;font-weight:800;color:#c8201a;letter-spacing:-.02em">PCCC24</b><span style="font-size:12px;color:#4a545e;font-weight:600">Hoàng Quân Phát</span></span></a>
+    <nav style="display:flex;gap:4px;flex:0 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;white-space:nowrap;font-size:14px;font-weight:500;color:#4a545e">
+      <a href="#" style="padding:7px 12px;border-radius:999px;background:rgba(29,35,41,.06);color:#1d2329">Sản phẩm</a>
+      <a href="#" style="padding:7px 12px;border-radius:999px">Thi công</a>
+      <a href="#" style="padding:7px 12px;border-radius:999px">Bảo trì</a>
+      <a href="#" style="padding:7px 12px;border-radius:999px">Dự án</a>
+      <a href="#" style="padding:7px 12px;border-radius:999px">Tin tức</a>
+      <a href="#" style="padding:7px 12px;border-radius:999px">Liên hệ</a>
+    </nav>
+    <div style="flex:1 1 160px;display:flex;align-items:center;gap:8px;background:rgba(118,118,128,.12);border-radius:10px;padding:8px 12px;min-width:120px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4a545e" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+      <input placeholder="Tìm thiết bị" style="border:0;background:transparent;outline:none;font:inherit;font-size:15px;flex:1;min-width:0;color:#1d2329">
+    </div>
+    <button onClick="{{ openQuote }}" style="border:0;background:#c8201a;color:#fff;font:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;flex:none;white-space:nowrap" style-active="transform:scale(.97)">Báo giá</button>
+  </div>
+</header>
+
+<main style="max-width:1240px;margin:0 auto;padding:0 20px">
+
+  <div style="padding:28px 0 16px;display:flex;flex-direction:column;gap:6px">
+    <div style="font-size:13px;font-weight:600;color:#4a545e;letter-spacing:.02em">CÔNG TY TNHH MTV HOÀNG QUÂN PHÁT</div>
+    <h1 style="margin:0;font-size:clamp(30px,4vw,40px);line-height:1.1;font-weight:700;letter-spacing:-.02em;text-wrap:pretty;max-width:900px">Thiết bị phòng cháy chữa cháy</h1>
+    <div style="font-size:17px;color:#4a545e;text-wrap:pretty">Tư vấn thiết kế thi công lắp đặt hệ thống phòng cháy chữa cháy</div>
+  </div>
+
+  <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:4px 0 20px">
+    <sc-for list="{{ cats }}" as="c" hint-placeholder-count="8">
+      <a href="#" style="flex:none;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;background:#fff;font-size:14px;font-weight:500;box-shadow:0 1px 2px rgba(29,35,41,.06)">{{ c.name }}<span style="font-size:12px;color:#4a545e">{{ c.count }}</span></a>
+    </sc-for>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch">
+    <div style="flex:2 1 520px;min-height:260px;min-width:0;position:relative;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(29,35,41,.06),0 8px 24px rgba(29,35,41,.06)">
+      <div style="position:absolute;inset:0;display:flex;transition:transform 450ms cubic-bezier(.23,1,.32,1);transform:{{ slideX }}">
+        <sc-for list="{{ slides }}" as="s" hint-placeholder-count="1">
+          <div style="flex:0 0 100%;width:100%;height:100%;position:relative;background:repeating-linear-gradient(135deg,#f3f4f3 0 10px,#e8eae8 10px 20px)"><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#4a545e">banner: {{ s.alt }}</span><img data-fb="1" src="{{ s.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:6px;padding:6px 8px;border-radius:999px;background:rgba(29,35,41,.28);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)">
+        <sc-for list="{{ dots }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.go }}" aria-label="Slide" style="border:0;padding:0;height:7px;border-radius:999px;cursor:pointer;transition:all 250ms;width:{{ d.w }};background:{{ d.bg }}"></button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="flex: 1 1 300px; border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 8px 24px rgba(29,35,41,.08); background-color: #F2F1EB">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:12px;font-weight:700;letter-spacing:.06em">PCCC Hoàng Quân Phát</span>
+        <span style="width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0px 0px 0px 3px #5FAD8E"></span>
+      </div>
+      <div style="font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.1">Liên hệ báo giá</div>
+      <div style="font-size:15px;line-height:1.45">Gọi hoặc nhắn Zalo, kỹ thuật viên tư vấn đúng thiết bị và báo giá trong ngày.</div>
+      <div style="display:flex;flex-direction:column;background:rgba(255,255,255,.55);border-radius:14px;overflow:hidden">
+        <a href="tel:0982765114" style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;font-size:15px"><span>Vật tư PCCC</span><b style="color:#0b7a4b">0982765114</b></a>
+        <div style="height:1px;background:rgba(29,35,41,.1);margin-left:14px"></div>
+        <a href="tel:02866566422" style="display:flex;justify-content:space-between;align-items:center;padding:11px 14px;font-size:15px"><span>Thi công và bảo trì PCCC</span><b style="color:#0b7a4b">02866566422</b></a>
+      </div>
+      <a href="https://zalo.me/0982765114" style="display:flex;justify-content:center;padding:12px;border-radius:14px;background:#0068ff;color:#fff;font-weight:600;font-size:15px">Nhắn Zalo</a>
+      <sc-if value="{{ showMonths }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding-top:10px;border-top:1px dashed rgba(29,35,41,.35)">
+          <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
+            <span style="text-align:center;font-size:11px;font-weight:600;padding:3px 0;border-radius:6px;background:{{ m.bg }};color:{{ m.fg }}">{{ m.label }}</span>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <div style="margin-top:20px;background:#fff;border-radius:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));overflow:hidden">
+    <sc-for list="{{ promises }}" as="p" hint-placeholder-count="4">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px">
+        <div style="width:40px;height:40px;border-radius:10px;background:#eef0ee;display:flex;align-items:center;justify-content:center;flex:none"><img data-fb="1" src="{{ p.img }}" alt="" style="width:28px;height:28px"><span style="display:none;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#f3f4f3 0 8px,#e8eae8 8px 16px);font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#4a545e;text-align:center;width:28px;height:28px;border-radius:6px"></span></div>
+        <div style="display:flex;flex-direction:column;min-width:0"><b style="font-size:15px;font-weight:600">{{ p.t }}</b><span style="font-size:13px;color:#4a545e;line-height:1.35">{{ p.d }}</span></div>
+      </div>
+    </sc-for>
+  </div>
+
+  <section style="margin-top:44px">
+    <h2 style="margin:0 0 14px;font-size:24px;font-weight:700;letter-spacing:-.015em">Bạn đang cần</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:14px">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="5">
+        <a href="#" style="position:relative;display:block;border-radius:18px;overflow:hidden;aspect-ratio:4/5;background:#1d2329" style-hover="transform:translateY(-2px)">
+          <img data-fb="1" src="{{ s.img }}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><span style="display:none;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#f3f4f3 0 8px,#e8eae8 8px 16px);font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#4a545e;text-align:center;width:100%;height:100%;align-items:flex-start;padding-top:40%">ảnh dịch vụ</span>
+          <div style="position:absolute;inset:auto 0 0 0;padding:28px 14px 14px;background:linear-gradient(transparent,rgba(29,35,41,.85));color:#fff;font-size:16px;font-weight:600;line-height:1.25">{{ s.t }}</div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="margin-top:44px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+      <h2 style="margin:0;font-size:24px;font-weight:700;letter-spacing:-.015em">Sản phẩm nổi bật</h2>
+      <a href="#" style="font-size:15px;font-weight:500;color:#c8201a">Xem tất cả {{ activeCount }} sản phẩm ›</a>
+    </div>
+    <div style="display:inline-flex;max-width:100%;overflow-x:auto;scrollbar-width:none;background:rgba(118,118,128,.12);border-radius:10px;padding:2px;margin-bottom:16px">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+        <button onClick="{{ t.pick }}" style="flex:none;border:0;font:inherit;font-size:14px;padding:7px 16px;border-radius:8px;cursor:pointer;transition:all 200ms;color:#1d2329;background:{{ t.bg }};box-shadow:{{ t.shadow }};font-weight:{{ t.weight }}">{{ t.name }}</button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ isGrid }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:14px">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="5">
+          <div style="background:#fff;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(29,35,41,.05)">
+            <div style="aspect-ratio:1;border-radius:12px;background:#f7f8f7;display:flex;align-items:center;justify-content:center;overflow:hidden"><img data-fb="1" src="{{ p.img }}" alt="" style="max-width:100%;max-height:100%;object-fit:contain"><span style="display:none;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#f3f4f3 0 8px,#e8eae8 8px 16px);font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#4a545e;text-align:center;width:100%;height:100%">ảnh sản phẩm</span></div>
+            <a href="#" style="font-size:14px;font-weight:500;line-height:1.38;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.76em">{{ p.name }}</a>
+            <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <span style="font-size:14px;font-weight:600;color:#c8201a">Liên hệ</span>
+              <button onClick="{{ p.open }}" style="border:0;font:inherit;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;background:rgba(200,32,26,.1);color:#c8201a;cursor:pointer">Xem nhanh</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#fff;border-radius:18px;overflow:hidden">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="5">
+          <div style="display:flex;align-items:center;gap:14px;padding:10px 16px;border-top:{{ p.sep }}">
+            <img data-fb="1" src="{{ p.img }}" alt="" style="width:60px;height:60px;object-fit:contain;border-radius:10px;background:#f7f8f7;flex:none"><span style="display:none;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#f3f4f3 0 8px,#e8eae8 8px 16px);font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#4a545e;text-align:center;width:60px;height:60px;border-radius:10px;flex:none">ảnh</span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:500;line-height:1.35">{{ p.name }}</span><span style="font-size:13px;color:#c8201a;font-weight:600">Liên hệ</span></div>
+            <button onClick="{{ p.open }}" style="border:0;font:inherit;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;background:rgba(200,32,26,.1);color:#c8201a;cursor:pointer;flex:none">Xem nhanh</button>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </section>
+
+  <section style="margin-top:44px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px">
+      <h2 style="margin:0;font-size:24px;font-weight:700;letter-spacing:-.015em">Tin Tức PCCC</h2>
+      <a href="#" style="font-size:15px;font-weight:500;color:#c8201a">Tất cả bài viết ›</a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px">
+      <a href="#" style="background:#1d2329;color:#fff;border-radius:22px;padding:24px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;min-height:220px">
+        <span style="font-size:12px;font-weight:600;color:#f3c623;letter-spacing:.04em">MỚI NHẤT · 12/06/2026</span>
+        <span style="font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.01em;text-wrap:pretty">Hệ thống báo cháy tự động: cấu tạo và nguyên lý hoạt động</span>
+      </a>
+      <div style="background:#fff;border-radius:22px;overflow:hidden">
+        <sc-for list="{{ news }}" as="n" hint-placeholder-count="3">
+          <a href="#" style="display:flex;align-items:center;gap:14px;padding:12px 16px;border-top:{{ n.sep }}">
+            <img data-fb="1" src="{{ n.img }}" alt="" style="width:76px;height:56px;object-fit:cover;border-radius:10px;flex:none"><span style="display:none;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,#f3f4f3 0 8px,#e8eae8 8px 16px);font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#4a545e;text-align:center;width:76px;height:56px;border-radius:10px;flex:none">ảnh</span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px"><span style="font-size:15px;font-weight:500;line-height:1.35">{{ n.t }}</span><span style="font-size:13px;color:#4a545e">{{ n.date }}</span></div>
+            <span style="color:#b4bab6;font-size:20px">›</span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer style="max-width:1240px;margin:56px auto 0;padding:0 20px;display:flex;flex-direction:column;gap:20px">
+  <h2 style="margin:0;font-size:24px;font-weight:700;letter-spacing:-.015em">Thông tin liên hệ<br></h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span style="font-size: 20px; font-weight: 600; color: #4a545e; padding: 0 16px; text-transform: uppercase; letter-spacing: .03em; text-align: left">Công ty TNHH MTV Hoàng Quân Phát</span>
+      <div style="background:#fff;border-radius:18px;overflow:hidden">
+        <div style="display: flex; flex-direction: column; gap: 2px; padding: 11px 16px; width: 593px; height: 65px"><span style="font-size:12px;color:#4a545e">Văn phòng đại diện</span><span style="font-size:15px;line-height:1.4">262 Đỗ Mười, Phường Tam Bình, Thành phố Hồ Chí Minh</span></div>
+        <div style="height:1px;background:rgba(29,35,41,.08);margin-left:16px"></div>
+        <div style="display: flex; flex-direction: column; gap: 2px; padding: 11px 16px; width: 592px; height: 84px"><span style="font-size:12px;color:#4a545e">Trụ sở chính</span><span style="font-size:15px;line-height:1.4">Số 16, Đường N4, khu nhà ở TM DV Phú Mỹ, khu 5, phường Bình Dương, Thành phố Hồ Chí Minh</span></div>
+        <div style="height:1px;background:rgba(29,35,41,.08);margin-left:16px"></div>
+        <a href="tel:0982765114" style="display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; font-size: 15px; width: 592px; height: 50px"><span>Điện thoại</span><b style="color:#0b7a4b">0982765114</b></a>
+        <div style="height:1px;background:rgba(29,35,41,.08);margin-left:16px"></div>
+        <a href="mailto:hoangquanphat@gmail.com" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 11px 16px; font-size: 15px; width: 591px; height: 50px"><span>Email</span><b style="color:#1d2329;font-weight:500;overflow-wrap:anywhere;text-align:right">hoangquanphat@gmail.com</b></a>
+        <div style="height:1px;background:rgba(29,35,41,.08);margin-left:16px"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; font-size: 15px; width: 589px; height: 56px"><span>GPKD</span><span style="color:#4a545e">3701888205</span></div>
+      </div>
+    </div>
+    <div style="position:relative;border-radius:18px;overflow:hidden;background:repeating-linear-gradient(135deg,#f3f4f3 0 10px,#e8eae8 10px 20px);min-height:340px;box-shadow:0 1px 2px rgba(29,35,41,.06)">
+      <iframe title="Bản đồ Hoàng Quân Phát" src="https://maps.google.com/maps?q=262%20%C4%90%E1%BB%97%20M%C6%B0%E1%BB%9Di%2C%20Tam%20B%C3%ACnh%2C%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%2C%20H%E1%BB%93%20Ch%C3%AD%20Minh&amp;z=16&amp;output=embed" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
+      <div style="position:absolute;left:12px;right:12px;bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 10px 10px 14px;border-radius:14px;background:rgba(255,255,255,.82);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);box-shadow:0 6px 20px rgba(29,35,41,.15)">
+        <div style="display:flex;flex-direction:column;min-width:0;line-height:1.3"><b style="font-size:14px">Văn phòng đại diện</b><span style="font-size:12px;color:#4a545e">262 Đỗ Mười, P. Tam Bình, TP.HCM</span></div>
+        <a href="https://www.google.com/maps/dir/?api=1&amp;destination=262%20%C4%90%E1%BB%97%20M%C6%B0%E1%BB%9Di%2C%20Tam%20B%C3%ACnh%2C%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c" target="_blank" style="flex:none;padding:8px 14px;border-radius:999px;background:#c8201a;color:#fff;font-size:13px;font-weight:600">Chỉ đường</a>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px">
+    <sc-for list="{{ footerGroups }}" as="g" hint-placeholder-count="3">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <span style="font-size:13px;font-weight:600;color:#4a545e;padding:0 16px;text-transform:uppercase;letter-spacing:.03em">{{ g.title }}</span>
+        <div style="background:#fff;border-radius:14px;overflow:hidden">
+          <sc-for list="{{ g.links }}" as="l" hint-placeholder-count="3">
+            <a href="#" style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;font-size:15px;border-top:{{ l.sep }}">{{ l.t }}<span style="color:#b4bab6">›</span></a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:16px 4px 24px;border-top:1px solid rgba(29,35,41,.1);font-size:13px;color:#4a545e">
+    <span style="font-size: 13px">© 2026 PCCC24 — Công ty TNHH MTV Hoàng Quân Phát.</span>
+    <div style="display:flex;gap:8px"><a href="https://www.facebook.com/pccc24" style="display:flex;align-items:center;gap:6px;padding:6px 12px 6px 8px;border-radius:999px;background:#fff"><img src="https://cdn.simpleicons.org/facebook/1877F2" alt="" style="width:18px;height:18px;display:block">Facebook</a><a href="https://www.youtube.com/c/Pccc24HQP" style="display:flex;align-items:center;gap:6px;padding:6px 12px 6px 8px;border-radius:999px;background:#fff"><img src="https://cdn.simpleicons.org/youtube/FF0000" alt="" style="width:18px;height:18px;display:block">Youtube</a><a href="https://zalo.me/0982765114" style="display:flex;align-items:center;gap:6px;padding:6px 12px 6px 8px;border-radius:999px;background:#fff"><img src="https://cdn.simpleicons.org/zalo/0068FF" alt="" style="width:18px;height:18px;display:block">Zalo</a></div>
+  </div>
+</footer>
+
+<div style="position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;display:flex;gap:6px;padding:6px;border-radius:999px;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);box-shadow:0 10px 30px rgba(29,35,41,.18),0 0 0 1px rgba(29,35,41,.06)">
+  <a href="tel:0982765114" style="display:flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;background:#0b7a4b;color:#fff;font-weight:600;font-size:15px;white-space:nowrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 013 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"></path></svg>Gọi báo giá</a>
+  <a href="https://zalo.me/0982765114" style="display:flex;align-items:center;padding:11px 20px;border-radius:999px;background:#0068ff;color:#fff;font-weight:600;font-size:15px">Zalo</a>
+</div>
+
+<sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeSheet }}" style="position:fixed;inset:0;z-index:50;background:rgba(29,35,41,.4);display:flex;align-items:flex-end;justify-content:center;padding:12px">
+    <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:90vh;overflow:auto;background:#eef0ee;border-radius:24px;padding:8px 18px 20px;animation:sheetUp 320ms cubic-bezier(.23,1,.32,1);display:flex;flex-direction:column;gap:14px">
+      <div style="width:38px;height:5px;border-radius:999px;background:rgba(29,35,41,.2);margin:2px auto 0"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:17px;font-weight:600">{{ sheetTitle }}</span>
+        <button onClick="{{ closeSheet }}" aria-label="Đóng" style="width:30px;height:30px;border-radius:50%;border:0;background:rgba(118,118,128,.16);color:#4a545e;font-size:16px;cursor:pointer">✕</button>
+      </div>
+      <sc-if value="{{ sheetIsProduct }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border-radius:18px;padding:16px;display:flex;justify-content:center"><img src="{{ sheetImg }}" alt="" style="max-height:260px;max-width:100%;object-fit:contain"></div>
+        <div style="font-size:20px;font-weight:700;line-height:1.25;letter-spacing:-.01em">{{ sheetName }}</div>
+      </sc-if>
+      <div style="background:#fff;border-radius:14px;overflow:hidden">
+        <a href="tel:0982765114" style="display:flex;justify-content:space-between;padding:12px 16px;font-size:16px"><span>Bán hàng</span><b style="color:#0b7a4b">0982765114</b></a>
+        <div style="height:1px;background:rgba(29,35,41,.08);margin-left:16px"></div>
+        <a href="tel:02866566422" style="display:flex;justify-content:space-between;padding:12px 16px;font-size:16px"><span>Kỹ thuật</span><b style="color:#0b7a4b">02866566422</b></a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <span style="font-size:13px;font-weight:600;color:#4a545e;padding:0 16px">HOẶC ĐỂ LẠI SĐT — KỸ THUẬT VIÊN GỌI LẠI</span>
+        <div style="background:#fff;border-radius:14px;overflow:hidden">
+          <input placeholder="Tên của bạn *" style="width:100%;border:0;outline:none;font:inherit;font-size:16px;padding:12px 16px;background:transparent">
+          <div style="height:1px;background:rgba(29,35,41,.08);margin-left:16px"></div>
+          <input placeholder="Số điện thoại *" style="width:100%;border:0;outline:none;font:inherit;font-size:16px;padding:12px 16px;background:transparent">
+          <div style="height:1px;background:rgba(29,35,41,.08);margin-left:16px"></div>
+          <select style="width:100%;border:0;outline:none;font:inherit;font-size:16px;padding:12px 16px;background:transparent;color:#1d2329"><option>Bình chữa cháy</option><option>Thi công hệ thống</option><option>Bảo trì</option><option>Khác</option></select>
+        </div>
+      </div>
+      <button style="border:0;font:inherit;font-size:16px;font-weight:600;padding:14px;border-radius:14px;background:#c8201a;color:#fff;cursor:pointer" style-active="transform:scale(.98)">Gửi yêu cầu gọi lại</button>
+    </div>
+  </div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;productLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;grid&quot;,&quot;list&quot;],&quot;default&quot;:&quot;grid&quot;,&quot;tsType&quot;:&quot;'grid'|'list'&quot;},&quot;showMonths&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;punchedMonths&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:12,&quot;step&quot;:1,&quot;default&quot;:10,&quot;tsType&quot;:&quot;number&quot;}}">
+const U = 'https://pccc24.com/uploads/';
+const DATA = {
+  cats: [['Bình chữa cháy',8],['Thiết bị báo cháy',5],['Đèn thoát hiểm',3],['Máy bơm chữa cháy',3],['Thiết bị PCCC',8],['Tủ, kệ PCCC',''],['Dụng cụ bảo hộ',3],['Thiết bị PCCC khác',''],['Kim chống sét',''],['Biển báo an toàn','']],
+  slides: [['template-2-2026-02-11t1636510921770802731.png','Bình chữa cháy DOLPHIN'],['1714876176_27656c43b29c41f1e677.jpg','Bình gốc nước'],['template-2-2026-03-13t1519031021773389956.png','Thi công']],
+  promises: [['1706704462_9744f95e1ab7371b0213.webp','Giao hàng nhanh','Giao trong ngày hoặc dưới 24h'],['1706704520_250f26fe295b373b7db9.webp','Tư vấn 24/7','Qua điện thoại và Zalo, cả ngoài giờ'],['1706704603_79880ff942f3cb6931c8.webp','Hàng chính hãng','Có tem kiểm định, đổi trả theo yêu cầu'],['1706704665_3c8e2320b6a7d70671e1.webp','Đúng quy chuẩn','Thi công, bảo trì theo quy định hiện hành']],
+  services: [['template-2-2026-03-05t1131441071772685130.png','Thi công PCCC'],['template-2-2026-03-05t1147436151772686095.png','Bảo trì sửa chữa'],['template-2-2026-03-04t0952325511772592769.png','Bình Chữa Cháy Giá Sỉ'],['template-2-2026-03-04t1000280961772593394.png','Thiết bị báo cháy'],['template-2-2026-03-05t1040506661772682056.png','Thiết bị chữa cháy']],
+  tabs: [
+    { name: 'Bình bột ABC', count: 24, items: [
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-8kg-83mecb%E1%BB%99-qu%E1%BB%91c-ph%C3%B2ng1778912896.png','Bình chữa cháy bột ABC 8kg - 83Mec/Bộ Quốc Phòng'],
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-abc-4kg-83mecb%E1%BB%99-qu%E1%BB%91c-ph%C3%B2ng1778912750.png','Bình chữa cháy bột ABC 4kg - 83Mec/Bộ Quốc Phòng'],
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-xe-%C4%91%E1%BA%A9y-b%E1%BB%99t-35kg-vinafoam1778911849.png','Bình chữa cháy xe đẩy bột ABC 35kg Vinafoam'],
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-xe-%C4%91%E1%BA%A9y-b%E1%BB%99t-kh%C3%B4-abc-35kg-hafico1778904277.png','Bình chữa cháy xe đẩy bột khô ABC 35kg HAFICO'],
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-b%E1%BB%99t-kh%C3%B4-abc-8kg-hafico1778902551.png','Bình chữa cháy bột khô ABC 8kg HAFICO']]},
+    { name: 'Bình CO2', count: 17, items: [
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-kh%C3%AD-co2-victory-24kg1779931532.png','Bình chữa cháy xe đẩy khí CO2 Victory 24kg'],
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-kh%C3%AD-co2-5kg-83mecb%E1%BB%99-qu%E1%BB%91c-ph%C3%B2ng1778918543.png','Bình chữa cháy khí CO2 5kg - 83Mec/Bộ Quốc Phòng'],
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-kh%C3%AD-co2-3kg-83mecb%E1%BB%99-qu%E1%BB%91c-ph%C3%B2ng1778918263.png','Bình chữa cháy khí CO2 3kg - 83Mec/Bộ Quốc Phòng'],
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-kh%C3%AD-co2-5kg-hafico1778917697.png','Bình chữa cháy khí CO2 5kg HAFICO'],
+      ['b%C3%ACnh-ch%E1%BB%AFa-ch%C3%A1y-kh%C3%AD-co2-3kg-hafico1778917178.png','Bình chữa cháy khí CO2 3kg HAFICO']]},
+    { name: 'Vòi chữa cháy', count: 7, items: [
+      ['v%C3%B2i-ch%E1%BB%AFa-ch%C3%A1y-83-mec-dn65x20mx16bar1779334768.png','Vòi chữa cháy 83 MEC DN65x20mx16bar'],
+      ['v%C3%B2i-ch%E1%BB%AFa-ch%C3%A1y-dn50x20mx16bar-c%C3%B3-tem-ki%E1%BB%83m-%C4%91%E1%BB%8Bnh-bqp1779334303.png','Vòi chữa cháy 83 MEC DN50x20mx16bar (bộ Quốc Phòng)'],
+      ['v%C3%B2i-ch%E1%BB%AFa-ch%C3%A1y-jakob-s%E1%BA%A3n-xu%E1%BA%A5t-t%E1%BA%A1i-%C4%91%E1%BB%A9c-dn50mmx20mx16bar-11779332582.png','Vòi chữa cháy Jakob ( sản xuất tại Đức) DN50mmx20mx16bar'],
+      ['v%C3%B2i-ch%E1%BB%AFa-ch%C3%A1y-tomoken-dn65x20mx16mpa1779330378.png','Vòi chữa cháy Tomoken DN65x20mx16bar'],
+      ['v%C3%B2i-ch%E1%BB%AFa-ch%C3%A1y-tomoken-dn50x20mx16bar-tem-k%C4%911779329925.png','Vòi chữa cháy Tomoken DN50x20mx16bar']]}
+  ],
+  news: [
+    ['nh%C3%A0-th%E1%BA%A7u-thi-c%C3%B4ng-h%E1%BB%87-th%E1%BB%91ng-pccc-hcm-chuy%C3%AAn-nghi%E1%BB%87p-v%C3%A0-uy-t%C3%ADn-11781229578.png','Nhà thầu thi công hệ thống PCCC HCM chuyên nghiệp và uy tín','12/06/2026'],
+    ['nh%C3%A0-th%E1%BA%A7u-thi-c%C3%B4ng-h%E1%BB%87-th%E1%BB%91ng-pccc-t%C3%A2y-ninh-chuy%C3%AAn-nghi%E1%BB%87p-v%C3%A0-uy-t%C3%ADn1780985858.png','Nhà thầu thi công hệ thống PCCC Tây Ninh chuyên nghiệp và uy tín','09/06/2026'],
+    ['nh%C3%A0-th%E1%BA%A7u-thi-c%C3%B4ng-h%E1%BB%87-th%E1%BB%91ng-pccc-%C4%91%E1%BB%93ng-nai-chuy%C3%AAn-nghi%E1%BB%87p-v%C3%A0-uy-t%C3%ADn1780979523.png','Nhà thầu thi công hệ thống PCCC Đồng Nai chuyên nghiệp và uy tín','09/06/2026']],
+  footer: [['Giới thiệu công ty',['Giới thiệu','Liên hệ','Tin tức']],['Chính sách',['Chính sách vận chuyển-giao nhận','Chính sách đổi trả hàng','Chính sách bảo mật']],['Quy định',['Điều khoản hoạt động','Quy định bảo hành','Điều kiện sử dụng']]]
+};
+const SEP = '1px solid rgba(29,35,41,.08)';
+class Component extends DCLogic {
+  state = { slide: 0, tab: 0, sheet: null, need: 0, cbPhone: '', cbSent: false };
+  componentDidMount() {
+    this.onErr = e => { const el = e.target; if (!el || el.tagName !== 'IMG' || !el.dataset.fb) return; el.style.display = 'none'; const n = el.nextElementSibling; if (n && n.tagName === 'SPAN') n.style.display = 'flex'; };
+    document.addEventListener('error', this.onErr, true);
+    document.querySelectorAll('img[data-fb]').forEach(el => { if (el.complete && !el.naturalWidth) this.onErr({ target: el }); }); this.t = setInterval(() => this.setState(s => ({ slide: (s.slide + 1) % 3 })), 5000); }
+  componentWillUnmount() { clearInterval(this.t); document.removeEventListener('error', this.onErr, true); }
+  renderVals() {
+    const { slide, tab, sheet } = this.state;
+    const layout = this.props.productLayout ?? 'grid';
+    const punched = this.props.punchedMonths ?? 10;
+    const T = DATA.tabs[tab];
+    const NEEDS = [['Vật tư PCCC','0982765114','vật tư PCCC'],['Thi công & bảo trì','02866566422','thi công & bảo trì']];
+    const N = NEEDS[this.state.need];
+    const cbOk = this.state.cbPhone.replace(/\D/g,'').length >= 9;
+    return {
+      needs: NEEDS.map(([name], i) => ({ name, bg: i === this.state.need ? '#fff' : 'transparent', shadow: i === this.state.need ? '0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04)' : 'none', weight: i === this.state.need ? 600 : 500, pick: () => this.setState({ need: i }) })),
+      needLabel: 'Gọi ' + N[2], needLabelLower: N[2], needPhone: N[1], needTel: 'tel:' + N[1],
+      cbPhone: this.state.cbPhone, cbSent: this.state.cbSent, cbNotSent: !this.state.cbSent, cbOpacity: cbOk ? 1 : .45,
+      setCbPhone: e => this.setState({ cbPhone: e.target.value }),
+      sendCb: () => { if (cbOk) this.setState({ cbSent: true }); },
+      cats: DATA.cats.map(([name, count]) => ({ name, count })),
+      slides: DATA.slides.map(([f, alt]) => ({ img: U + f, alt })),
+      slideX: `translateX(-${slide * 100}%)`,
+      dots: DATA.slides.map((_, i) => ({ w: i === slide ? '22px' : '7px', bg: i === slide ? '#fff' : 'rgba(255,255,255,.55)', go: () => this.setState({ slide: i }) })),
+      showMonths: this.props.showMonths ?? true,
+      months: Array.from({ length: 12 }, (_, i) => ({ label: 'T' + (i + 1), bg: i < punched ? '#1d2329' : 'rgba(255,255,255,.45)', fg: i < punched ? '#f3c623' : '#1d2329' })),
+      promises: DATA.promises.map(([f, t, d]) => ({ img: U + f, t, d })),
+      services: DATA.services.map(([f, t]) => ({ img: U + f, t })),
+      tabs: DATA.tabs.map((x, i) => ({ name: x.name, bg: i === tab ? '#fff' : 'transparent', shadow: i === tab ? '0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.04)' : 'none', weight: i === tab ? 600 : 500, pick: () => this.setState({ tab: i }) })),
+      activeCount: T.count,
+      isGrid: layout === 'grid', isList: layout === 'list',
+      products: T.items.map(([f, name], i) => ({ img: U + f, name, sep: i ? SEP : '0', open: () => this.setState({ sheet: { name, img: U + f } }) })),
+      news: DATA.news.map(([f, t, date], i) => ({ img: U + f, t, date, sep: i ? SEP : '0' })),
+      footerGroups: DATA.footer.map(([title, links]) => ({ title, links: links.map((t, i) => ({ t, sep: i ? SEP : '0' })) })),
+      sheetOpen: !!sheet,
+      sheetIsProduct: !!(sheet && sheet.img),
+      sheetTitle: sheet && sheet.img ? 'Xem nhanh' : 'Báo giá & Tư vấn PCCC',
+      sheetName: sheet?.name, sheetImg: sheet?.img,
+      openQuote: () => this.setState({ sheet: {} }),
+      closeSheet: () => this.setState({ sheet: null }),
+      stop: e => e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>

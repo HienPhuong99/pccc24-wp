@@ -34,12 +34,18 @@ file_put_contents("$dist_dir/.nojekyll", "");
  */
 function pccc24_transform_for_gh_pages(string $html, string $prefix): string
 {
-    // 1. Ảnh uploads -> https://pccc24.com/uploads/...
+    // 1. Ảnh uploads: bản nén .webp phục vụ trực tiếp từ GitHub Pages (/pccc24-wp/wp-content/uploads/pccc24/...),
+    //    còn ảnh gốc PNG/JPG trong bài viết cũ trỏ về CDN https://pccc24.com/uploads/...
     $html = preg_replace_callback(
         '~(?:https?://localhost:8080)?/wp-content/uploads/pccc24/([^"\'\s<>)]+)~i',
-        function ($m) {
+        function ($m) use ($prefix) {
             $parts = explode('/', $m[1]);
-            $encoded = implode('/', array_map('rawurlencode', array_map('rawurldecode', $parts)));
+            $decoded_parts = array_map('rawurldecode', $parts);
+            $rel_decoded = implode('/', $decoded_parts);
+            $encoded = implode('/', array_map('rawurlencode', $decoded_parts));
+            if (str_ends_with(strtolower($rel_decoded), '.webp') && is_file(ABSPATH . 'wp-content/uploads/pccc24/' . $rel_decoded)) {
+                return $prefix . '/wp-content/uploads/pccc24/' . $encoded;
+            }
             return 'https://pccc24.com/uploads/' . $encoded;
         },
         $html
@@ -101,7 +107,7 @@ function pccc24_copy_dir(string $src, string $dst): void
     }
 }
 
-// 1. Copy toàn bộ theme assets + đồng bộ các file ảnh WebP mới trong uploads/pccc24
+// 1. Copy toàn bộ theme assets + chỉ đồng bộ các file ảnh .webp chuẩn (bỏ qua 375 file lỗi mã hoá Ã và ảnh gốc nặng)
 $theme_assets_src = get_stylesheet_directory() . '/assets';
 $theme_assets_dst = $dist_dir . '/wp-content/themes/pccc24-theme/assets';
 pccc24_copy_dir($theme_assets_src, $theme_assets_dst);
@@ -113,20 +119,21 @@ if (is_dir($uploads_src)) {
         RecursiveIteratorIterator::SELF_FIRST
     );
     foreach ($uit as $uitem) {
-        $utarget = $uploads_dst . DIRECTORY_SEPARATOR . $uit->getSubPathName();
         if ($uitem->isDir()) {
-            if (!is_dir($utarget)) {
-                mkdir($utarget, 0777, true);
-            }
-        } elseif (!is_file($utarget)) {
-            if (!is_dir(dirname($utarget))) {
-                mkdir(dirname($utarget), 0777, true);
-            }
-            copy($uitem->getPathname(), $utarget);
+            continue;
         }
+        $fname = $uitem->getFilename();
+        if (!str_ends_with(strtolower($fname), '.webp') || str_contains($fname, 'Ã')) {
+            continue;
+        }
+        $utarget = $uploads_dst . DIRECTORY_SEPARATOR . $uit->getSubPathName();
+        if (!is_dir(dirname($utarget))) {
+            mkdir(dirname($utarget), 0777, true);
+        }
+        copy($uitem->getPathname(), $utarget);
     }
 }
-WP_CLI::log('Copied theme assets and synced WebP uploads.');
+WP_CLI::log('Copied theme assets and synced clean WebP uploads.');
 
 // 2. Xuất dữ liệu JSON tĩnh cho REST API (/wp-json/pccc24/v1/...)
 $products_all = [];
@@ -328,7 +335,7 @@ $adapter_js = <<<'JS'
                     '<div class="product-img"><img src="' +
                     esc(p.image_url || noImg) +
                     '" alt="" loading="lazy"></div>' +
-                    '<a href="' +
+                    '<a class="product-link" href="' +
                     esc(p.url) +
                     '"><h3>' +
                     esc(p.name) +

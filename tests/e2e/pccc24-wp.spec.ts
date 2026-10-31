@@ -1,4 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
+import { execFileSync } from 'node:child_process';
 
 const PRODUCT = '/san-pham/binh-chua-chay-goc-nuoc-cong-nghe-sinh-hoc-ecosafe/718';
 
@@ -130,11 +131,8 @@ test.describe('Tương tác người dùng', () => {
     const sheet = page.locator('#quote-sheet');
     await expect(sheet).toBeVisible();
 
-    // Gửi form yêu cầu gọi lại (reset rate limit cho test bucket)
-    await request.post('/wp-json/pccc24/v1/quotes', {
-      headers: { 'X-PCCC24-Client': 'e2e-ui-test' },
-      data: { name: 'Init', phone: '0901234567', _reset_rl: 1 },
-    });
+    // Xoá bộ đếm giới hạn gửi (transient) bằng WP-CLI: API không có cửa reset/giả IP.
+    execFileSync('php', ['tools/wp-cli.phar', 'transient', 'delete', '--all', '--quiet']);
     await sheet.locator('#quote-name').fill('Anh Minh Kho Xưởng');
     await sheet.locator('#quote-phone').fill('0982765114');
     await sheet.locator('#quote-need').selectOption('Thi công hệ thống');
@@ -147,26 +145,21 @@ test.describe('Tương tác người dùng', () => {
     });
     expect(spamRes.status()).toBe(400);
 
-    const rlHeaders = { 'X-PCCC24-Client': 'e2e-rl-bucket' };
-    await request.post('/wp-json/pccc24/v1/quotes', {
-      headers: rlHeaders,
-      data: { name: 'RL1', phone: '0901234567', _reset_rl: 1 },
-    });
+    // Đã gửi 1 lần qua form (honeypot không tính) -> thêm 4 lần nữa OK, lần thứ 6 bị chặn.
     for (let i = 2; i <= 5; i++) {
-      const okR = await request.post('/wp-json/pccc24/v1/quotes', {
-        headers: rlHeaders,
-        data: { name: 'RL' + i, phone: '0901234567' },
-      });
+      const okR = await request.post('/wp-json/pccc24/v1/quotes', { data: { name: 'E2E ' + i, phone: '0901234567' } });
       expect(okR.status()).toBe(201);
     }
     const blockedR = await request.post('/wp-json/pccc24/v1/quotes', {
-      headers: rlHeaders,
-      data: { name: 'RL6', phone: '0901234567' },
+      headers: { 'X-PCCC24-Client': 'gia-ip-khac' },
+      data: { name: 'E2E 6', phone: '0901234567' },
     });
     expect(blockedR.status()).toBe(429);
+    // Yêu cầu báo giá chứa tên + SĐT khách: không được lộ qua REST công khai.
+    expect((await request.get('/wp-json/wp/v2/pccc_quote')).status()).toBe(404);
   });
 
-  test('Chặng A & C: trang chủ dùng ảnh nén WebP (< 1,2 MB) và thẻ kiểm định có rossark-motion-skill', async ({ page }) => {
+  test('Chặng A & C + iOS Handoff: trang chủ dùng ảnh nén WebP (< 1,2 MB), Segmented Control chuyển tab không reload, và thẻ kiểm định có rossark-motion-skill', async ({ page }) => {
     let imgBytes = 0;
     page.on('response', async (res) => {
       if (res.request().resourceType() === 'image' && res.status() === 200) {
@@ -180,6 +173,15 @@ test.describe('Tương tác người dùng', () => {
     expect(imgBytes).toBeLessThan(1_200_000);
     const hasMotion = await page.evaluate(() => Boolean((window as any).PCCC24_MOTION && document.querySelector('[data-motion-tag] .tag-gauge-scene')));
     expect(hasMotion).toBe(true);
+
+    // Kiểm tra iOS Segmented Control trên trang chủ
+    const tabs = page.locator('.seg-control [data-seg-tab]');
+    expect(await tabs.count()).toBeGreaterThan(1);
+    const secondTab = tabs.nth(1);
+    const targetId = await secondTab.getAttribute('data-seg-tab');
+    await secondTab.click();
+    await expect(secondTab).toHaveAttribute('aria-selected', 'true');
+    await expect(page.locator('#' + targetId)).toBeVisible();
   });
 
   test('menu mobile mở được', async ({ page, isMobile }) => {
