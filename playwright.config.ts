@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: 'tests/e2e',
   timeout: 60_000,
   retries: 0,
-  workers: 2,
+  workers: 1, // php -S chỉ xử lý 1 request mỗi lúc: chạy song song làm test admin chập chờn
   reporter: [['list'], ['html', { open: 'never' }]],
   use: { baseURL: 'http://localhost:8080', screenshot: 'only-on-failure', trace: 'retain-on-failure' },
   webServer: { command: 'php -S localhost:8080 -t .', url: 'http://localhost:8080', reuseExistingServer: true, timeout: 60_000 },

@@ -122,6 +122,7 @@ $service_types = pccc24_get_service_types();
     <nav>
         <details>
             <summary>Sản phẩm</summary>
+            <a href="<?= esc_url(home_url('/san-pham')) ?>"><b>Tất cả sản phẩm</b></a>
             <?php foreach (pccc24_get_category_tree() as $root) : ?>
                 <a href="<?= esc_url($root->url) ?>"><?= esc_html($root->name) ?></a>
             <?php endforeach; ?>

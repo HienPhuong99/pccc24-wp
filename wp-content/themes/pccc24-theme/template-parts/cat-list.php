@@ -6,6 +6,12 @@ defined('ABSPATH') || exit;
 $current = is_tax('pccc_product_cat') ? get_queried_object_id() : 0;
 ?>
 <ul class="cat-list">
+    <li class="cat-all">
+        <a href="<?= esc_url(home_url('/san-pham')) ?>"<?= get_query_var('pccc_view') === 'products' ? ' aria-current="page"' : '' ?>>
+            <span>Tất cả sản phẩm</span>
+            <span class="count"><?= (int) wp_count_posts('pccc_product')->publish ?></span>
+        </a>
+    </li>
     <?php foreach (pccc24_get_category_tree() as $root) : ?>
         <li>
             <a href="<?= esc_url($root->url) ?>"<?= $current === $root->term_id ? ' aria-current="page"' : '' ?>>

@@ -521,3 +521,64 @@ add_action('login_footer', function () {
 // Theme không dùng emoji của WP (bản tĩnh GitHub Pages còn báo 404 file này).
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
+
+// wp-admin + trang đăng nhập dùng cùng phong cách iOS với site (assets/css/admin.css).
+add_action('admin_enqueue_scripts', fn() => wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '1'));
+add_action('login_enqueue_scripts', function () {
+    wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '1');
+    wp_add_inline_style('pccc24-admin', '.login h1 a{background-image:url(' . esc_url(pccc24_get_setting('logo', false)) . ')}');
+});
+add_filter('login_headerurl', fn() => home_url('/'));
+add_filter('login_headertext', fn() => 'PCCC24 - Hoàng Quân Phát');
+
+/**
+ * Bản WebP thu nhỏ cho ảnh nằm trong nội dung bài (không phải ảnh đại diện nên không có -card/-hero).
+ * Tạo một lần khi cần rồi dùng lại; lỗi thì trả ảnh gốc.
+ */
+function pccc24_upload_webp(string $url, int $max_w): string
+{
+    $path = ABSPATH . ltrim(rawurldecode((string) wp_parse_url($url, PHP_URL_PATH)), '/');
+    $dst  = preg_replace('/\.[^.\/]+$/', "-w$max_w.webp", $path);
+    if (!is_file($dst) && is_file($path)) {
+        $ed = wp_get_image_editor($path);
+        // resize() báo lỗi khi ảnh đã nhỏ hơn max_w: khi đó chỉ đổi sang WebP.
+        if (is_wp_error($ed) || ($ed->get_size()['width'] > $max_w && is_wp_error($ed->resize($max_w, null))) || is_wp_error($ed->save($dst, 'image/webp'))) {
+            return $url;
+        }
+    }
+    return is_file($dst) ? preg_replace('/\.[^.\/]+$/', "-w$max_w.webp", $url) : $url;
+}
+
+/**
+ * Nội dung "Giới thiệu" (trang /pages/gioi-thieu) tách thành từng phần cho trang Liên hệ,
+ * để sửa ở wp-admin một chỗ là cả hai trang cùng đổi.
+ */
+function pccc24_about_data(): array
+{
+    $page = get_page_by_path('gioi-thieu');
+    $html = $page ? $page->post_content : '';
+    $img_after = fn(string $heading) => preg_match('~' . preg_quote($heading, '~') . '.*?<img[^>]+src="([^"]+)"~su', $html, $m) ? $m[1] : '';
+
+    preg_match_all('~<p[^>]*>(.*?)</p>~su', $html, $ps);
+    $clean = fn($t) => preg_replace('/^[\s\x{00A0}]+|[\s\x{00A0}]+$/u', '', html_entity_decode(wp_strip_all_tags($t)));
+    $paras = array_values(array_filter(array_map($clean, $ps[1]), fn($t) => mb_strlen($t) > 120));
+
+    // Khách hàng tiêu biểu: một hàng ảnh rồi một hàng link tên dự án (2 bảng riêng) -> ghép theo thứ tự.
+    $tail = (string) strstr($html, 'KHÁCH HÀNG TIÊU BIỂU');
+    preg_match_all('~<img[^>]+src="([^"]+)"~', $tail, $imgs);
+    preg_match_all('~<a[^>]+href="(/dich-vu/[^"]+)"[^>]*>(.*?)</a>~su', $tail, $links, PREG_SET_ORDER);
+    $projects = [];
+    foreach ($links as $i => [, $url, $title]) {
+        $projects[] = ['url' => $url, 'title' => $clean($title), 'img' => $imgs[1][$i] ?? ''];
+    }
+
+    return [
+        'paras'       => array_slice($paras, 0, 4),
+        'hsnl_url'    => preg_match('~href="(https://drive\.google\.com/[^"]+)"~', $html, $m) ? $m[1] : '',
+        'hsnl_img'    => preg_match('~<img[^>]+src="([^"]+)"~', $html, $m) ? $m[1] : '',
+        'certificate' => $img_after('GIẤY CHỨNG NHẬN'),
+        'partners'    => $img_after('ĐỐI TÁC TIÊU BIỂU'),
+        'projects'    => $projects,
+        'url'         => $page ? get_permalink($page) : home_url('/pages/gioi-thieu'),
+    ];
+}

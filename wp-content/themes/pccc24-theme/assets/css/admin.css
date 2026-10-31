@@ -1,0 +1,171 @@
+/* wp-admin + trang đăng nhập theo phong cách iOS của site (design_handoff_pccc24_ios). Chỉ CSS, không đổi markup WP. */
+:root {
+  --red: #c8201a;
+  --red-dark: #9e1712;
+  --ink: #1d2329;
+  --ink-soft: #4a545e;
+  --concrete: #eef0ee;
+  --ios-fill: rgba(118, 118, 128, .12);
+  --ios-sep: rgba(29, 35, 41, .08);
+  --card-shadow: 0 1px 2px rgba(29, 35, 41, .06), 0 8px 24px rgba(29, 35, 41, .06);
+  --wp-admin-theme-color: #c8201a;
+  --wp-admin-theme-color--rgb: 200, 32, 26;
+  --wp-admin-theme-color-darker-10: #9e1712;
+  --wp-admin-theme-color-darker-10--rgb: 158, 23, 18;
+  --wp-admin-theme-color-darker-20: #7d120e;
+  --wp-admin-theme-color-darker-20--rgb: 125, 18, 14;
+}
+
+body.wp-admin, body.login {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Be Vietnam Pro", system-ui, sans-serif;
+  background: var(--concrete);
+  color: var(--ink);
+}
+
+/* ---------- Thanh trên + menu trái ---------- */
+#wpadminbar {
+  background: rgba(29, 35, 41, .94);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+#adminmenuback, #adminmenuwrap, #adminmenu { background: var(--ink); }
+#adminmenu a { color: rgba(255, 255, 255, .82); }
+#adminmenu div.wp-menu-image::before { color: rgba(255, 255, 255, .55); }
+body:not(.folded) #adminmenu li.menu-top > a.menu-top { margin: 1px 8px; border-radius: 10px; }
+#adminmenu li.menu-top:hover > a.menu-top,
+#adminmenu li.opensub > a.menu-top,
+#adminmenu li > a.menu-top:focus { background: rgba(255, 255, 255, .08); color: #fff; }
+#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,
+#adminmenu li.current a.menu-top,
+#adminmenu .wp-menu-arrow, #adminmenu .wp-menu-arrow div { background: var(--red); color: #fff; }
+#adminmenu li.wp-has-current-submenu div.wp-menu-image::before,
+#adminmenu li.current div.wp-menu-image::before,
+#adminmenu li:hover div.wp-menu-image::before { color: #fff; }
+ul#adminmenu a.wp-has-current-submenu::after,
+ul#adminmenu > li.current > a.current::after { display: none; } /* bỏ tam giác xám của WP */
+#adminmenu .wp-submenu, #adminmenu .wp-has-current-submenu .wp-submenu { background: #161b20; }
+#adminmenu .wp-has-current-submenu .wp-submenu { background: transparent; padding: 4px 0 8px; }
+#adminmenu .wp-submenu { border-radius: 0 12px 12px 0; }
+#adminmenu .wp-submenu a { color: rgba(255, 255, 255, .68); }
+#adminmenu .wp-submenu a:hover, #adminmenu .wp-submenu a:focus { color: #fff; }
+#adminmenu .wp-submenu li.current a { color: #fff; font-weight: 600; }
+#adminmenu .awaiting-mod, #adminmenu .update-plugins { background: var(--red); }
+#collapse-button { color: rgba(255, 255, 255, .6); }
+
+/* ---------- Tiêu đề, liên kết, nút ---------- */
+#wpbody-content a { color: var(--red); }
+#wpbody-content a:hover { color: var(--red-dark); }
+.wrap h1.wp-heading-inline, .wrap > h1 { font-size: 28px; font-weight: 700; letter-spacing: -.02em; color: var(--ink); }
+.wp-core-ui .button, .wp-core-ui .button-secondary, .wrap .page-title-action {
+  border-radius: 999px;
+  border-color: transparent;
+  background: var(--ios-fill);
+  color: var(--ink);
+  min-height: 32px;
+  padding: 0 14px;
+  transition: transform 120ms cubic-bezier(.23, 1, .32, 1), background-color 150ms;
+}
+.wp-core-ui .button:hover, .wrap .page-title-action:hover { background: rgba(118, 118, 128, .2); border-color: transparent; color: var(--ink); }
+.wp-core-ui .button:active, .wrap .page-title-action:active { transform: scale(.97); }
+.wp-core-ui .button-primary, #wpbody-content .wrap .page-title-action {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: none;
+  text-shadow: none;
+}
+.wp-core-ui .button-primary:hover, .wp-core-ui .button-primary:focus, #wpbody-content .wrap .page-title-action:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  color: #fff;
+}
+.wp-core-ui .button:focus, .wp-core-ui .button-primary:focus { box-shadow: 0 0 0 3px rgba(200, 32, 26, .22); }
+#wpbody-content a.submitdelete, #wpbody-content .row-actions .trash a, #wpbody-content .row-actions .delete a { color: var(--red); }
+
+/* ---------- Ô nhập ---------- */
+.wp-core-ui input[type=text], .wp-core-ui input[type=search], .wp-core-ui input[type=email], .wp-core-ui input[type=url],
+.wp-core-ui input[type=number], .wp-core-ui input[type=password], .wp-core-ui input[type=tel], .wp-core-ui input:not([type]), .wp-core-ui textarea, .wp-core-ui select {
+  border: 1px solid rgba(29, 35, 41, .14);
+  border-radius: 10px;
+  box-shadow: none;
+  background-color: #fff;
+}
+.wp-core-ui input[type=text], .wp-core-ui input[type=search], .wp-core-ui input[type=email], .wp-core-ui input[type=url],
+.wp-core-ui input[type=number], .wp-core-ui input[type=password], .wp-core-ui input[type=tel], .wp-core-ui input:not([type]) { min-height: 36px; padding: 0 12px; }
+.wp-core-ui input:focus, .wp-core-ui textarea:focus, .wp-core-ui select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(200, 32, 26, .15);
+  outline: none;
+}
+.wp-core-ui input[type=checkbox]:checked { background: var(--red); border-color: var(--red); }
+.wp-core-ui input[type=checkbox]:checked::before { filter: brightness(0) invert(1); }
+.wp-core-ui input[type=radio]:checked::before { background-color: var(--red); }
+.wp-core-ui input[type=checkbox], .wp-core-ui input[type=radio] { border-color: rgba(29, 35, 41, .3); }
+#titlediv #title { border-radius: 12px; font-size: 20px; padding: 8px 14px; }
+
+/* ---------- Thẻ (postbox, bảng danh sách, form cài đặt) ---------- */
+.postbox, .wp-list-table, .wrap > .card, #col-left .form-wrap,
+.wrap > form > .form-table, .wrap > .form-table, .wp-editor-container {
+  border: 0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: var(--card-shadow);
+}
+.wp-list-table, .wp-editor-container { overflow: hidden; }
+.postbox .postbox-header { border-bottom: 1px solid var(--ios-sep); }
+.postbox .postbox-header .hndle { font-size: 15px; font-weight: 600; }
+.postbox .handle-order-higher, .postbox .handle-order-lower, .postbox .handlediv { color: var(--ink-soft); }
+#col-left .form-wrap { padding: 16px 20px; }
+.wrap > form > .form-table, .wrap > .form-table { border-collapse: separate; padding: 4px 8px; }
+.form-table th { font-weight: 600; color: var(--ink); }
+
+.wp-list-table thead th, .wp-list-table thead td, .wp-list-table tfoot th, .wp-list-table tfoot td {
+  background: rgba(118, 118, 128, .06);
+  border-bottom: 1px solid var(--ios-sep);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.wp-list-table tfoot th, .wp-list-table tfoot td { border-top: 1px solid var(--ios-sep); border-bottom: 0; }
+.striped > tbody > :nth-child(odd), .alternate { background: #fff; }
+.wp-list-table tbody tr + tr td, .wp-list-table tbody tr + tr th { border-top: 1px solid var(--ios-sep); }
+.wp-list-table tbody tr:hover td, .wp-list-table tbody tr:hover th { background: #fafbfa; }
+#wpbody-content .row-title { color: var(--ink); font-weight: 600; }
+.subsubsub a .count { color: var(--ink-soft); }
+.subsubsub a.current { color: var(--ink); }
+
+/* ---------- Thông báo ---------- */
+.notice, div.updated, div.error {
+  border: 0;
+  border-left: 4px solid var(--red);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+.notice-success, div.updated { border-left-color: #0b7a4b; }
+.notice-warning { border-left-color: #f3c623; }
+#screen-meta-links .show-settings { border-radius: 0 0 10px 10px; border-color: transparent; }
+
+/* ---------- Trang đăng nhập ---------- */
+.login #login { padding: 8vh 0 24px; }
+.login h1 a {
+  width: 220px;
+  height: 64px;
+  background-size: contain;
+  background-position: center;
+}
+.login form {
+  border: 0;
+  border-radius: 22px;
+  box-shadow: var(--card-shadow);
+  padding: 24px;
+}
+.login label { font-weight: 600; color: var(--ink); }
+.login .forgetmenot { margin-bottom: 4px; }
+.login .forgetmenot label { font-weight: 400; }
+.login .submit .button-primary { float: none; width: 100%; min-height: 44px; margin-top: 16px; font-size: 15px; }
+.login .button.wp-hide-pw { background: transparent; min-height: 36px; }
+.login .button.wp-hide-pw .dashicons { color: var(--ink-soft); }
+.login #nav a, .login #backtoblog a { color: var(--ink-soft); }
+.login #nav a:hover, .login #backtoblog a:hover { color: var(--red); }
+.login .message, .login .notice, .login #login_error { border-radius: 12px; }

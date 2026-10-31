@@ -4,8 +4,6 @@
   if (!sheet) return;
 
   var handle = sheet.querySelector('[data-sheet-drag]');
-  var form   = document.getElementById('quote-form');
-  var msgEl  = document.getElementById('quote-msg');
   var noteEl = document.getElementById('quote-note');
   var CURVE  = 'cubic-bezier(0.32, 0.72, 0, 1)';
 
@@ -70,7 +68,9 @@
     handle.addEventListener('pointercancel', endDrag);
   }
 
-  if (form) {
+  // Mọi form báo giá (trong sheet và form trên trang /contacts) gửi chung một đường.
+  document.querySelectorAll('form[data-quote-form]').forEach(function (form) {
+    var msgEl = form.querySelector('[role="status"]');
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var CFG = window.PCCC24_CONFIG || {};
@@ -114,5 +114,5 @@
           msgEl.textContent = 'Không gửi được yêu cầu. Vui lòng bấm nút Gọi trực tiếp phía trên.';
         });
     });
-  }
+  });
 })();

@@ -133,7 +133,7 @@ test.describe('Tương tác người dùng', () => {
 
     // Xoá bộ đếm giới hạn gửi (transient) bằng WP-CLI: API không có cửa reset/giả IP.
     execFileSync('php', ['tools/wp-cli.phar', 'transient', 'delete', '--all', '--quiet']);
-    await sheet.locator('#quote-name').fill('Anh Minh Kho Xưởng');
+    await sheet.locator('#quote-name').fill('E2E Anh Minh Kho Xưởng');
     await sheet.locator('#quote-phone').fill('0982765114');
     await sheet.locator('#quote-need').selectOption('Thi công hệ thống');
     await sheet.getByRole('button', { name: 'Gửi yêu cầu gọi lại' }).click();
@@ -157,6 +157,8 @@ test.describe('Tương tác người dùng', () => {
     expect(blockedR.status()).toBe(429);
     // Yêu cầu báo giá chứa tên + SĐT khách: không được lộ qua REST công khai.
     expect((await request.get('/wp-json/wp/v2/pccc_quote')).status()).toBe(404);
+    // Dọn các yêu cầu báo giá test vừa tạo (tên bắt đầu bằng "E2E ").
+    execFileSync('php', ['tools/wp-cli.phar', 'eval', 'foreach (get_posts(["post_type" => "pccc_quote", "post_status" => "any", "numberposts" => -1, "s" => "E2E"]) as $p) if (str_starts_with($p->post_title, "E2E ")) wp_delete_post($p->ID, true);']);
   });
 
   test('Chặng A & C + iOS Handoff: trang chủ dùng ảnh nén WebP (< 1,2 MB), Segmented Control chuyển tab không reload, và thẻ kiểm định có rossark-motion-skill', async ({ page }) => {
@@ -194,12 +196,33 @@ test.describe('Tương tác người dùng', () => {
     await expect(drawer.getByRole('link', { name: 'Bình chữa cháy', exact: true })).toBeVisible();
   });
 
-  test('menu "Sản phẩm" desktop mở danh mục', async ({ page, isMobile }) => {
+  test('menu "Sản phẩm" desktop: "Tất cả sản phẩm" + mở danh mục', async ({ page, isMobile }) => {
     test.skip(isMobile, 'chỉ desktop');
     await page.goto('/tin-tuc');
     await page.locator('.nav-cats summary').click();
-    await page.locator('.nav-cats .cat-list > li > a').first().click();
+    await page.locator('.nav-cats .cat-list a', { hasText: 'Tất cả sản phẩm' }).click();
+    await expect(page).toHaveURL(/\/san-pham$/);
+    await expect(page.locator('.product')).toHaveCount(20);
+    await page.locator('.nav-cats summary').click();
+    await page.locator('.nav-cats .cat-list > li:not(.cat-all) > a').first().click();
     await expect(page).toHaveURL(/\/san-pham\/[^/]+$/);
+  });
+
+  test('trang Liên hệ: không lặp footer, form gửi được, có giới thiệu + dự án', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'chỉ desktop');
+    await page.goto('/contacts');
+    await expect(page.locator('h1')).toHaveText('Liên hệ');
+    await expect(page.locator('main iframe')).toHaveCount(0); // bản đồ chỉ còn ở footer
+    await expect(page.locator('.contact-row')).toHaveCount(4);
+    await expect(page.locator('.about-text p')).toHaveCount(4);
+    await expect(page.locator('.project-card')).toHaveCount(4);
+    execFileSync('php', ['tools/wp-cli.phar', 'transient', 'delete', '--all', '--quiet']);
+    const form = page.locator('.contact-form-card form');
+    await form.locator('[name=name]').fill('E2E Trang liên hệ');
+    await form.locator('[name=phone]').fill('0987000111');
+    await form.getByRole('button', { name: 'Gửi yêu cầu gọi lại' }).click();
+    await expect(form.locator('[role=status]')).toContainText(/Đã nhận yêu cầu/i);
+    execFileSync('php', ['tools/wp-cli.phar', 'eval', 'foreach (get_posts(["post_type" => "pccc_quote", "post_status" => "any", "numberposts" => -1, "s" => "E2E"]) as $p) if (str_starts_with($p->post_title, "E2E ")) wp_delete_post($p->ID, true);']);
   });
 });
 

@@ -21,7 +21,7 @@ add_action('init', function () {
         register_post_type($type, $extra + [
             'label' => $name, 'public' => true, 'show_in_rest' => true, 'menu_icon' => $icon,
             'labels' => ['name' => $name, 'singular_name' => $name, 'add_new' => 'Thêm mới', 'add_new_item' => "Thêm $name",
-                'edit_item' => "Sửa $name", 'search_items' => "Tìm $name", 'not_found' => 'Chưa có mục nào', 'all_items' => "Tất cả $name"],
+                'edit_item' => "Sửa $name", 'view_item' => "Xem $name", 'search_items' => "Tìm $name", 'not_found' => 'Chưa có mục nào', 'all_items' => "Tất cả $name"],
             'has_archive' => false, 'rewrite' => false, 'query_var' => false,
             'supports' => ['title', 'editor', 'excerpt', 'thumbnail', 'custom-fields', 'page-attributes'],
         ]);
