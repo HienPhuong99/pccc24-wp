@@ -101,26 +101,35 @@
 
 ### Where the code is
 - **Platform:** Web (WordPress theme `wp-content/themes/pccc24-theme/`, pure vanilla JS + SVG + CSS, zero external JS frameworks).
-- **Motion engine and live rig:** `wp-content/themes/pccc24-theme/assets/js/site.js` (implements the `rossark-motion-skill` engine: `EASE_IN_OUT`, `EASE_OUT`, `track`, `flow`, `seg`, `wave`, `loop`, `bell`, `seeded`, and a single `requestAnimationFrame` clock with `IntersectionObserver` + `document.hidden` + `prefers-reduced-motion: reduce` support).
-- **Art kit, layers, pivots:**
-  - `wp-content/themes/pccc24-theme/template-parts/quote-tag.php`: The signature fire-extinguisher inspection tag (`.tag`) with an embedded living SVG pressure-gauge & valve-lever inspection emblem (`.tag-gauge-scene`, `viewBox="0 0 180 54"`):
-    - **Tag body (`.tag`):** Pivots around the top cord grommet `(50%, 14px)`.
-    - **Gauge needle (`.rg-needle`):** Pivots around the dial center `(42, 34)` inside `viewBox="0 0 180 54"`.
-    - **Safety lever (`.rg-lever`):** Pivots around the valve hinge `(92, 22)`.
-    - **Mist/foam safety wisps (`.rg-wisp`):** 3 seeded particles rising from the nozzle `(136, 26)` using `loop`, `bell`, and `seeded(i)`.
-    - **Status LED ring (`.rg-glow`):** Pulses gently `±3%` scale around `(42, 34)`.
-- **Interface motion (`assets/css/site.css`):**
+- **Motion engines and live rigs:**
+  1. **User Frontend Engine (`wp-content/themes/pccc24-theme/assets/js/site.js`):** Implements `window.PCCC24_MOTION` (`EASE_IN_OUT`, `EASE_OUT`, `track`, `flow`, `seg`, `wave`, `loop`, `bell`, `seeded`) with a single `requestAnimationFrame` clock, `IntersectionObserver`, `document.hidden`, and `prefers-reduced-motion: reduce` support.
+  2. **Admin V18 Engine (`wp-content/themes/pccc24-theme/assets/js/admin-motion.js`):** Implements `window.PCCC24_ADMIN_MOTION` for WordPress `/wp-admin/` and static GitHub Pages `/wp-admin/`.
+- **Art kits, layers, pivots:**
+  - **User Frontend (`wp-content/themes/pccc24-theme/template-parts/quote-tag.php`):** The iOS-inspired fire-extinguisher inspection card (`.tag`) with an embedded living SVG pressure-gauge & valve-lever inspection rig (`.tag-gauge-scene`, `viewBox="0 0 206 50"`):
+    - **Tag body (`.tag`):** Pivots around the top cord grommet `(50%, 14px)`, settling with `flow` (`[[0, -1.2], [520, 0.18], [1200, 0]]`) + calm `wave` sway (`±0.32°`).
+    - **Gauge needle (`.rg-needle`) & Glow (`.rg-glow`):** Pivot around `(30px, 25px)`. One-shot sweep `-52° -> 0°` (`seg` + `EASE_OUT`) + `±1.6°` idle breathing.
+    - **Safety lever (`.rg-lever`) & Safety pin (`.rg-pin`):** Lever pivots around `(80px, 20px)` and pin around `(73px, 22px)` with phase-delayed follow-through (`-0.16` phase).
+    - **Mist/foam safety wisps (`.rg-wisp`):** 3 seeded particles rising from the nozzle using `loop`, `bell`, and `seeded(i)`.
+    - **Status LED (`.rg-led`):** Pulses gently around `(144px, 25px)`.
+    - **Floating Contact Phone Icon (`.float-contact .btn-call svg`):** Follows the Phone recipe (`±3°` bursts, then a pause).
+  - **Admin Dashboard V18 (`functions.php` & `scripts/export-gh-pages.php`):** Living Telemetry & Fire-Safety Rig (`.v18-motion-scene`, `viewBox="0 0 280 56"`) inside `.v18-hero-card[data-v18-motion]`:
+    - **Gauge & Valve Layers:** `.v18-glow` and `.v18-needle` pivot at `(30px, 28px)`, `.v18-lever` at `(84px, 22px)`, `.v18-pin` at `(76px, 24px)`, `.v18-led` at `(142px, 18px)`, plus 3 `.v18-wisp` particles.
+    - **Chart Recipe (`.v18-bar`):** 5 telemetry bars (`transform-box: fill-box; transform-origin: 50% 100%`) with a one-shot draw-on staggered `55ms` (`seg(oneShotTime, 90 + b*55, 760 + b*55, EASE_OUT)`) from `scaleY(0.18)` to `scaleY(1)` + subtle idle wave breathing.
+- **Interface motion (`assets/css/site.css`, `assets/css/ios-sheet.css`, `assets/css/admin.css`):**
   - Curves declared as CSS custom properties `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)` and `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)`.
-  - Button press feedback (`transform: scale(0.97)` over `120ms var(--ease-out)`).
-  - Dialog (`#quickview`, `#drawer`) entrance (`scale(0.96) -> 1`, `opacity: 0 -> 1` over `180ms var(--ease-out)`, never from `scale(0)`).
+  - **Traveling Shared Elements (Principle 13: *shared elements travel, never teleport*):**
+    - `.seg-pill` glides smoothly (`translate3d` + `width` over `220ms var(--ease-in-out)`) across `.seg-control` on the homepage while `.featured-pane.pane-enter` enters from `scale(0.985), opacity: 0` (`180ms var(--ease-out)`).
+    - `.v18-nav-pill` glides across the static Admin V18 sidebar dock (`.v18-nav`).
+  - **Bento Card Staggered Entrance:** `.v18-bento-wrap > *` and `.v18-bento-grid > *` enter with a `45ms` stagger (`calc(var(--stagger-i, 0) * 45ms)`) from `translate3d(0, 8px, 0) scale(0.975)` (`280ms var(--ease-out)`).
+  - **Bottom Sheet (`dialog.ios-sheet[open]`):** Enters from `translate3d(0, 36px, 0) scale(0.95)` (never from `scale(0)`).
 
 ### The owner's rules
-- **2026-10-31:** Industrial fire-safety & inspection tag aesthetic (`frontend-design` + `rossark-motion-skill`). No shopping cart/checkout; all conversions go through direct phone call (`tel:`) or Zalo quote request.
-- **2026-10-31:** Zero horizontal overflow on any viewport (`documentElement.scrollWidth <= clientWidth`). Motion lives inside the SVG and around the tag's cord hole without ever shifting layout or causing horizontal scrollbar overflow.
+- **2026-10-31:** iOS-inspired user frontend (`design_handoff_pccc24_ios`) + Dashboard V18 admin (`V18.mp4`) + `rossark-motion-skill` motion system across both user and admin.
+- **2026-10-31:** Zero horizontal overflow on any viewport (`documentElement.scrollWidth <= clientWidth`). Motion lives inside the SVG and traveling pills without ever shifting layout or causing horizontal scrollbar overflow.
 
 ### Rig limits
-- Product photos in `.grid-products` are flat raster images from the original database (`wp-content/uploads/pccc24/`), so living motion is focused on the vector SVG inspection gauge scene inside `.tag` (`template-parts/quote-tag.php`), header/button call icons, and calm interface transitions.
+- Product photos in `.grid-products` are flat raster images from the original database (`wp-content/uploads/pccc24/`), so living motion is focused on the vector SVG inspection gauge scenes (`.tag-gauge-scene` on user frontend, `.v18-motion-scene` on admin V18), floating phone icon bursts, traveling segmented pills, and calm interface transitions.
 
 ### How changes are checked
-- Automated Playwright E2E suite (`npm run test:e2e`, 44 tests across Desktop `1280x800` and Mobile `Pixel 7`), including horizontal overflow checks, zero console/page errors, REST API checks, and `wp-admin` metabox tests.
+- Automated Playwright E2E suite (`npx playwright test`, 71 tests across `pccc24-wp.spec.ts`, `ui-audit.spec.ts`, and `admin-crud.spec.ts`), including axe-core WCAG checks, horizontal overflow checks, zero console/page errors, REST API checks, and `wp-admin` CRUD tests.
 - Data integrity check: `php tools/wp-cli.phar eval-file scripts/verify-migration.php` (15/15 checks).

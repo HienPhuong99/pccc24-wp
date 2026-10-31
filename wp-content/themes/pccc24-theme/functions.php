@@ -497,7 +497,9 @@ function pccc24_render_pagination($wp_query = null): void
 
 /**
  * Tự động điền sẵn Tài khoản, Email và Mật khẩu mặc định tại trang /wp-login.php (chỉ bật trên môi trường local/dev)
+ * Đồng thời tắt enable_login_autofocus (setTimeout 200ms của WP) để tránh cướp focus khi nhập tự động.
  */
+add_filter('enable_login_autofocus', '__return_false');
 add_action('login_footer', function () {
     $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
     $host_only = explode(':', $host)[0];
@@ -522,10 +524,13 @@ add_action('login_footer', function () {
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
 
-// wp-admin + trang đăng nhập dùng phong cách Dashboard V18 (V18.mp4) trong assets/css/admin.css.
-add_action('admin_enqueue_scripts', fn() => wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '3'));
+// wp-admin + trang đăng nhập dùng phong cách Dashboard V18 (V18.mp4) + rossark-motion-skill.
+add_action('admin_enqueue_scripts', function () {
+    wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '4');
+    wp_enqueue_script('pccc24-admin-motion', pccc24_theme_asset('js/admin-motion.js'), [], '4', true);
+});
 add_action('login_enqueue_scripts', function () {
-    wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '3');
+    wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '4');
     wp_add_inline_style('pccc24-admin', '.login h1 a{background-image:url(' . esc_url(pccc24_get_setting('logo', false)) . ')}');
 });
 add_filter('login_headerurl', fn() => home_url('/'));
@@ -544,11 +549,49 @@ add_action('admin_notices', function () {
     $quote_cnt  = (int) (($quote_obj->private ?? 0) + ($quote_obj->publish ?? 0));
     ?>
     <div class="v18-bento-wrap">
-        <div class="v18-hero-card">
+        <div class="v18-hero-card" data-v18-motion>
             <div>
                 <span class="v18-hero-badge">● PCCC24 · DASHBOARD V18</span>
                 <h2 class="v18-hero-title">Hệ thống Quản trị PCCC Hoàng Quân Phát</h2>
                 <p class="v18-hero-sub">Quản lý toàn bộ danh mục thiết bị PCCC, dịch vụ thi công – bảo trì, bài viết kỹ thuật và yêu cầu báo giá của khách hàng.</p>
+            </div>
+            <div class="v18-rig-box" aria-hidden="true">
+                <svg class="v18-motion-scene" viewBox="0 0 280 56" fill="none">
+                    <!-- Lớp 1: Đồng hồ áp suất PCCC & Van kẹp chì -->
+                    <circle class="v18-glow" cx="30" cy="28" r="22" fill="#0b7a4b" fill-opacity="0.16" />
+                    <circle cx="30" cy="28" r="19" fill="#ffffff" stroke="#14161b" stroke-width="2" />
+                    <path d="M16 35 A 15 15 0 0 1 23 15" stroke="#c8201a" stroke-width="3" stroke-linecap="round" />
+                    <path d="M23 15 A 15 15 0 0 1 39 16" stroke="#0b7a4b" stroke-width="3.2" stroke-linecap="round" />
+                    <path d="M39 16 A 15 15 0 0 1 44 35" stroke="#f3c623" stroke-width="3" stroke-linecap="round" />
+                    <g class="v18-needle">
+                        <line x1="30" y1="31" x2="30" y2="15" stroke="#c8201a" stroke-width="2.2" stroke-linecap="round" />
+                        <circle cx="30" cy="28" r="3" fill="#14161b" />
+                    </g>
+                    <!-- Cụm van bóp & chốt an toàn (phase-delayed overlap) -->
+                    <rect x="74" y="22" width="16" height="15" rx="3" fill="#14161b" />
+                    <rect x="78" y="37" width="8" height="10" rx="2" fill="#c8201a" />
+                    <g class="v18-lever">
+                        <path d="M78 22 L106 14 L108 18 L82 25 Z" fill="#14161b" />
+                    </g>
+                    <g class="v18-pin">
+                        <circle cx="71" cy="24" r="4" stroke="#f3c623" stroke-width="2" fill="#ffffff" />
+                        <line x1="75" y1="24" x2="82" y2="24" stroke="#f3c623" stroke-width="1.8" stroke-linecap="round" />
+                    </g>
+                    <path d="M90 28 Q 100 28 106 25" stroke="#14161b" stroke-width="2.5" stroke-linecap="round" />
+                    <circle class="v18-wisp" cx="110" cy="24" r="2.5" fill="#0b7a4b" fill-opacity="0.45" />
+                    <circle class="v18-wisp" cx="115" cy="21" r="3.2" fill="#0b7a4b" fill-opacity="0.32" />
+                    <circle class="v18-wisp" cx="113" cy="27" r="2.1" fill="#0b7a4b" fill-opacity="0.38" />
+                    <!-- Lớp 2: Telemetry Chart Recipe (5 cột nhịp hệ thống + đèn LED trạng thái) -->
+                    <rect x="130" y="8" width="142" height="40" rx="10" fill="#ffffff" fill-opacity="0.72" stroke="#14161b" stroke-opacity="0.10" />
+                    <circle class="v18-led" cx="142" cy="18" r="4" fill="#0b7a4b" />
+                    <text x="151" y="21" fill="#14161b" font-size="8.5" font-weight="700" font-family="system-ui, sans-serif">TELEMETRY · 24/7</text>
+                    <text x="140" y="39" fill="#0b7a4b" font-size="8" font-weight="600" font-family="system-ui, sans-serif">385 SP · 100% ĐẠT</text>
+                    <rect class="v18-bar" x="218" y="24" width="6" height="18" rx="3" fill="#14161b" />
+                    <rect class="v18-bar" x="228" y="19" width="6" height="23" rx="3" fill="#14161b" />
+                    <rect class="v18-bar" x="238" y="15" width="6" height="27" rx="3" fill="#0b7a4b" />
+                    <rect class="v18-bar" x="248" y="21" width="6" height="21" rx="3" fill="#14161b" />
+                    <rect class="v18-bar" x="258" y="13" width="6" height="29" rx="3" fill="#c8201a" />
+                </svg>
             </div>
             <div class="v18-hero-actions">
                 <a class="v18-btn-dark" href="<?= esc_url(admin_url('post-new.php?post_type=pccc_product')) ?>">+ Thêm sản phẩm mới</a>

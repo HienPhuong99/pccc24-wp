@@ -299,7 +299,7 @@ main { padding: 18px 0 0; }
   display: flex;
   height: 100%;
   min-height: 260px;
-  transition: transform 450ms cubic-bezier(.23, 1, .32, 1);
+  transition: transform 420ms var(--ease-in-out);
   will-change: transform;
 }
 .slides > .slide {
@@ -433,11 +433,36 @@ main { padding: 18px 0 0; }
   background: var(--ink);
   color: var(--tag);
 }
+.tag-rig {
+  padding: 6px 8px;
+  border-radius: 12px;
+  background: radial-gradient(
+    120px circle at var(--gx, 28%) var(--gy, 28%),
+    rgba(255, 255, 255, .90),
+    rgba(255, 255, 255, .58) 65%,
+    rgba(255, 255, 255, .36)
+  );
+  border: 1px solid rgba(29, 35, 41, .08);
+}
+.tag-gauge-scene {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 .tag-gauge-scene .rg-glow,
-.tag-gauge-scene .rg-needle { transform-origin: 30px 27px; }
-.tag-gauge-scene .rg-lever { transform-origin: 80px 21px; }
-.tag-gauge-scene .rg-pin { transform-origin: 73px 23px; }
-.tag-gauge-scene .rg-led { transform-origin: 144px 22px; }
+.tag-gauge-scene .rg-needle,
+.tag-gauge-scene .rg-lever,
+.tag-gauge-scene .rg-pin,
+.tag-gauge-scene .rg-led,
+.tag-gauge-scene .rg-wisp {
+  transform-box: view-box;
+  will-change: transform, opacity;
+}
+.tag-gauge-scene .rg-glow,
+.tag-gauge-scene .rg-needle { transform-origin: 30px 25px; }
+.tag-gauge-scene .rg-lever { transform-origin: 80px 20px; }
+.tag-gauge-scene .rg-pin { transform-origin: 73px 22px; }
+.tag-gauge-scene .rg-led { transform-origin: 144px 25px; }
 
 /* ---------- 4 Cam kết (.promises) ---------- */
 .promises {
@@ -534,7 +559,7 @@ main { padding: 18px 0 0; }
   line-height: 1.25;
 }
 
-/* ---------- iOS Segmented Control ---------- */
+/* ---------- iOS Segmented Control + Traveling Pill (rossark Principle 13) ---------- */
 .seg-wrap {
   overflow-x: auto;
   scrollbar-width: none;
@@ -542,6 +567,7 @@ main { padding: 18px 0 0; }
 }
 .seg-wrap::-webkit-scrollbar { display: none; }
 .seg-control {
+  position: relative;
   display: inline-flex;
   background: var(--ios-fill);
   border-radius: 10px;
@@ -551,7 +577,22 @@ main { padding: 18px 0 0; }
   scrollbar-width: none;
 }
 .seg-control::-webkit-scrollbar { display: none; }
+.seg-pill {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+  transition: transform 220ms var(--ease-in-out), width 220ms var(--ease-in-out);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, width;
+}
 .seg-btn {
+  position: relative;
+  z-index: 1;
   padding: 6px 14px;
   border-radius: 8px;
   border: 0;
@@ -560,12 +601,25 @@ main { padding: 18px 0 0; }
   white-space: nowrap;
   background: transparent;
   color: var(--ink);
-  transition: background-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
+  transition: color 160ms var(--ease-out), background-color 160ms var(--ease-out), box-shadow 160ms var(--ease-out);
 }
 .seg-btn.is-active {
   background: #fff;
   font-weight: 600;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+}
+.seg-control.has-pill .seg-btn.is-active {
+  background: transparent;
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .featured-pane.pane-enter {
+    animation: pane-in 180ms var(--ease-out) both;
+  }
+  @keyframes pane-in {
+    from { opacity: 0; transform: scale(0.985); }
+    to { opacity: 1; transform: scale(1); }
+  }
 }
 
 /* ---------- Ô sản phẩm (.grid-products, .product) ---------- */
@@ -1055,6 +1109,10 @@ main { padding: 18px 0 0; }
   font-weight: 600;
   font-size: 15px;
   white-space: nowrap;
+}
+.float-contact .btn-call svg {
+  transform-origin: 50% 50%;
+  will-change: transform;
 }
 
 /* ---------- Dialogs & Mobile Drawer ---------- */

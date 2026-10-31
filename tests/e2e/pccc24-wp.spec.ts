@@ -173,7 +173,11 @@ test.describe('Tương tác người dùng', () => {
     });
     await page.goto('/', { waitUntil: 'networkidle' });
     expect(imgBytes).toBeLessThan(1_200_000);
-    const hasMotion = await page.evaluate(() => Boolean((window as any).PCCC24_MOTION && document.querySelector('[data-motion-tag] .tag-gauge-scene')));
+    const hasMotion = await page.evaluate(() => Boolean(
+      (window as any).PCCC24_MOTION &&
+      document.querySelector('[data-motion-tag] .tag-gauge-scene') &&
+      document.querySelector('.seg-control .seg-pill')
+    ));
     expect(hasMotion).toBe(true);
 
     // Kiểm tra iOS Segmented Control trên trang chủ
@@ -235,6 +239,8 @@ test.describe('wp-admin', () => {
     await page.fill('#user_pass', process.env.PCCC24_ADMIN_PASS || 'pccc24@admin2026');
     await page.click('#wp-submit');
     await expect(page).toHaveURL(/wp-admin/);
+    await expect(page.locator('.v18-hero-card .v18-motion-scene')).toBeVisible();
+    await expect.poll(() => page.evaluate(() => Boolean((window as any).PCCC24_ADMIN_MOTION))).toBe(true);
 
     await page.goto('/wp-admin/edit.php?post_type=pccc_product');
     await expect(page.locator('th#old_id')).toBeVisible();

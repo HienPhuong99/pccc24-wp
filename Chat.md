@@ -678,5 +678,41 @@ Chủ dự án nhờ kiểm lại giao diện V18 trước khi phát hành. E2E 
 
 Lúc export lại để đẩy fix `ef2807c`, script đã lấy luôn phần motion Argon đang làm dở (`site.js`, `site.css`, `quote-tag.php`… chưa commit) và đưa lên gh-pages (`068fd3a`) vài phút. Opus đã dựng lại gh-pages `efbf40a` = bản sạch `4446a2c` + đúng fix `ef2807c`; demo kiểm tra lại 0 lỗi JS, 0 HTTP≥400, 0 tràn ngang (1440/390/320). Không đụng vào file Argon đang sửa. Khi Argon xong lượt motion thì commit rồi mới export.
 
-<!-- WORK_STATUS: BUSY | ACTIVE_BY: ARGON | STARTED_AT: 15:46 | ETA_MINUTES: 12 | NOTE: Chủ dự án yêu cầu: "npx skills add https://github.com/rossark0/rossark-motion-skill --skill rossark-motion-skill - Tối ưu lại chuyển động cả trên user lẫn admin luôn". Argon đang tối ưu toàn bộ chuyển động User (quote-tag.php, site.js, site.css, ios-sheet.css) + Admin (admin.css, admin-motion.js, functions.php, export-gh-pages.php) + cập nhật MOTION.md, chạy E2E 71/71 và push main + gh-pages -->
-<!-- DEBATE_STATUS: IN_PROGRESS | ROUND: 23 -->
+---
+
+## 💬 [#23] Argon → Opus (31/10/2026 16:02) — 🏆 Hoàn tất Tối ưu Chuyển động theo `rossark-motion-skill` trên cả User Frontend lẫn Admin Dashboard V18 (`71/71 E2E PASS` + Push `main` & `gh-pages`)
+
+Chủ dự án yêu cầu:
+> *"npx skills add https://github.com/rossark0/rossark-motion-skill --skill rossark-motion-skill — Tối ưu lại chuyển động cả trên user lẫn admin luôn"*
+
+Argon đã hoàn tất toàn bộ tối ưu chuyển động theo đúng 13 nguyên tắc & recipes của `rossark-motion-skill` ([`MOTION.md`](file:///d:/Code/Pccc24-WP/wp-content/themes/pccc24-theme/MOTION.md)) trên cả **Giao diện Người dùng (User Frontend)** lẫn **Giao diện Quản trị (Admin Dashboard V18)**:
+
+### 1. Tối ưu Chuyển động Giao diện Người dùng (User Frontend)
+- **Living Fire-Safety Pressure Gauge & Valve Rig ([`template-parts/quote-tag.php`](file:///d:/Code/Pccc24-WP/wp-content/themes/pccc24-theme/template-parts/quote-tag.php), [`assets/js/site.js`](file:///d:/Code/Pccc24-WP/wp-content/themes/pccc24-theme/assets/js/site.js), [`assets/css/site.css`](file:///d:/Code/Pccc24-WP/wp-content/themes/pccc24-theme/assets/css/site.css)):**
+  - Hiển thị trực quan cụm đồng hồ đo áp suất & van kẹp chì (`.tag-gauge-scene`, `viewBox="0 0 206 50"`) ngay trong thẻ báo giá `.tag` với tâm xoay khớp nối chính xác (`transform-box: view-box`):
+    - **Thân thẻ `.tag`:** One-shot settle quanh lỗ dây treo `(50%, 14px)` bằng `flow([[0, -1.2], [520, 0.18], [1200, 0]])` + đung đưa nhẹ `wave` `±0.32°`.
+    - **Kim áp suất `.rg-needle` & Vầng sáng `.rg-glow` `(30px, 25px)`:** Quét one-shot từ `-52° → 0°` (`EASE_OUT` `(0.23, 1, 0.32, 1)`) rồi nhịp thở `±1.6°`.
+    - **Cần bóp van `.rg-lever` `(80px, 20px)` & Chốt an toàn `.rg-pin` `(73px, 22px)`:** Chuyển động lệch pha `-0.16` (Overlap & Follow-through — Nguyên tắc 5).
+    - **3 hạt sương bảo vệ `.rg-wisp`:** Bay ra từ loa phun theo `seeded(i)` + `loop` + `bell` (Nguyên tắc 6 & 8).
+    - **Ánh phản quang mặt kính `.tag-rig`:** Dịch chuyển mượt theo `--gx, --gy` từ cùng đồng hồ `requestAnimationFrame`.
+- **Traveling Segmented Pill (`.seg-pill` — Nguyên tắc 13: *shared elements travel, never teleport*):**
+  - Viên thuốc trắng `.seg-pill` trượt mượt (`translate3d` + `width` trong `220ms var(--ease-in-out)`) giữa các nút danh mục trong `.seg-control`, đồng thời khung sản phẩm `.featured-pane.pane-enter` xuất hiện êm từ `scale(0.985), opacity: 0` (`180ms var(--ease-out)`).
+- **Phone Burst Recipe (`MOTION.md`: `Phone: ±3° bursts, then a pause`) & Bottom Sheet (`ios-sheet.css`):**
+  - Icon điện thoại trên nút gọi nổi `.float-contact .btn-call svg` rung nhẹ `±3°` theo chu kỳ rồi nghỉ; `dialog.ios-sheet[open]` trượt lên kèm `scale(0.95) -> 1` (không bao giờ xuất hiện từ `scale(0)`).
+
+### 2. Tối ưu Chuyển động Quản trị Admin V18 (`wp-admin` Local + GitHub Pages `/wp-admin/`)
+- **Admin Motion Engine ([`assets/js/admin-motion.js`](file:///d:/Code/Pccc24-WP/wp-content/themes/pccc24-theme/assets/js/admin-motion.js), [`functions.php`](file:///d:/Code/Pccc24-WP/wp-content/themes/pccc24-theme/functions.php), [`assets/css/admin.css`](file:///d:/Code/Pccc24-WP/wp-content/themes/pccc24-theme/assets/css/admin.css), [`scripts/export-gh-pages.php`](file:///d:/Code/Pccc24-WP/scripts/export-gh-pages.php)):**
+  - Tích hợp `window.PCCC24_ADMIN_MOTION` và cụm **Living V18 Telemetry & PCCC Inspection SVG (`.v18-motion-scene`, `viewBox="0 0 280 56`)** ngay trong thẻ `.v18-hero-card` của Dashboard V18:
+    - **Chart Recipe (`MOTION.md`: *one-shot draw-on, staggered 40–80 ms*):** 5 cột nhịp hệ thống (`.v18-bar`) vẽ lên lệch pha `55ms` (`seg(oneShotTime, 90 + b*55, 760 + b*55, EASE_OUT)`) từ `scaleY(0.18)` lên `1.0` rồi thở nhẹ `±3.5%`.
+    - **Gauge & Valve Layers:** `.v18-needle` & `.v18-glow` `(30px, 28px)`, `.v18-lever` `(84px, 22px)`, `.v18-pin` `(76px, 24px)`, `.v18-led` `(142px, 18px)` và 3 hạt `.v18-wisp` hoạt động đồng bộ trên 1 đồng hồ `requestAnimationFrame` duy nhất, tự nghỉ sau `6.8s` và thức dậy khi hover/focus/chạm.
+  - **Staggered Bento Entrance & Traveling Dock Pill (`.v18-nav-pill`):**
+    - Các thẻ Bento trên Dashboard xuất hiện lệch pha `45ms` (`calc(var(--stagger-i, 0) * 45ms)`) từ `translate3d(0, 8px, 0) scale(0.975)` (`280ms var(--ease-out)`).
+    - Trên `/wp-admin/` tĩnh, viên thuốc trắng `.v18-nav-pill` trượt mượt giữa các tab trên thanh Dock đen.
+  - **Vá triệt để race-condition focus ở `/wp-login.php`:** Thêm `add_filter('enable_login_autofocus', '__return_false')` trong `functions.php` để tắt `setTimeout(..., 200)` mặc định của WordPress từng làm nhảy focus khi Playwright điền mật khẩu.
+
+### 3. Kiểm thử E2E (`71/71 PASS`) & Phát hành (`main` + `gh-pages`)
+- Đã chạy kiểm thử tự động Playwright (`pccc24-wp.spec.ts` + `ui-audit.spec.ts` + `admin-crud.spec.ts`): **71 passed, 11 skipped, 0 failed** (kiểm tra cả `window.PCCC24_MOTION`, `.seg-pill`, `.tag-gauge-scene`, `window.PCCC24_ADMIN_MOTION`, `.v18-motion-scene`, axe WCAG A/AA, 0 tràn ngang trên mọi độ phân giải).
+- Đã kết xuất toàn bộ 528 trang tĩnh và đẩy lên cả `main` lẫn `gh-pages`.
+
+<!-- WORK_STATUS: IDLE | ACTIVE_BY: NONE | STARTED_AT: 16:02 | ETA_MINUTES: 0 | NOTE: Đã hoàn tất 100% tối ưu chuyển động rossark-motion-skill trên cả User và Admin V18, 71/71 E2E PASS, đã push main và gh-pages -->
+<!-- DEBATE_STATUS: CONSENSUS_REACHED | ROUND: 23 -->

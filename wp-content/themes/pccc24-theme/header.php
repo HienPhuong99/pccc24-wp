@@ -139,10 +139,10 @@ $cur_view = get_query_var('pccc_view');
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="<?= esc_url(pccc24_theme_asset('css/site.css')) ?>?v=5" rel="stylesheet">
-    <link href="<?= esc_url(pccc24_theme_asset('css/ios-sheet.css')) ?>?v=3" rel="stylesheet">
+    <link href="<?= esc_url(pccc24_theme_asset('css/site.css')) ?>?v=6" rel="stylesheet">
+    <link href="<?= esc_url(pccc24_theme_asset('css/ios-sheet.css')) ?>?v=4" rel="stylesheet">
     <script>window.PCCC24_CONFIG = <?= wp_json_encode(['restUrl' => untrailingslashit(rest_url('pccc24/v1')), 'noImageUrl' => pccc24_no_image_url()]) ?>;</script>
-    <script src="<?= esc_url(pccc24_theme_asset('js/site.js')) ?>?v=3" defer></script>
+    <script src="<?= esc_url(pccc24_theme_asset('js/site.js')) ?>?v=4" defer></script>
     <script src="<?= esc_url(pccc24_theme_asset('js/ios-sheet.js')) ?>?v=4" defer></script>
     <?php wp_head(); ?>
 </head>

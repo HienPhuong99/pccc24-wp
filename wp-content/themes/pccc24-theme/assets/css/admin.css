@@ -18,6 +18,8 @@
   --ios-sep: rgba(20, 22, 27, .07);
   --v18-shadow: 0 2px 6px rgba(20, 22, 27, .04), 0 12px 28px rgba(20, 22, 27, .05);
   --v18-shadow-hover: 0 8px 20px rgba(20, 22, 27, .08), 0 20px 38px rgba(20, 22, 27, .08);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --wp-admin-theme-color: #14161b;
   --wp-admin-theme-color--rgb: 20, 22, 27;
   --wp-admin-theme-color-darker-10: #c8201a;
@@ -277,21 +279,70 @@ ul#adminmenu > li.current > a.current::after,
 .v18-hero-card {
   grid-row: span 2;
   border-radius: 24px;
-  padding: 26px 28px;
-  background: linear-gradient(128deg, #e9d5ff 0%, #fbcfe8 52%, #dbeafe 100%);
+  padding: 24px 26px;
+  background:
+    radial-gradient(220px circle at var(--gx, 24%) var(--gy, 26%), rgba(255, 255, 255, .62), transparent 70%),
+    linear-gradient(128deg, #e9d5ff 0%, #fbcfe8 52%, #dbeafe 100%);
   box-shadow: var(--v18-shadow);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 18px;
+  gap: 14px;
   position: relative;
   overflow: hidden;
-  transition: transform 220ms cubic-bezier(.23, 1, .32, 1), box-shadow 220ms;
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
 }
 .v18-hero-card:hover,
 .v18-stat-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--v18-shadow-hover);
+}
+.v18-stat-card:active,
+.v18-btn-dark:active,
+.v18-btn-glass:active {
+  transform: scale(0.98);
+}
+.v18-rig-box {
+  padding: 6px 8px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .58);
+  border: 1px solid rgba(20, 22, 27, .08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.v18-motion-scene {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.v18-motion-scene .v18-glow,
+.v18-motion-scene .v18-needle,
+.v18-motion-scene .v18-lever,
+.v18-motion-scene .v18-pin,
+.v18-motion-scene .v18-led,
+.v18-motion-scene .v18-wisp {
+  transform-box: view-box;
+  will-change: transform, opacity;
+}
+.v18-motion-scene .v18-glow,
+.v18-motion-scene .v18-needle { transform-origin: 30px 28px; }
+.v18-motion-scene .v18-lever { transform-origin: 84px 22px; }
+.v18-motion-scene .v18-pin { transform-origin: 76px 24px; }
+.v18-motion-scene .v18-led { transform-origin: 142px 18px; }
+.v18-motion-scene .v18-bar {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .v18-bento-wrap > * {
+    animation: v18-card-in 280ms var(--ease-out) both;
+    animation-delay: calc(var(--stagger-i, 0) * 45ms);
+  }
+  @keyframes v18-card-in {
+    from { opacity: 0; transform: translate3d(0, 8px, 0) scale(0.975); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
 }
 .v18-hero-badge {
   display: inline-flex;

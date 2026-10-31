@@ -1,4 +1,4 @@
-// PCCC24 iOS Handoff: menu, segmented control, slider translateX, image fallback, quickview + rossark-motion-skill engine.
+// PCCC24 iOS Handoff + rossark-motion-skill living illustration & interface motion engine.
 (function () {
   var CFG = window.PCCC24_CONFIG || {};
   var esc = function (s) { var d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; };
@@ -94,15 +94,17 @@
 
   window.PCCC24_MOTION = { EASE_IN_OUT: EASE_IN_OUT, EASE_OUT: EASE_OUT, wave: wave, loop: loop, bell: bell, seg: seg, seeded: seeded, track: track, flow: flow };
 
-  // Khởi tạo chuyển động cho các thẻ kiểm định [data-motion-tag]
+  // Khởi tạo chuyển động cho các thẻ kiểm định [data-motion-tag] + icon điện thoại nổi (Phone recipe: ±3° bursts, then a pause)
   var tags = [].slice.call(document.querySelectorAll('[data-motion-tag]'));
+  var floatPhoneIcon = document.querySelector('.float-contact .btn-call svg');
   if (tags.length) {
     var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var IDLE_DURATION = 6500;
+    var IDLE_DURATION = 6800;
     var scenes = tags.map(function (el, idx) {
       return {
         el: el,
         rig: el.querySelector('.tag-rig'),
+        dot: el.querySelector('.tag-status-dot'),
         seed: seeded(idx, 7),
         visible: true,
         awake: true,
@@ -120,27 +122,37 @@
     });
 
     function renderScene(sc, loopTime, oneShotTime, env) {
+      // 1. One-shot settle (flow) + calm sway (Principle 3: small amplitudes)
+      var tagSettle = flow(Math.min(oneShotTime, 1200), [[0, -1.2], [520, 0.18], [1200, 0]]);
+      var tagSway   = wave(loopTime, 5200, sc.seed) * 0.32 * env;
+      sc.el.style.transform = 'rotate(' + (tagSettle + tagSway).toFixed(3) + 'deg)';
+
       if (sc.needle) {
-        var needleSweep = (1 - seg(oneShotTime, 60, 1100, EASE_OUT)) * -54;
-        var needleIdle  = wave(loopTime, 3600, sc.seed + 0.15) * 1.8 * env;
+        var needleSweep = (1 - seg(oneShotTime, 60, 1050, EASE_OUT)) * -52;
+        var needleIdle  = wave(loopTime, 3600, sc.seed + 0.15) * 1.6 * env;
         sc.needle.style.transform = 'rotate(' + (needleSweep + needleIdle).toFixed(2) + 'deg)';
       }
       if (sc.lever) {
-        var leverPress = (1 - seg(oneShotTime, 120, 900, EASE_OUT)) * -4;
-        var leverIdle  = wave(loopTime, 4800, sc.seed + 0.22) * 1.25 * env;
+        var leverPress = (1 - seg(oneShotTime, 120, 880, EASE_OUT)) * -3.5;
+        var leverIdle  = wave(loopTime, 4800, sc.seed + 0.22) * 1.1 * env;
         sc.lever.style.transform = 'rotate(' + (leverPress + leverIdle).toFixed(2) + 'deg)';
       }
       if (sc.pin) {
-        var pinIdle = wave(loopTime, 4800, sc.seed + 0.38) * 2.4 * env;
+        // Overlap & follow-through: chốt an toàn trễ pha hơn cần bóp van (+0.16)
+        var pinIdle = wave(loopTime, 4800, sc.seed + 0.38) * 2.1 * env;
         sc.pin.style.transform = 'rotate(' + pinIdle.toFixed(2) + 'deg)';
       }
       if (sc.glow) {
-        var glowScale = 1 + wave(loopTime, 3200, sc.seed) * 0.04 * env;
+        var glowScale = 1 + wave(loopTime, 3200, sc.seed) * 0.045 * env;
         sc.glow.style.transform = 'scale(' + glowScale.toFixed(3) + ')';
       }
       if (sc.led) {
         var ledScale = 1 + wave(loopTime, 2800, sc.seed + 0.4) * 0.05 * env;
         sc.led.style.transform = 'scale(' + ledScale.toFixed(3) + ')';
+      }
+      if (sc.dot) {
+        var dotScale = 1 + wave(loopTime, 3200, sc.seed + 0.2) * 0.06 * env;
+        sc.dot.style.transform = 'scale(' + dotScale.toFixed(3) + ')';
       }
       for (var i = 0; i < sc.wisps.length; i++) {
         if (reducedMotion) {
@@ -150,11 +162,18 @@
         var period = 3200 + seeded(i, 1) * 1100;
         var phase  = seeded(i, 2) + sc.seed;
         var p      = loop(loopTime, period, phase);
-        var dx     = (9 + seeded(i, 3) * 8) * p;
-        var dy     = (-3.5 - seeded(i, 4) * 4.5) * p + wave(loopTime, 2400, phase) * 0.8;
-        var scWisp = 0.75 + p * 0.45;
-        sc.wisps[i].style.opacity   = (bell(p) * 0.48 * env).toFixed(3);
+        var dx     = (8 + seeded(i, 3) * 7) * p;
+        var dy     = (-3.0 - seeded(i, 4) * 4.0) * p + wave(loopTime, 2400, phase) * 0.7;
+        var scWisp = 0.78 + p * 0.42;
+        sc.wisps[i].style.opacity   = (bell(p) * 0.46 * env).toFixed(3);
         sc.wisps[i].style.transform = 'translate(' + dx.toFixed(2) + 'px,' + dy.toFixed(2) + 'px) scale(' + scWisp.toFixed(2) + ')';
+      }
+      // Phone recipe: ±3° bursts, then a pause (trên icon Gọi báo giá ở thanh nổi đáy màn hình)
+      if (floatPhoneIcon && sc === scenes[0]) {
+        var burstPhase = loop(loopTime, 4200, 0.25);
+        var burstWin   = burstPhase < 0.18 ? bell(burstPhase / 0.18) : 0;
+        var phoneDeg   = wave(loopTime, 180, 0) * 3.0 * burstWin * env;
+        floatPhoneIcon.style.transform = 'rotate(' + phoneDeg.toFixed(2) + 'deg)';
       }
     }
 
@@ -208,6 +227,16 @@
         sc.el.addEventListener('pointerenter', function () { wakeScene(sc); });
         sc.el.addEventListener('focusin', function () { wakeScene(sc); });
         sc.el.addEventListener('touchstart', function () { wakeScene(sc); }, { passive: true });
+        if (sc.rig && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          sc.el.addEventListener('pointermove', function (e) {
+            var r = sc.rig.getBoundingClientRect();
+            if (!r.width || !r.height) return;
+            var gx = Math.max(0, Math.min(100, ((e.clientX - r.left) / r.width) * 100));
+            var gy = Math.max(0, Math.min(100, ((e.clientY - r.top) / r.height) * 100));
+            sc.rig.style.setProperty('--gx', gx.toFixed(1) + '%');
+            sc.rig.style.setProperty('--gy', gy.toFixed(1) + '%');
+          });
+        }
       });
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
@@ -243,7 +272,38 @@
   bindImageFallbacks();
 
   // =========================================================================
-  // 3. GIAO DIỆN TƯƠNG TÁC (Menu, Dropdown, Segmented Control, Slider, Quickview)
+  // 3. TRAVELING SEGMENTED CONTROL PILL (Principle 13: shared elements travel, never teleport)
+  // =========================================================================
+  var segControl = document.querySelector('.seg-control');
+  var segPill = null;
+  function syncSegPill(btn, immediate) {
+    if (!segControl || !btn) return;
+    if (!segPill) {
+      segPill = document.createElement('span');
+      segPill.className = 'seg-pill';
+      segPill.setAttribute('aria-hidden', 'true');
+      segControl.insertBefore(segPill, segControl.firstChild);
+      segControl.classList.add('has-pill');
+    }
+    if (immediate) segPill.style.transition = 'none';
+    segPill.style.width = btn.offsetWidth + 'px';
+    segPill.style.transform = 'translate3d(' + (btn.offsetLeft - 2) + 'px, 0, 0)';
+    if (immediate) {
+      segPill.offsetHeight; // force reflow
+      segPill.style.transition = '';
+    }
+  }
+  if (segControl) {
+    var initActive = segControl.querySelector('.seg-btn.is-active');
+    if (initActive) syncSegPill(initActive, true);
+    window.addEventListener('resize', function () {
+      var curActive = segControl.querySelector('.seg-btn.is-active');
+      if (curActive) syncSegPill(curActive, true);
+    });
+  }
+
+  // =========================================================================
+  // 4. GIAO DIỆN TƯƠNG TÁC (Menu, Dropdown, Segmented Control, Slider, Quickview)
   // =========================================================================
   document.addEventListener('click', function (e) {
     var open = e.target.closest('[data-open]');
@@ -254,7 +314,7 @@
     var quick = e.target.closest('[data-quick]');
     if (quick) quickView(quick.dataset.quick);
 
-    // iOS Segmented Control: chuyển tab "Sản phẩm nổi bật" không tải lại trang
+    // iOS Segmented Control: chuyển tab mượt với .seg-pill trượt (220ms EASE_IN_OUT) + pane arrive (180ms EASE_OUT)
     var segBtn = e.target.closest('[data-seg-tab]');
     if (segBtn) {
       var targetId = segBtn.dataset.segTab;
@@ -265,12 +325,17 @@
           b.classList.toggle('is-active', active);
           b.setAttribute('aria-selected', active ? 'true' : 'false');
         });
+        syncSegPill(segBtn, false);
       }
       document.querySelectorAll('.featured-pane').forEach(function (pane) {
         if (pane.id === targetId) {
           pane.removeAttribute('hidden');
+          pane.classList.remove('pane-enter');
+          void pane.offsetWidth;
+          pane.classList.add('pane-enter');
         } else {
           pane.setAttribute('hidden', '');
+          pane.classList.remove('pane-enter');
         }
       });
       var moreLink  = document.getElementById('featured-more-link');
@@ -287,7 +352,7 @@
     });
   });
 
-  // Slider Hero: translateX(-N*100%) + chấm điều hướng kính mờ
+  // Slider Hero: translateX(-N*100%) với curve EASE_IN_OUT (0.77, 0, 0.175, 1) cho chuyển động ngang (travel)
   var slides = document.querySelector('.slides');
   if (slides && slides.children.length > 1) {
     var dots = document.querySelector('.slide-dots');
