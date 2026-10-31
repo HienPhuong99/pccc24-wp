@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bảng tin ‹ PCCC24 — WordPress Admin Demo</title>
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { margin: 0; background: #f0f0f1; color: #1d2327; display: flex; min-height: 100vh; }
+        .wp-sidebar { width: 220px; background: #1d2327; color: #f0f0f1; flex-shrink: 0; display: flex; flex-direction: column; }
+        .wp-brand { padding: 14px 16px; background: #2c3338; font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .wp-brand a { color: #72aee6; text-decoration: none; font-size: 12px; font-weight: 400; }
+        .wp-nav { list-style: none; padding: 8px 0; margin: 0; }
+        .wp-nav li { padding: 10px 16px; cursor: pointer; font-size: 14px; border-left: 4px solid transparent; }
+        .wp-nav li:hover { background: #2c3338; color: #72aee6; }
+        .wp-nav li.active { background: #2271b1; color: #fff; font-weight: 600; border-left-color: #fff; }
+        .wp-main { flex: 1; padding: 24px 32px; overflow-x: auto; }
+        .wp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #c3c4c7; padding-bottom: 12px; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card { background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #2271b1; padding: 16px; border-radius: 4px; }
+        .stat-card .num { font-size: 26px; font-weight: 700; color: #1d2327; }
+        .stat-card .lbl { font-size: 13px; color: #50575e; margin-top: 4px; }
+        table.wp-list-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #c3c4c7; }
+        table.wp-list-table th, table.wp-list-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #f0f0f1; font-size: 13px; }
+        table.wp-list-table th { background: #fff; border-bottom: 1px solid #c3c4c7; font-weight: 600; }
+        table.wp-list-table tr:nth-child(even) { background: #f6f7f7; }
+        .metabox { background: #fff; border: 1px solid #c3c4c7; margin-top: 20px; }
+        .metabox-title { padding: 12px 16px; border-bottom: 1px solid #c3c4c7; font-weight: 600; background: #f6f7f7; }
+        .metabox-body { padding: 16px; }
+        .form-row { display: grid; grid-template-columns: 220px 1fr; gap: 12px; align-items: start; margin-bottom: 12px; }
+        .form-row label { font-weight: 600; font-size: 13px; padding-top: 6px; }
+        .form-row input, .form-row textarea { width: 100%; padding: 6px 10px; border: 1px solid #8c8f94; border-radius: 4px; font-size: 13px; }
+        .btn-primary { background: #2271b1; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; }
+        .btn-primary:hover { background: #135e96; }
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+        .notice-ok { background: #fff; border-left: 4px solid #00a32a; padding: 10px 14px; margin-bottom: 16px; box-shadow: 0 1px 1px rgba(0,0,0,.04); font-size: 13px; }
+    </style>
+</head>
+<body>
+    <aside class="wp-sidebar">
+        <div class="wp-brand">
+            <span>WordPress PCCC24</span>
+            <a href="/pccc24-wp/">&larr; Xem trang</a>
+        </div>
+        <ul class="wp-nav">
+            <li class="active" data-tab="dashboard">📊 Tổng quan hệ thống</li>
+            <li data-tab="products">🛒 Sản phẩm (385)</li>
+            <li data-tab="orders">📋 Đơn hàng (<span id="order-count">0</span>)</li>
+            <li data-tab="settings">⚙️ Cài đặt PCCC24 (15)</li>
+        </ul>
+    </aside>
+    <main class="wp-main">
+        <div class="wp-header">
+            <h1 style="margin:0;font-size:22px;">Quản trị WordPress — PCCC24 (`pccc24-core` + `pccc24-theme`)</h1>
+            <a href="/pccc24-wp/" class="btn-primary" style="text-decoration:none;">Mở Trang Chủ Frontend</a>
+        </div>
+
+        <div class="notice-ok">
+            ✅ <strong>Đối soát Migration CI4 &rarr; WordPress: 15/15 hạng mục khớp 100%</strong> • Bộ kiểm thử tự động Playwright E2E: <strong>40/40 PASSED</strong>.
+        </div>
+
+        <section id="tab-dashboard" class="tab-pane active">
+            <div class="card-grid">
+                <div class="stat-card"><div class="num">385</div><div class="lbl">Sản phẩm (`pccc_product`)</div></div>
+                <div class="stat-card"><div class="num">40</div><div class="lbl">Danh mục (`pccc_product_cat`)</div></div>
+                <div class="stat-card"><div class="num">62</div><div class="lbl">Tin tức (`post`)</div></div>
+                <div class="stat-card"><div class="num">14</div><div class="lbl">Dịch vụ (`pccc_service`)</div></div>
+                <div class="stat-card"><div class="num">12</div><div class="lbl">Trang tĩnh (`page`)</div></div>
+                <div class="stat-card"><div class="num">723</div><div class="lbl">Ảnh Media (`wp-content/uploads`)</div></div>
+            </div>
+
+            <div class="metabox">
+                <div class="metabox-title">Metabox "Thông tin PCCC24" (Mẫu chỉnh sửa sản phẩm #718 trong wp-admin)</div>
+                <div class="metabox-body">
+                    <div class="form-row"><label>Tên sản phẩm</label><input value="Bình chữa cháy gốc nước công nghệ sinh học Ecosafe"></div>
+                    <div class="form-row"><label>Giá (0 = Liên hệ)</label><input value="0"></div>
+                    <div class="form-row"><label>Nổi bật (1/0)</label><input value="1"></div>
+                    <div class="form-row"><label>SEO Title</label><input value="Bình chữa cháy gốc nước công nghệ sinh học Ecosafe"></div>
+                    <div class="form-row"><label>Thông số kỹ thuật (Tên | Giá trị)</label><textarea rows="5">Chủng loại | Bình chữa cháy gốc nước sinh học
+Model | Ecosafe
+Bảo hành | 12 tháng</textarea></div>
+                    <button class="btn-primary" onclick="alert('Đã lưu thông tin Metabox (Demo)!')">Cập nhật sản phẩm</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-products" class="tab-pane">
+            <table class="wp-list-table">
+                <thead>
+                    <tr><th>ID cũ (`_pccc_old_id`)</th><th>Tên sản phẩm</th><th>Giá (`_pccc_price`)</th><th>Hành động</th></tr>
+                </thead>
+                <tbody id="admin-products-tbody">
+                    <tr><td colspan="4">Đang tải danh sách sản phẩm...</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="tab-orders" class="tab-pane">
+            <p style="font-size:13px;color:#50575e;">💡 Khi bạn thêm sản phẩm vào giỏ và bấm <strong>Đặt hàng</strong> ngoài giao diện trang chủ/danh mục, đơn hàng sẽ xuất hiện trực tiếp tại đây:</p>
+            <table class="wp-list-table">
+                <thead>
+                    <tr><th>Mã ĐH</th><th>Khách hàng</th><th>Điện thoại</th><th>Số SP</th><th>Ghi chú</th><th>Thời gian</th></tr>
+                </thead>
+                <tbody id="admin-orders-tbody"></tbody>
+            </table>
+        </section>
+
+        <section id="tab-settings" class="tab-pane">
+            <div class="metabox">
+                <div class="metabox-title">Cài đặt chung PCCC24 (`options-general.php?page=pccc24`)</div>
+                <div class="metabox-body">
+                    <div class="form-row"><label>Tên công ty (`company`)</label><input value="CÔNG TY TNHH MTV HOÀNG QUÂN PHÁT"></div>
+                    <div class="form-row"><label>Địa chỉ (`address`)</label><textarea rows="2">262 Đỗ Mười, Phường Tam Bình, Thành phố Hồ Chí Minh</textarea></div>
+                    <div class="form-row"><label>Điện thoại (`phone`)</label><input value="0982765114"></div>
+                    <div class="form-row"><label>ĐT bán hàng (`phone_sale`)</label><input value="0982765114"></div>
+                    <div class="form-row"><label>ĐT kỹ thuật (`phone_technique`)</label><input value="02866566422"></div>
+                    <div class="form-row"><label>Email (`email`)</label><input value="hoangquanphat@gmail.com"></div>
+                    <div class="form-row"><label>GPKD (`gpkd`)</label><input value="3701888205"></div>
+                    <button class="btn-primary" onclick="alert('Đã lưu cấu hình PCCC24 (Demo)!')">Lưu thay đổi</button>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+        document.querySelectorAll('.wp-nav li').forEach(function(li) {
+            li.addEventListener('click', function() {
+                document.querySelectorAll('.wp-nav li').forEach(x => x.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(x => x.classList.remove('active'));
+                li.classList.add('active');
+                document.getElementById('tab-' + li.dataset.tab).classList.add('active');
+            });
+        });
+
+        fetch('/pccc24-wp/wp-json/pccc24/v1/products-all.json')
+            .then(r => r.json())
+            .then(list => {
+                var tbody = document.getElementById('admin-products-tbody');
+                tbody.innerHTML = list.slice(0, 40).map(p =>
+                    '<tr><td><strong>#' + p.id + '</strong></td><td><a href="' + p.url + '" target="_blank">' + p.name + '</a></td><td>' + (p.price > 0 ? p.price.toLocaleString('vi-VN') + 'đ' : 'Liên hệ') + '</td><td><a href="' + p.url + '" target="_blank">Xem ngoài trang &rarr;</a></td></tr>'
+                ).join('');
+            });
+
+        function renderOrders() {
+            var orders = [];
+            try { orders = JSON.parse(localStorage.getItem('pccc24_demo_orders') || '[]'); } catch(e) {}
+            document.getElementById('order-count').textContent = orders.length;
+            var tbody = document.getElementById('admin-orders-tbody');
+            if (!orders.length) {
+                tbody.innerHTML = '<tr><td colspan="6">Chưa có đơn hàng mới. Hãy thử bấm "Thêm vào giỏ" &rarr; "Đặt hàng" ngoài trang chủ!</td></tr>';
+                return;
+            }
+            tbody.innerHTML = orders.map(o => {
+                var qty = (o.items || []).reduce((s, it) => s + (parseInt(it.quantity, 10) || 1), 0);
+                return '<tr><td><strong>#' + o.id + '</strong></td><td>' + o.name + '</td><td>' + o.phone + '</td><td>' + qty + ' SP</td><td>' + (o.note || '') + '</td><td>' + (o.created_at || '') + '</td></tr>';
+            }).join('');
+        }
+        renderOrders();
+    </script>
+</body>
+</html>
