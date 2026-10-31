@@ -133,7 +133,7 @@ main { padding: 24px 0 56px; }
 /* ---------- Thẻ kiểm định (điểm nhấn duy nhất + rossark-motion-skill living rig) ---------- */
 .tag { position: relative; background: var(--tag); color: var(--ink); padding: 38px 20px 20px; border-radius: 6px 6px 18px 18px; clip-path: polygon(16% 0, 84% 0, 100% 9%, 100% 100%, 0 100%, 0 9%); transform-origin: 50% 14px; will-change: transform; }
 .tag::before { content: ""; position: absolute; top: 14px; left: 50%; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: var(--paper); box-shadow: inset 0 0 0 3px #d8ac0f; } /* lỗ xỏ dây */
-.tag-rig { margin: 0 -4px 10px; padding: 6px 8px; background: rgba(255, 255, 255, .42); border: 1px solid rgba(29, 35, 41, .18); border-radius: 4px; }
+.tag-rig { margin: 0 -4px 10px; padding: 6px 8px; background: radial-gradient(120px circle at var(--gx, 28%) var(--gy, 28%), rgba(255, 255, 255, .72), rgba(255, 255, 255, .36) 60%, rgba(255, 255, 255, .18)); border: 1px solid rgba(255, 255, 255, .55); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .65), 0 1px 2px rgba(29, 35, 41, .12); border-radius: 4px; }
 .tag-gauge-scene { width: 100%; height: auto; display: block; overflow: visible; }
 .tag-gauge-scene .rg-glow,
 .tag-gauge-scene .rg-needle,
@@ -153,6 +153,10 @@ main { padding: 24px 0 56px; }
 .tag-months { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin: 14px 0 0; padding: 10px 0 0; border-top: 1px dashed rgba(29, 35, 41, .45); font: 600 .75rem var(--display); text-align: center; list-style: none; }
 .tag-months li { padding: 2px 0; border: 1px solid rgba(29, 35, 41, .35); border-radius: 2px; }
 .tag-months li.punched { background: var(--ink); color: var(--tag); }
+@media (max-width: 640px) {
+  .hero .tag { padding: 34px 16px 16px; }
+  .hero .tag > p:not(.tag-title), .hero .tag .tag-months { display: none; }
+}
 
 /* ---------- Trang chủ ---------- */
 .hero { display: grid; grid-template-columns: 260px minmax(0, 1fr) 250px; gap: 24px; align-items: start; overflow-x: clip; } /* thẻ đang xoay lúc tải không gây cuộn ngang */

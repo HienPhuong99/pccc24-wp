@@ -486,9 +486,14 @@ function pccc24_render_pagination($wp_query = null): void
 }
 
 /**
- * Tự động điền sẵn Tài khoản, Email và Mật khẩu mặc định tại trang /wp-login.php để tiện kiểm thử
+ * Tự động điền sẵn Tài khoản, Email và Mật khẩu mặc định tại trang /wp-login.php (chỉ bật trên môi trường local/dev)
  */
 add_action('login_footer', function () {
+    $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+    $host_only = explode(':', $host)[0];
+    if (!in_array($host_only, ['localhost', '127.0.0.1', '::1'], true) && !str_ends_with($host_only, '.local') && !str_ends_with($host_only, '.test')) {
+        return;
+    }
     ?>
     <script>
     (function () {
@@ -526,3 +531,7 @@ add_action('login_footer', function () {
     </script>
     <?php
 });
+
+// Theme không dùng emoji của WP (bản tĩnh GitHub Pages còn báo 404 file này).
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('wp_print_styles', 'print_emoji_styles');
