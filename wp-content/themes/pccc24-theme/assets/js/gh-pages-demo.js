@@ -19,6 +19,17 @@
           input = PREFIX + "/wp-json/pccc24/v1/products/" + mProd[1] + ".json";
         } else if (/\/wp-json\/pccc24\/v1\/supports\/?$/.test(input)) {
           input = PREFIX + "/wp-json/pccc24/v1/supports.json";
+        } else if (/\/wp-json\/pccc24\/v1\/quotes\/?/.test(input)) {
+          return Promise.resolve(
+            new Response(
+              JSON.stringify({
+                ok: true,
+                id: 999,
+                message: "Bản demo tĩnh: đã nhận thông tin mẫu, vui lòng gọi trực tiếp để báo giá.",
+              }),
+              { status: 200, headers: { "Content-Type": "application/json" } }
+            )
+          );
         }
       }
       return origFetch(input, init);
