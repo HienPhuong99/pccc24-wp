@@ -3,98 +3,334 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bảng tin ‹ PCCC24 — WordPress Admin Demo</title>
+    <title>Bảng tin ‹ PCCC24 — WordPress Admin (Dashboard V18)</title>
     <style>
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { margin: 0; background: #f0f0f1; color: #1d2327; display: flex; min-height: 100vh; }
-        .wp-sidebar { width: 230px; background: #1d2327; color: #f0f0f1; flex-shrink: 0; display: flex; flex-direction: column; }
-        .wp-brand { padding: 14px 16px; background: #2c3338; font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .wp-brand a { color: #72aee6; text-decoration: none; font-size: 12px; font-weight: 400; }
-        .wp-nav { list-style: none; padding: 8px 0; margin: 0; }
-        .wp-nav li { padding: 10px 16px; cursor: pointer; font-size: 14px; border-left: 4px solid transparent; }
-        .wp-nav li:hover { background: #2c3338; color: #72aee6; }
-        .wp-nav li.active { background: #2271b1; color: #fff; font-weight: 600; border-left-color: #fff; }
-        .wp-main { flex: 1; padding: 24px 32px; overflow-x: auto; }
-        .wp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #c3c4c7; padding-bottom: 12px; flex-wrap: wrap; gap: 12px; }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .stat-card { background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #2271b1; padding: 16px; border-radius: 4px; }
-        .stat-card .num { font-size: 26px; font-weight: 700; color: #1d2327; }
-        .stat-card .lbl { font-size: 13px; color: #50575e; margin-top: 4px; }
-        table.wp-list-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #c3c4c7; }
-        table.wp-list-table th, table.wp-list-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #f0f0f1; font-size: 13px; }
-        table.wp-list-table th { background: #fff; border-bottom: 1px solid #c3c4c7; font-weight: 600; }
-        table.wp-list-table tr:nth-child(even) { background: #f6f7f7; }
-        .metabox { background: #fff; border: 1px solid #c3c4c7; margin-top: 20px; }
-        .metabox-title { padding: 12px 16px; border-bottom: 1px solid #c3c4c7; font-weight: 600; background: #f6f7f7; }
-        .metabox-body { padding: 16px; }
+        :root {
+            --v18-bg: #f3f4f7;
+            --v18-dock: #14161b;
+            --v18-ink: #14161b;
+            --v18-muted: #646b78;
+            --red: #c8201a;
+            --emerald: #0b7a4b;
+            --sep: rgba(20, 22, 27, .07);
+            --shadow: 0 2px 6px rgba(20, 22, 27, .04), 0 12px 28px rgba(20, 22, 27, .05);
+            --shadow-hover: 0 8px 20px rgba(20, 22, 27, .08), 0 20px 38px rgba(20, 22, 27, .08);
+        }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Be Vietnam Pro", system-ui, sans-serif; }
+        body { margin: 0; background: var(--v18-bg); color: var(--v18-ink); display: flex; min-height: 100vh; padding: 14px; gap: 18px; -webkit-font-smoothing: antialiased; }
+        /* Floating Dark Pill Sidebar Dock (V18.mp4) */
+        .v18-dock {
+            width: 210px;
+            background: var(--v18-dock);
+            color: #fff;
+            border-radius: 26px;
+            padding: 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex-shrink: 0;
+            box-shadow: 0 18px 42px rgba(20, 22, 27, .24), inset 0 0 0 1px rgba(255, 255, 255, .08);
+            position: sticky;
+            top: 14px;
+            height: calc(100vh - 28px);
+            transition: width 220ms cubic-bezier(.23, 1, .32, 1);
+        }
+        .v18-dock.is-collapsed { width: 68px; border-radius: 999px; align-items: center; padding: 16px 8px; }
+        .v18-brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            margin-bottom: 6px;
+        }
+        .v18-brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: -.02em;
+            color: #fff;
+            text-decoration: none;
+        }
+        .v18-brand-mark {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            background: var(--red);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .v18-dock.is-collapsed .v18-brand-text { display: none; }
+        .v18-nav { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+        .v18-nav li {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, .72);
+            transition: background-color 160ms, color 160ms, transform 160ms;
+        }
+        .v18-nav li:hover { background: rgba(255, 255, 255, .10); color: #fff; }
+        .v18-nav li.active {
+            background: #ffffff;
+            color: var(--v18-dock);
+            font-weight: 700;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .22);
+        }
+        .v18-nav-icon { font-size: 17px; line-height: 1; flex-shrink: 0; }
+        .v18-dock.is-collapsed .v18-nav li { width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 999px; }
+        .v18-dock.is-collapsed .v18-nav-label {
+            position: absolute;
+            left: calc(100% + 12px);
+            top: 50%;
+            transform: translateY(-50%) translateX(-4px);
+            background: var(--v18-dock);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 12.5px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, .28);
+            transition: opacity 150ms, transform 150ms;
+            z-index: 20;
+        }
+        .v18-dock.is-collapsed .v18-nav li:hover .v18-nav-label {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+        .v18-collapse-btn {
+            border: 0;
+            background: rgba(255, 255, 255, .08);
+            color: rgba(255, 255, 255, .75);
+            border-radius: 12px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .v18-collapse-btn:hover { background: rgba(255, 255, 255, .14); color: #fff; }
+
+        /* Main Canvas & Bento Grid */
+        .wp-main { flex: 1; min-width: 0; padding: 6px 10px 24px; }
+        .wp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .wp-header h1 { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -.025em; }
+        .btn-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 0;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 150ms, background-color 150ms;
+        }
+        .btn-pill-dark { background: var(--v18-dock); color: #fff; box-shadow: 0 6px 16px rgba(20, 22, 27, .18); }
+        .btn-pill-dark:hover { background: var(--red); transform: translateY(-1px); }
+        .btn-pill-soft { background: #fff; color: var(--v18-ink); box-shadow: var(--shadow); }
+        .btn-pill-soft:hover { background: #f9fafb; }
+
+        .v18-bento-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        @media (max-width: 1024px) { .v18-bento-grid { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 680px) {
+            body { flex-direction: column; }
+            .v18-dock { width: 100%; height: auto; position: static; }
+            .v18-bento-grid { grid-template-columns: 1fr; }
+        }
+        .v18-hero-card {
+            grid-row: span 2;
+            border-radius: 24px;
+            padding: 26px 28px;
+            background: linear-gradient(128deg, #e9d5ff 0%, #fbcfe8 52%, #dbeafe 100%);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 18px;
+            transition: transform 220ms cubic-bezier(.23, 1, .32, 1), box-shadow 220ms;
+        }
+        .v18-hero-card:hover, .stat-card:hover, .product-bento-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        .v18-badge {
+            display: inline-flex;
+            align-self: flex-start;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .75);
+            font-size: 11.5px;
+            font-weight: 700;
+            letter-spacing: .03em;
+        }
+        .v18-hero-card h2 { margin: 8px 0 6px; font-size: 25px; font-weight: 800; letter-spacing: -.03em; line-height: 1.15; }
+        .v18-hero-card p { margin: 0; font-size: 14px; color: rgba(20, 22, 27, .74); }
+        .stat-card {
+            background: #fff;
+            border-radius: 22px;
+            padding: 20px 22px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+            transition: transform 220ms cubic-bezier(.23, 1, .32, 1), box-shadow 220ms;
+        }
+        .stat-top { display: flex; justify-content: space-between; align-items: center; }
+        .stat-card .lbl { font-size: 13px; font-weight: 600; color: var(--v18-muted); }
+        .stat-card .ico { width: 36px; height: 36px; border-radius: 12px; background: var(--v18-bg); display: inline-flex; align-items: center; justify-content: center; font-size: 16px; }
+        .stat-card .num { font-size: 32px; font-weight: 800; letter-spacing: -.03em; color: var(--v18-ink); }
+        .stat-card .trend { font-size: 12.5px; font-weight: 600; color: var(--emerald); }
+
+        .bento-card {
+            background: #fff;
+            border-radius: 22px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            margin-bottom: 18px;
+        }
+        .bento-title { font-size: 17px; font-weight: 700; margin: 0 0 16px; display: flex; justify-content: space-between; align-items: center; }
+        .products-bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .product-bento-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 14px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--v18-ink);
+            transition: transform 220ms cubic-bezier(.23, 1, .32, 1), box-shadow 220ms;
+        }
+        .product-bento-card img { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: #f8f9fb; border-radius: 14px; padding: 8px; }
+        .product-bento-card b { font-size: 13.5px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-bento-card span { font-size: 12.5px; font-weight: 700; color: var(--red); margin-top: auto; }
+
+        table.wp-list-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); }
+        table.wp-list-table th, table.wp-list-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--sep); font-size: 13.5px; }
+        table.wp-list-table th { background: #f9fafb; font-weight: 700; font-size: 12px; color: var(--v18-muted); }
+        table.wp-list-table a { color: var(--v18-ink); font-weight: 600; text-decoration: none; }
+        table.wp-list-table a:hover { color: var(--red); }
         .form-row { display: grid; grid-template-columns: 220px 1fr; gap: 12px; align-items: start; margin-bottom: 12px; }
-        .form-row label { font-weight: 600; font-size: 13px; padding-top: 6px; }
-        .form-row input, .form-row textarea { width: 100%; padding: 6px 10px; border: 1px solid #8c8f94; border-radius: 4px; font-size: 13px; }
-        .btn-primary { background: #2271b1; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; text-decoration: none; display: inline-block; }
-        .btn-primary:hover { background: #135e96; }
+        .form-row label { font-weight: 600; font-size: 13px; padding-top: 8px; color: var(--v18-muted); }
+        .form-row input, .form-row textarea { width: 100%; padding: 9px 12px; border: 1px solid rgba(20,22,27,.12); border-radius: 12px; font-size: 14px; }
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
-        .notice-ok { background: #fff; border-left: 4px solid #00a32a; padding: 12px 16px; margin-bottom: 16px; box-shadow: 0 1px 1px rgba(0,0,0,.04); font-size: 13px; line-height: 1.6; }
-        .notice-ok code { background: #f0f0f1; padding: 2px 6px; border-radius: 3px; font-weight: 600; }
     </style>
 </head>
 <body>
-    <aside class="wp-sidebar">
-        <div class="wp-brand">
-            <span>WordPress PCCC24</span>
-            <a href="/pccc24-wp/">&larr; Xem trang</a>
+    <aside class="v18-dock" id="v18-dock">
+        <div class="v18-brand">
+            <a class="v18-brand-logo" href="/pccc24-wp/">
+                <span class="v18-brand-mark">24</span>
+                <span class="v18-brand-text">PCCC24 Admin</span>
+            </a>
         </div>
-        <ul class="wp-nav">
-            <li class="active" data-tab="dashboard">📊 Tổng quan & Tài khoản</li>
-            <li data-tab="products">📦 Sản phẩm (385)</li>
-            <li data-tab="settings">⚙️ Cài đặt PCCC24 (15)</li>
+        <ul class="v18-nav">
+            <li class="active" data-tab="dashboard"><span class="v18-nav-icon">⊞</span><span class="v18-nav-label">Bảng tin V18</span></li>
+            <li data-tab="products"><span class="v18-nav-icon">🧯</span><span class="v18-nav-label">Sản phẩm (385)</span></li>
+            <li data-tab="settings"><span class="v18-nav-icon">⚙</span><span class="v18-nav-label">Cài đặt PCCC24</span></li>
         </ul>
+        <button type="button" class="v18-collapse-btn" id="v18-toggle" title="Thu gọn / Mở rộng thanh Dock">⇄ Thu gọn Dock</button>
     </aside>
+
     <main class="wp-main">
         <div class="wp-header">
-            <h1 style="margin:0;font-size:22px;">Quản trị WordPress — PCCC24 (`pccc24-core` + `pccc24-theme`)</h1>
-            <div style="display:flex;gap:8px;">
-                <a href="/pccc24-wp/wp-login/" class="btn-primary" style="background:#50575e;">🔑 Form Đăng nhập (Đã điền sẵn)</a>
-                <a href="/pccc24-wp/" class="btn-primary">🌐 Mở Trang Chủ Frontend</a>
+            <h1>Dashboard V18 — Quản trị PCCC Hoàng Quân Phát</h1>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <a href="/pccc24-wp/wp-login/" class="btn-pill btn-pill-soft">🔑 Trang Đăng nhập</a>
+                <a href="/pccc24-wp/" class="btn-pill btn-pill-dark">🌐 Mở Trang Chủ ↗</a>
             </div>
-        </div>
-
-        <div class="notice-ok">
-            <div>✅ <strong>Đối soát Migration CI4 &rarr; WordPress: 15/15 hạng mục khớp 100%</strong> • Bộ kiểm thử tự động Playwright E2E: <strong>44/44 PASSED</strong>.</div>
-            <div style="margin-top:4px;">🔑 <strong>Thông tin đăng nhập mặc định (Đã điền sẵn):</strong> Tài khoản: <code>admin</code> &nbsp;|&nbsp; Email: <code>admin@pccc24.local</code> &nbsp;|&nbsp; Mật khẩu: <code>pccc24@admin2026</code></div>
         </div>
 
         <section id="tab-dashboard" class="tab-pane active">
-            <div class="card-grid">
-                <div class="stat-card"><div class="num">385</div><div class="lbl">Sản phẩm (`pccc_product`)</div></div>
-                <div class="stat-card"><div class="num">40</div><div class="lbl">Danh mục (`pccc_product_cat`)</div></div>
-                <div class="stat-card"><div class="num">62</div><div class="lbl">Tin tức (`post`)</div></div>
-                <div class="stat-card"><div class="num">14</div><div class="lbl">Dịch vụ (`pccc_service`)</div></div>
-                <div class="stat-card"><div class="num">12</div><div class="lbl">Trang tĩnh (`page`)</div></div>
-                <div class="stat-card"><div class="num">723</div><div class="lbl">Ảnh Media (`wp-content/uploads`)</div></div>
-            </div>
+            <div class="v18-bento-grid">
+                <div class="v18-hero-card">
+                    <div>
+                        <span class="v18-badge">● PCCC24 · DASHBOARD V18</span>
+                        <h2>Hệ thống Quản trị Thiết bị &amp; Dịch vụ PCCC</h2>
+                        <p>Đồng bộ 100% dữ liệu từ PCCC24 sang WordPress: 385 sản phẩm, 40 danh mục, 62 bài viết kỹ thuật, 14 dịch vụ thi công – bảo trì và hệ thống nhận báo giá nhanh.</p>
+                    </div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <button type="button" class="btn-pill btn-pill-dark" onclick="document.querySelector('[data-tab=products]').click()">Xem 385 Sản phẩm &rarr;</button>
+                        <button type="button" class="btn-pill btn-pill-soft" onclick="document.querySelector('[data-tab=settings]').click()">Cấu hình PCCC24</button>
+                    </div>
+                </div>
 
-            <div class="metabox">
-                <div class="metabox-title">Hồ sơ Quản trị viên Mặc định (`profile.php` — Đã điền sẵn)</div>
-                <div class="metabox-body">
-                    <div class="form-row"><label>Tài khoản (`user_login`)</label><input value="admin" readonly></div>
-                    <div class="form-row"><label>Email (`user_email`)</label><input value="admin@pccc24.local"></div>
-                    <div class="form-row"><label>Mật khẩu (`user_pass`)</label><input value="pccc24@admin2026"></div>
+                <div class="stat-card">
+                    <div class="stat-top"><span class="lbl">Thiết bị PCCC</span><span class="ico">🧯</span></div>
+                    <div class="num">385</div>
+                    <div class="trend">↗ 40 danh mục 2 cấp</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top"><span class="lbl">Tin tức &amp; Dịch vụ</span><span class="ico">📰</span></div>
+                    <div class="num">76</div>
+                    <div class="trend">↗ 62 bài viết · 14 dịch vụ</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top"><span class="lbl">Ảnh WebP Tối ưu</span><span class="ico">⚡</span></div>
+                    <div class="num">472</div>
+                    <div class="trend">↗ LCP 0.62s (&lt; 250 KB)</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top"><span class="lbl">Kiểm thử E2E</span><span class="ico">✓</span></div>
+                    <div class="num">71/71</div>
+                    <div class="trend">↗ Playwright + axe-core WCAG</div>
                 </div>
             </div>
 
-            <div class="metabox">
-                <div class="metabox-title">Metabox "Thông tin PCCC24" (Mẫu chỉnh sửa sản phẩm #718 trong wp-admin)</div>
-                <div class="metabox-body">
-                    <div class="form-row"><label>Tên sản phẩm</label><input value="Bình chữa cháy gốc nước công nghệ sinh học Ecosafe"></div>
-                    <div class="form-row"><label>Giá (0 = Liên hệ)</label><input value="0"></div>
-                    <div class="form-row"><label>Nổi bật (1/0)</label><input value="1"></div>
-                    <div class="form-row"><label>SEO Title</label><input value="Bình chữa cháy gốc nước công nghệ sinh học Ecosafe"></div>
-                    <div class="form-row"><label>Thông số kỹ thuật (Tên | Giá trị)</label><textarea rows="5">Chủng loại | Bình chữa cháy gốc nước sinh học
+            <div class="bento-title">
+                <span>Thiết bị mới cập nhật</span>
+                <a href="/pccc24-wp/san-pham/" style="font-size:13px;color:var(--red);text-decoration:none;">Xem tất cả &rarr;</a>
+            </div>
+            <div class="products-bento-grid" id="v18-recent-grid"></div>
+
+            <div class="bento-card">
+                <div class="bento-title"><span>Metabox "Thông tin PCCC24" (Mẫu chỉnh sửa sản phẩm #718)</span></div>
+                <div class="form-row"><label>Tên sản phẩm</label><input value="Bình chữa cháy gốc nước công nghệ sinh học Ecosafe"></div>
+                <div class="form-row"><label>Giá (0 = Liên hệ)</label><input value="0"></div>
+                <div class="form-row"><label>Thông số kỹ thuật</label><textarea rows="4">Chủng loại | Bình chữa cháy gốc nước sinh học
 Model | Ecosafe
 Bảo hành | 12 tháng</textarea></div>
-                    <button class="btn-primary" onclick="alert('Đã lưu thông tin Metabox (Demo)!')">Cập nhật sản phẩm</button>
-                </div>
+                <button class="btn-pill btn-pill-dark" onclick="alert('Đã lưu thông tin Metabox (Demo)!')">Lưu cập nhật</button>
             </div>
         </section>
 
@@ -110,25 +346,28 @@ Bảo hành | 12 tháng</textarea></div>
         </section>
 
         <section id="tab-settings" class="tab-pane">
-            <div class="metabox">
-                <div class="metabox-title">Cài đặt chung PCCC24 (`options-general.php?page=pccc24`)</div>
-                <div class="metabox-body">
-                    <div class="form-row"><label>Tên công ty (`company`)</label><input value="CÔNG TY TNHH MTV HOÀNG QUÂN PHÁT"></div>
-                    <div class="form-row"><label>Địa chỉ (`address`)</label><textarea rows="2">262 Đỗ Mười, Phường Tam Bình, Thành phố Hồ Chí Minh</textarea></div>
-                    <div class="form-row"><label>Điện thoại (`phone`)</label><input value="0982765114"></div>
-                    <div class="form-row"><label>ĐT bán hàng (`phone_sale`)</label><input value="0982765114"></div>
-                    <div class="form-row"><label>ĐT kỹ thuật (`phone_technique`)</label><input value="02866566422"></div>
-                    <div class="form-row"><label>Email (`email`)</label><input value="hoangquanphat@gmail.com"></div>
-                    <div class="form-row"><label>GPKD (`gpkd`)</label><input value="3701888205"></div>
-                    <button class="btn-primary" onclick="alert('Đã lưu cấu hình PCCC24 (Demo)!')">Lưu thay đổi</button>
-                </div>
+            <div class="bento-card">
+                <div class="bento-title"><span>Cài đặt chung PCCC24 (`options-general.php?page=pccc24`)</span></div>
+                <div class="form-row"><label>Tên công ty (`company`)</label><input value="CÔNG TY TNHH MTV HOÀNG QUÂN PHÁT"></div>
+                <div class="form-row"><label>Địa chỉ (`address`)</label><textarea rows="2">262 Đỗ Mười, Phường Tam Bình, Thành phố Hồ Chí Minh</textarea></div>
+                <div class="form-row"><label>Điện thoại (`phone`)</label><input value="0982765114"></div>
+                <div class="form-row"><label>ĐT bán hàng (`phone_sale`)</label><input value="0982765114"></div>
+                <div class="form-row"><label>ĐT kỹ thuật (`phone_technique`)</label><input value="02866566422"></div>
+                <div class="form-row"><label>Email (`email`)</label><input value="hoangquanphat@gmail.com"></div>
+                <div class="form-row"><label>GPKD (`gpkd`)</label><input value="3701888205"></div>
+                <button class="btn-pill btn-pill-dark" onclick="alert('Đã lưu cấu hình PCCC24 (Demo)!')">Lưu thay đổi</button>
             </div>
         </section>
     </main>
     <script>
-        document.querySelectorAll('.wp-nav li').forEach(function(li) {
+        var dock = document.getElementById('v18-dock');
+        document.getElementById('v18-toggle').addEventListener('click', function() {
+            dock.classList.toggle('is-collapsed');
+            this.textContent = dock.classList.contains('is-collapsed') ? '⇄' : '⇄ Thu gọn Dock';
+        });
+        document.querySelectorAll('.v18-nav li').forEach(function(li) {
             li.addEventListener('click', function() {
-                document.querySelectorAll('.wp-nav li').forEach(x => x.classList.remove('active'));
+                document.querySelectorAll('.v18-nav li').forEach(x => x.classList.remove('active'));
                 document.querySelectorAll('.tab-pane').forEach(x => x.classList.remove('active'));
                 li.classList.add('active');
                 document.getElementById('tab-' + li.dataset.tab).classList.add('active');
@@ -138,8 +377,18 @@ Bảo hành | 12 tháng</textarea></div>
         fetch('/pccc24-wp/wp-json/pccc24/v1/products-all.json')
             .then(r => r.json())
             .then(list => {
+                var recent = document.getElementById('v18-recent-grid');
+                if (recent) {
+                    recent.innerHTML = list.slice(0, 8).map(p =>
+                        '<a class="product-bento-card" href="' + p.url + '" target="_blank">' +
+                        '<img src="' + p.image_url + '" alt="" loading="lazy">' +
+                        '<b>' + p.name + '</b>' +
+                        '<span>#' + p.id + ' · ' + (p.price > 0 ? p.price.toLocaleString('vi-VN') + 'đ' : 'Liên hệ') + '</span>' +
+                        '</a>'
+                    ).join('');
+                }
                 var tbody = document.getElementById('admin-products-tbody');
-                tbody.innerHTML = list.slice(0, 40).map(p =>
+                tbody.innerHTML = list.slice(0, 50).map(p =>
                     '<tr><td><strong>#' + p.id + '</strong></td><td><a href="' + p.url + '" target="_blank">' + p.name + '</a></td><td>' + (p.price > 0 ? p.price.toLocaleString('vi-VN') + 'đ' : 'Liên hệ') + '</td><td><a href="' + p.url + '" target="_blank">Xem ngoài trang &rarr;</a></td></tr>'
                 ).join('');
             });

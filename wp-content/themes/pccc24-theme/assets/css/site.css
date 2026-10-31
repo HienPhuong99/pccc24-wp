@@ -867,11 +867,6 @@ main { padding: 18px 0 0; }
 .share a { text-decoration: underline; text-underline-offset: 3px; }
 .product-body { margin-top: 28px; }
 
-.contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
-.contact dl { display: grid; grid-template-columns: max-content 1fr; gap: 10px 20px; margin: 0; }
-.contact dt { color: var(--ink-soft); }
-.contact dd { margin: 0; font-weight: 500; }
-.contact iframe { width: 100%; height: 100%; min-height: 320px; border: 0; border-radius: 16px; }
 
 /* ---------- Footer theo PCCC24 iOS Handoff (Section 9) ---------- */
 .footer {
@@ -1109,7 +1104,6 @@ dialog::backdrop {
   .with-side { grid-template-columns: 1fr; }
   .with-side > aside { display: none; }
   .grid-products.row-products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .contact { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   .wrap { padding: 0 14px; }
@@ -1131,7 +1125,7 @@ dialog::backdrop {
 .search input { min-height: 26px; }
 .slide-dots button { position: relative; }
 .slide-dots button::after { content: ""; position: absolute; inset: -9px -4px; } /* vùng chạm ~24px, chấm vẫn 7px */
-.share a, .ios-row-link, .section-head > a, .contact dd > a { display: inline-block; padding-block: 6px; }
+.share a, .ios-row-link, .section-head > a { display: inline-block; padding-block: 6px; }
 @media (max-width: 900px) {
   .ios-header-actions { flex-basis: 100%; } /* README: ô tìm kiếm xuống hàng 2 full width */
 }
@@ -1140,3 +1134,103 @@ dialog::backdrop {
   .hero-banner, .slides, .slides > .slide { min-height: 0; }
   .hero-banner { aspect-ratio: 1364 / 495; }
 }
+
+/* ---------- Trang Liên hệ (/contacts): cùng ngôn ngữ thẻ với trang chủ ---------- */
+.contact-hero { display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch; }
+.contact-card, .contact-form-card {
+  flex: 1 1 340px;
+  min-width: 0;
+  border-radius: 22px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 1px 2px rgba(29, 35, 41, .06), 0 8px 24px rgba(29, 35, 41, .06);
+}
+.contact-card { background: #fff; }
+.contact-form-card { background: var(--tag-card); }
+.contact-card-title { margin: 0; font: 700 24px/1.15 var(--display); letter-spacing: -.02em; }
+.contact-card-sub { margin: 0; font-size: 15px; line-height: 1.45; color: var(--ink-soft); }
+.contact-rows { border-radius: 14px; overflow: hidden; background: rgba(118, 118, 128, .06); }
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  min-height: 60px;
+  color: var(--ink);
+  transition: background-color 150ms var(--ease-out);
+}
+.contact-row + .contact-row { border-top: 1px solid var(--ios-sep); }
+.contact-row:hover { background: rgba(118, 118, 128, .08); color: var(--ink); }
+.contact-row:active { transform: scale(.99); }
+.contact-ic {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--exit);
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+}
+.contact-ic svg { width: 20px; height: 20px; }
+.contact-row.is-zalo .contact-ic { background: #0068ff; }
+.contact-row.is-mail .contact-ic { background: var(--ink); }
+.contact-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.contact-txt small { font-size: 13px; color: var(--ink-soft); }
+.contact-txt b { font-size: 17px; font-weight: 600; color: var(--exit); overflow-wrap: anywhere; }
+.contact-row.is-zalo .contact-txt b { color: #0052cc; } /* #0068ff không đủ tương phản (axe) trên nền xám nhạt */
+.contact-row.is-mail .contact-txt b { color: var(--ink); font-size: 15px; }
+.contact-row .chev { color: rgba(29, 35, 41, .3); font-size: 22px; }
+.contact-form-card form { display: flex; flex-direction: column; }
+.contact-form-card .ios-sheet-group { margin-bottom: 12px; }
+
+.contact-stats .stat-num { min-width: 64px; font: 700 28px/1 var(--display); letter-spacing: -.02em; color: var(--red); }
+
+.about-grid { display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch; }
+.about-text { flex: 2 1 480px; min-width: 0; }
+.about-text p { margin: 0 0 12px; font-size: 15px; line-height: 1.6; }
+.about-text p:last-child { margin-bottom: 0; }
+.hsnl-card {
+  flex: 1 1 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 22px;
+  border-radius: 22px;
+  background: var(--ink);
+  color: #fff;
+  text-align: center;
+}
+.hsnl-card:hover { color: #fff; }
+.hsnl-card img { width: 150px; height: auto; border-radius: 8px; box-shadow: 0 10px 24px rgba(0, 0, 0, .35); transition: transform 180ms var(--ease-out); }
+.hsnl-card:hover img { transform: translateY(-3px) rotate(-1deg); }
+.hsnl-txt { display: flex; flex-direction: column; gap: 2px; }
+.hsnl-txt b { font-size: 18px; }
+.hsnl-txt small { font-size: 13px; color: rgba(255, 255, 255, .7); }
+.hsnl-card .btn { width: 100%; justify-content: center; }
+
+.project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 14px; }
+.project-card {
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(29, 35, 41, .05);
+  transition: transform 180ms var(--ease-out);
+}
+.project-card:hover { transform: translateY(-2px); color: var(--ink); }
+.project-card img { width: 100%; height: auto; aspect-ratio: 5 / 3; object-fit: cover; display: block; }
+.project-card span { display: block; padding: 12px 14px 14px; font-weight: 600; font-size: 15px; }
+
+.cert-grid { display: grid; gap: 14px; }
+.cert-grid figure { margin: 0; padding: 16px; }
+.cert-grid figcaption { font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 8px; }
+.cert-grid img { width: 100%; max-width: 760px; height: auto; display: block; margin: 0 auto; }
+
+.cat-list .cat-all { border-bottom: 1px solid var(--ios-sep); margin-bottom: 4px; padding-bottom: 4px; }
+.cat-list .cat-all a { font-weight: 600; }

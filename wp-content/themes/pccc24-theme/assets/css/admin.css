@@ -1,154 +1,527 @@
-/* wp-admin + trang đăng nhập theo phong cách iOS của site (design_handoff_pccc24_ios). Chỉ CSS, không đổi markup WP. */
+/* ==========================================================================
+   PCCC24 WP-Admin — Dashboard V18 Style (V18.mp4)
+   - Floating Dark Pill Sidebar Dock (#adminmenuwrap)
+   - Zero WordPress Default Blue (#2271b1) — White Pill Active + Dark Pill Flyout
+   - Bento Grid Cards (rounded-2xl / 22px) with subtle -5px hover lift
+   - Frosted Light Topbar (#wpadminbar)
+   ========================================================================== */
 :root {
+  --v18-bg: #f3f4f7;
+  --v18-dock: #14161b;
+  --v18-dock-soft: #1e2128;
+  --v18-ink: #14161b;
+  --v18-muted: #646b78;
   --red: #c8201a;
   --red-dark: #9e1712;
-  --ink: #1d2329;
-  --ink-soft: #4a545e;
-  --concrete: #eef0ee;
-  --ios-fill: rgba(118, 118, 128, .12);
-  --ios-sep: rgba(29, 35, 41, .08);
-  --card-shadow: 0 1px 2px rgba(29, 35, 41, .06), 0 8px 24px rgba(29, 35, 41, .06);
-  --wp-admin-theme-color: #c8201a;
-  --wp-admin-theme-color--rgb: 200, 32, 26;
-  --wp-admin-theme-color-darker-10: #9e1712;
-  --wp-admin-theme-color-darker-10--rgb: 158, 23, 18;
-  --wp-admin-theme-color-darker-20: #7d120e;
-  --wp-admin-theme-color-darker-20--rgb: 125, 18, 14;
+  --emerald: #0b7a4b;
+  --ios-fill: rgba(118, 118, 128, .11);
+  --ios-sep: rgba(20, 22, 27, .07);
+  --v18-shadow: 0 2px 6px rgba(20, 22, 27, .04), 0 12px 28px rgba(20, 22, 27, .05);
+  --v18-shadow-hover: 0 8px 20px rgba(20, 22, 27, .08), 0 20px 38px rgba(20, 22, 27, .08);
+  --wp-admin-theme-color: #14161b;
+  --wp-admin-theme-color--rgb: 20, 22, 27;
+  --wp-admin-theme-color-darker-10: #c8201a;
+  --wp-admin-theme-color-darker-10--rgb: 200, 32, 26;
+  --wp-admin-theme-color-darker-20: #9e1712;
+  --wp-admin-theme-color-darker-20--rgb: 158, 23, 18;
 }
 
-body.wp-admin, body.login {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Be Vietnam Pro", system-ui, sans-serif;
-  background: var(--concrete);
-  color: var(--ink);
+body.wp-admin,
+body.login {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Be Vietnam Pro", system-ui, sans-serif;
+  background: var(--v18-bg) !important;
+  color: var(--v18-ink);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ---------- Thanh trên + menu trái ---------- */
+/* ---------- 1. Thanh Topbar Kính Mờ Sáng (#wpadminbar) ---------- */
 #wpadminbar {
-  background: rgba(29, 35, 41, .94);
+  background: rgba(243, 244, 247, .86) !important;
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--ios-sep);
+  color: var(--v18-ink) !important;
+  box-shadow: none !important;
 }
-#adminmenuback, #adminmenuwrap, #adminmenu { background: var(--ink); }
-#adminmenu a { color: rgba(255, 255, 255, .82); }
-#adminmenu div.wp-menu-image::before { color: rgba(255, 255, 255, .55); }
-body:not(.folded) #adminmenu li.menu-top > a.menu-top { margin: 1px 8px; border-radius: 10px; }
-#adminmenu li.menu-top:hover > a.menu-top,
-#adminmenu li.opensub > a.menu-top,
-#adminmenu li > a.menu-top:focus { background: rgba(255, 255, 255, .08); color: #fff; }
-#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,
-#adminmenu li.current a.menu-top,
-#adminmenu .wp-menu-arrow, #adminmenu .wp-menu-arrow div { background: var(--red); color: #fff; }
-#adminmenu li.wp-has-current-submenu div.wp-menu-image::before,
-#adminmenu li.current div.wp-menu-image::before,
-#adminmenu li:hover div.wp-menu-image::before { color: #fff; }
-ul#adminmenu a.wp-has-current-submenu::after,
-ul#adminmenu > li.current > a.current::after { display: none; } /* bỏ tam giác xám của WP */
-#adminmenu .wp-submenu, #adminmenu .wp-has-current-submenu .wp-submenu { background: #161b20; }
-#adminmenu .wp-has-current-submenu .wp-submenu { background: transparent; padding: 4px 0 8px; }
-#adminmenu .wp-submenu { border-radius: 0 12px 12px 0; }
-#adminmenu .wp-submenu a { color: rgba(255, 255, 255, .68); }
-#adminmenu .wp-submenu a:hover, #adminmenu .wp-submenu a:focus { color: #fff; }
-#adminmenu .wp-submenu li.current a { color: #fff; font-weight: 600; }
-#adminmenu .awaiting-mod, #adminmenu .update-plugins { background: var(--red); }
-#collapse-button { color: rgba(255, 255, 255, .6); }
+#wpadminbar #wp-admin-bar-wp-logo,
+#wpadminbar #wp-admin-bar-comments,
+#wpadminbar #wp-admin-bar-updates {
+  display: none !important;
+}
+#wpadminbar .ab-item,
+#wpadminbar a.ab-item,
+#wpadminbar > #wp-toolbar span.ab-label,
+#wpadminbar > #wp-toolbar span.noticon,
+#wpadminbar .ab-icon::before,
+#wpadminbar .ab-item::before {
+  color: var(--v18-ink) !important;
+}
+#wpadminbar .ab-top-menu > li.hover > .ab-item,
+#wpadminbar.nojq .quicklinks .ab-top-menu > li > .ab-item:focus,
+#wpadminbar:not(.mobile) .ab-top-menu > li:hover > .ab-item,
+#wpadminbar:not(.mobile) .ab-top-menu > li > .ab-item:focus {
+  background: rgba(20, 22, 27, .07) !important;
+  color: var(--red) !important;
+  border-radius: 10px;
+}
+#wpadminbar .menupop .ab-sub-wrapper {
+  background: #fff !important;
+  border-radius: 14px !important;
+  box-shadow: 0 12px 32px rgba(20, 22, 27, .14) !important;
+  border: 1px solid var(--ios-sep) !important;
+  padding: 6px !important;
+}
+#wpadminbar .ab-submenu .ab-item {
+  color: var(--v18-ink) !important;
+  border-radius: 8px;
+}
+#wpadminbar .quicklinks .menupop ul li a:hover {
+  background: var(--v18-bg) !important;
+  color: var(--red) !important;
+}
 
-/* ---------- Tiêu đề, liên kết, nút ---------- */
-#wpbody-content a { color: var(--red); }
-#wpbody-content a:hover { color: var(--red-dark); }
-.wrap h1.wp-heading-inline, .wrap > h1 { font-size: 28px; font-weight: 700; letter-spacing: -.02em; color: var(--ink); }
-.wp-core-ui .button, .wp-core-ui .button-secondary, .wrap .page-title-action {
+/* ---------- 2. V18 Floating Pill Sidebar Dock (#adminmenuwrap) ---------- */
+#adminmenuback {
+  display: none !important;
+}
+#adminmenuwrap {
+  background: var(--v18-dock) !important;
+  border-radius: 24px !important;
+  margin: 12px 0 12px 12px !important;
+  padding: 10px 0 !important;
+  box-shadow: 0 18px 42px rgba(20, 22, 27, .24), inset 0 0 0 1px rgba(255, 255, 255, .08) !important;
+}
+@media (min-width: 783px) {
+  body:not(.folded) #adminmenuwrap {
+    width: 176px !important;
+  }
+  body:not(.folded) #adminmenu,
+  body:not(.folded) #adminmenu .wp-submenu {
+    width: 176px !important;
+  }
+  body:not(.folded) #wpcontent,
+  body:not(.folded) #wpfooter {
+    margin-left: 202px !important;
+  }
+  body.folded #adminmenuwrap {
+    width: 58px !important;
+    border-radius: 999px !important;
+    padding: 12px 0 !important;
+  }
+  body.folded #adminmenu {
+    width: 58px !important;
+  }
+  body.folded #wpcontent,
+  body.folded #wpfooter {
+    margin-left: 84px !important;
+  }
+}
+
+#adminmenu {
+  background: transparent !important;
+  margin: 0 !important;
+}
+#adminmenu li.wp-menu-separator {
+  height: 1px !important;
+  margin: 8px 16px !important;
+  background: rgba(255, 255, 255, .08) !important;
+}
+#adminmenu a {
+  color: rgba(255, 255, 255, .74) !important;
+}
+#adminmenu div.wp-menu-image::before {
+  color: rgba(255, 255, 255, .62) !important;
+  transition: color 150ms ease, transform 150ms ease;
+}
+
+/* Mục menu cấp 1 kiểu V18 Pill */
+body:not(.folded) #adminmenu li.menu-top > a.menu-top {
+  margin: 3px 10px !important;
+  border-radius: 14px !important;
+  padding: 3px 6px !important;
+  transition: background-color 160ms cubic-bezier(.23, 1, .32, 1), color 160ms, transform 160ms;
+}
+body.folded #adminmenu li.menu-top > a.menu-top {
+  width: 42px !important;
+  height: 42px !important;
+  margin: 4px auto !important;
+  border-radius: 999px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Hover / Opensub: Xoá sạch màu xanh dương #2271b1 mặc định của WordPress */
+#adminmenu li.menu-top:hover,
+#adminmenu li.opensub > a.menu-top,
+#adminmenu li > a.menu-top:focus,
+#adminmenu li.menu-top:hover > a.menu-top {
+  background: rgba(255, 255, 255, .10) !important;
+  color: #fff !important;
+}
+#adminmenu li.menu-top:hover div.wp-menu-image::before,
+#adminmenu li.opensub > a.menu-top div.wp-menu-image::before {
+  color: #fff !important;
+  transform: scale(1.06);
+}
+
+/* Mục đang chọn (Active): Viên thuốc trắng nổi bật trên nền Dock đen giống hệt V18.mp4 */
+#adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu,
+#adminmenu li.current > a.menu-top {
+  background: #ffffff !important;
+  color: var(--v18-dock) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .22) !important;
+}
+#adminmenu li.wp-has-current-submenu > a.wp-has-current-submenu div.wp-menu-image::before,
+#adminmenu li.current > a.menu-top div.wp-menu-image::before {
+  color: var(--red) !important;
+}
+ul#adminmenu a.wp-has-current-submenu::after,
+ul#adminmenu > li.current > a.current::after,
+#adminmenu li.wp-has-submenu.wp-not-current-submenu.opensub:hover::after,
+#adminmenu li.wp-has-submenu.wp-not-current-submenu:focus-within::after {
+  display: none !important;
+}
+
+/* Submenu đang mở bên dưới mục Active */
+#adminmenu .wp-has-current-submenu .wp-submenu,
+#adminmenu .wp-has-current-submenu .wp-submenu.sub-open,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu {
+  background: transparent !important;
+  padding: 6px 10px 8px !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+#adminmenu .wp-has-current-submenu .wp-submenu li a {
+  border-radius: 10px !important;
+  padding: 6px 12px !important;
+  color: rgba(255, 255, 255, .68) !important;
+}
+#adminmenu .wp-has-current-submenu .wp-submenu li.current a,
+#adminmenu .wp-has-current-submenu .wp-submenu li a:hover {
+  background: rgba(255, 255, 255, .10) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+/* Submenu Flyout nổi bên phải khi rê chuột (giống Tooltip đen bo tròn trong V18.mp4) */
+#adminmenu li.wp-not-current-submenu .wp-submenu,
+.folded #adminmenu .wp-has-current-submenu .wp-submenu {
+  background: var(--v18-dock) !important;
+  border-radius: 16px !important;
+  margin-left: 10px !important;
+  padding: 8px !important;
+  box-shadow: 0 14px 34px rgba(20, 22, 27, .32), inset 0 0 0 1px rgba(255, 255, 255, .10) !important;
+  border: 0 !important;
+}
+#adminmenu li.wp-not-current-submenu .wp-submenu li a,
+.folded #adminmenu .wp-submenu li a {
+  border-radius: 10px !important;
+  padding: 7px 12px !important;
+  color: rgba(255, 255, 255, .82) !important;
+}
+#adminmenu li.wp-not-current-submenu .wp-submenu li a:hover,
+.folded #adminmenu .wp-submenu li a:hover {
+  background: rgba(255, 255, 255, .12) !important;
+  color: #fff !important;
+}
+#adminmenu .wp-submenu-head {
+  color: #fff !important;
+  font-weight: 700 !important;
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, .08) !important;
+  margin-bottom: 4px !important;
+}
+#adminmenu .awaiting-mod,
+#adminmenu .update-plugins {
+  background: var(--red) !important;
+  color: #fff !important;
+}
+#collapse-button {
+  color: rgba(255, 255, 255, .65) !important;
+  margin: 4px 10px !important;
+  border-radius: 12px !important;
+}
+#collapse-button:hover {
+  background: rgba(255, 255, 255, .10) !important;
+  color: #fff !important;
+}
+
+/* ---------- 3. Bento Grid Dashboard V18 (Hero + Stat Cards whileHover y:-5) ---------- */
+.v18-bento-wrap {
+  margin: 16px 0 22px;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+@media (max-width: 1100px) {
+  .v18-bento-wrap {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 782px) {
+  .v18-bento-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+.v18-hero-card {
+  grid-row: span 2;
+  border-radius: 24px;
+  padding: 26px 28px;
+  background: linear-gradient(128deg, #e9d5ff 0%, #fbcfe8 52%, #dbeafe 100%);
+  box-shadow: var(--v18-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 220ms cubic-bezier(.23, 1, .32, 1), box-shadow 220ms;
+}
+.v18-hero-card:hover,
+.v18-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--v18-shadow-hover);
+}
+.v18-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .72);
+  backdrop-filter: blur(8px);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--v18-ink);
+  letter-spacing: .02em;
+}
+.v18-hero-title {
+  margin: 8px 0 6px;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -.03em;
+  color: var(--v18-ink);
+}
+.v18-hero-sub {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(20, 22, 27, .74);
+  max-width: 44ch;
+}
+.v18-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.v18-btn-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--v18-dock);
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 13.5px;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(20, 22, 27, .20);
+  transition: transform 150ms ease, background-color 150ms;
+}
+.v18-btn-dark:hover {
+  background: var(--red);
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+.v18-btn-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .78);
+  color: var(--v18-ink) !important;
+  font-weight: 600;
+  font-size: 13.5px;
+  text-decoration: none;
+}
+.v18-btn-glass:hover {
+  background: #fff;
+}
+
+.v18-stat-card {
+  background: #fff;
+  border-radius: 22px;
+  padding: 20px 22px;
+  box-shadow: var(--v18-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--v18-ink) !important;
+  transition: transform 220ms cubic-bezier(.23, 1, .32, 1), box-shadow 220ms;
+}
+.v18-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.v18-stat-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--v18-muted);
+}
+.v18-stat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  background: var(--v18-bg);
+  color: var(--v18-ink);
+}
+.v18-stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -.03em;
+  color: var(--v18-ink);
+}
+.v18-stat-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--emerald);
+}
+
+/* ---------- 4. Nút bấm, Ô nhập, Bảng danh sách & Postbox kiểu Bento V18 ---------- */
+#wpbody-content a { color: var(--v18-ink); }
+#wpbody-content a:hover { color: var(--red); }
+.wrap h1.wp-heading-inline, .wrap > h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -.025em;
+  color: var(--v18-ink);
+}
+.wp-core-ui .button,
+.wp-core-ui .button-secondary,
+.wrap .page-title-action {
   border-radius: 999px;
   border-color: transparent;
   background: var(--ios-fill);
-  color: var(--ink);
-  min-height: 32px;
-  padding: 0 14px;
+  color: var(--v18-ink);
+  min-height: 34px;
+  padding: 0 15px;
+  font-weight: 500;
   transition: transform 120ms cubic-bezier(.23, 1, .32, 1), background-color 150ms;
 }
-.wp-core-ui .button:hover, .wrap .page-title-action:hover { background: rgba(118, 118, 128, .2); border-color: transparent; color: var(--ink); }
-.wp-core-ui .button:active, .wrap .page-title-action:active { transform: scale(.97); }
-.wp-core-ui .button-primary, #wpbody-content .wrap .page-title-action {
-  background: var(--red);
-  border-color: var(--red);
-  color: #fff;
+.wp-core-ui .button:hover,
+.wrap .page-title-action:hover {
+  background: rgba(118, 118, 128, .18);
+  border-color: transparent;
+  color: var(--v18-ink);
+}
+.wp-core-ui .button:active,
+.wrap .page-title-action:active {
+  transform: scale(.97);
+}
+.wp-core-ui .button-primary,
+#wpbody-content .wrap .page-title-action {
+  background: var(--v18-dock);
+  border-color: var(--v18-dock);
+  color: #fff !important;
   font-weight: 600;
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(20, 22, 27, .16);
   text-shadow: none;
 }
-.wp-core-ui .button-primary:hover, .wp-core-ui .button-primary:focus, #wpbody-content .wrap .page-title-action:hover {
-  background: var(--red-dark);
-  border-color: var(--red-dark);
-  color: #fff;
+.wp-core-ui .button-primary:hover,
+.wp-core-ui .button-primary:focus,
+#wpbody-content .wrap .page-title-action:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff !important;
 }
-.wp-core-ui .button:focus, .wp-core-ui .button-primary:focus { box-shadow: 0 0 0 3px rgba(200, 32, 26, .22); }
-#wpbody-content a.submitdelete, #wpbody-content .row-actions .trash a, #wpbody-content .row-actions .delete a { color: var(--red); }
+#wpbody-content a.submitdelete,
+#wpbody-content .row-actions .trash a,
+#wpbody-content .row-actions .delete a {
+  color: var(--red) !important;
+}
 
-/* ---------- Ô nhập ---------- */
+/* Ô nhập */
 .wp-core-ui input[type=text], .wp-core-ui input[type=search], .wp-core-ui input[type=email], .wp-core-ui input[type=url],
-.wp-core-ui input[type=number], .wp-core-ui input[type=password], .wp-core-ui input[type=tel], .wp-core-ui textarea, .wp-core-ui select {
-  border: 1px solid rgba(29, 35, 41, .14);
-  border-radius: 10px;
+.wp-core-ui input[type=number], .wp-core-ui input[type=password], .wp-core-ui input[type=tel], .wp-core-ui input:not([type]), .wp-core-ui textarea, .wp-core-ui select {
+  border: 1px solid rgba(20, 22, 27, .12);
+  border-radius: 12px;
   box-shadow: none;
   background-color: #fff;
 }
 .wp-core-ui input[type=text], .wp-core-ui input[type=search], .wp-core-ui input[type=email], .wp-core-ui input[type=url],
-.wp-core-ui input[type=number], .wp-core-ui input[type=password], .wp-core-ui input[type=tel] { min-height: 36px; padding: 0 12px; }
+.wp-core-ui input[type=number], .wp-core-ui input[type=password], .wp-core-ui input[type=tel], .wp-core-ui input:not([type]) {
+  min-height: 36px;
+  padding: 0 12px;
+}
 .wp-core-ui input:focus, .wp-core-ui textarea:focus, .wp-core-ui select:focus {
-  border-color: var(--red);
-  box-shadow: 0 0 0 3px rgba(200, 32, 26, .15);
+  border-color: var(--v18-dock);
+  box-shadow: 0 0 0 3px rgba(20, 22, 27, .10);
   outline: none;
 }
-.wp-core-ui input[type=checkbox]:checked { background: var(--red); border-color: var(--red); }
+.wp-core-ui input[type=checkbox]:checked { background: var(--v18-dock); border-color: var(--v18-dock); }
 .wp-core-ui input[type=checkbox]:checked::before { filter: brightness(0) invert(1); }
-.wp-core-ui input[type=radio]:checked::before { background-color: var(--red); }
-.wp-core-ui input[type=checkbox], .wp-core-ui input[type=radio] { border-color: rgba(29, 35, 41, .3); }
-#titlediv #title { border-radius: 12px; font-size: 20px; padding: 8px 14px; }
+.wp-core-ui input[type=radio]:checked::before { background-color: var(--v18-dock); }
+#titlediv #title { border-radius: 14px; font-size: 20px; padding: 8px 14px; }
 
-/* ---------- Thẻ (postbox, bảng danh sách, form cài đặt) ---------- */
+/* Thẻ Bento (postbox, bảng danh sách, form cài đặt) */
 .postbox, .wp-list-table, .wrap > .card, #col-left .form-wrap,
 .wrap > form > .form-table, .wrap > .form-table, .wp-editor-container {
-  border: 0;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: var(--card-shadow);
+  border: 0 !important;
+  border-radius: 20px !important;
+  background: #fff !important;
+  box-shadow: var(--v18-shadow) !important;
 }
 .wp-list-table, .wp-editor-container { overflow: hidden; }
 .postbox .postbox-header { border-bottom: 1px solid var(--ios-sep); }
-.postbox .postbox-header .hndle { font-size: 15px; font-weight: 600; }
-.postbox .handle-order-higher, .postbox .handle-order-lower, .postbox .handlediv { color: var(--ink-soft); }
-#col-left .form-wrap { padding: 16px 20px; }
-.wrap > form > .form-table, .wrap > .form-table { border-collapse: separate; padding: 4px 8px; }
-.form-table th { font-weight: 600; color: var(--ink); }
+.postbox .postbox-header .hndle { font-size: 15px; font-weight: 700; }
+#col-left .form-wrap { padding: 18px 22px; }
+.wrap > form > .form-table, .wrap > .form-table { border-collapse: separate; padding: 8px 14px; }
+.form-table th { font-weight: 600; color: var(--v18-ink); }
 
 .wp-list-table thead th, .wp-list-table thead td, .wp-list-table tfoot th, .wp-list-table tfoot td {
-  background: rgba(118, 118, 128, .06);
+  background: #f9fafb;
   border-bottom: 1px solid var(--ios-sep);
   font-size: 12px;
-  font-weight: 600;
-  color: var(--ink-soft);
+  font-weight: 700;
+  color: var(--v18-muted);
 }
-.wp-list-table tfoot th, .wp-list-table tfoot td { border-top: 1px solid var(--ios-sep); border-bottom: 0; }
 .striped > tbody > :nth-child(odd), .alternate { background: #fff; }
 .wp-list-table tbody tr + tr td, .wp-list-table tbody tr + tr th { border-top: 1px solid var(--ios-sep); }
-.wp-list-table tbody tr:hover td, .wp-list-table tbody tr:hover th { background: #fafbfa; }
-#wpbody-content .row-title { color: var(--ink); font-weight: 600; }
-.subsubsub a .count { color: var(--ink-soft); }
-.subsubsub a.current { color: var(--ink); }
+.wp-list-table tbody tr:hover td, .wp-list-table tbody tr:hover th { background: #f8f9fc; }
+#wpbody-content .row-title { color: var(--v18-ink); font-weight: 600; }
+#wpbody-content .row-title:hover { color: var(--red); }
 
-/* ---------- Thông báo ---------- */
+/* Thông báo */
 .notice, div.updated, div.error {
   border: 0;
-  border-left: 4px solid var(--red);
-  border-radius: 12px;
-  box-shadow: var(--card-shadow);
+  border-left: 4px solid var(--v18-dock);
+  border-radius: 14px;
+  box-shadow: var(--v18-shadow);
 }
-.notice-success, div.updated { border-left-color: #0b7a4b; }
+.notice-success, div.updated { border-left-color: var(--emerald); }
 .notice-warning { border-left-color: #f3c623; }
-#screen-meta-links .show-settings { border-radius: 0 0 10px 10px; border-color: transparent; }
 
-/* ---------- Trang đăng nhập ---------- */
-body.login { display: flex; align-items: center; min-height: 100vh; }
-.login #login { padding: 24px 0; }
+/* ---------- 5. Trang đăng nhập (/wp-login.php) kiểu V18 ---------- */
+.login #login { padding: 8vh 0 24px; }
 .login h1 a {
   width: 220px;
   height: 64px;
@@ -157,16 +530,21 @@ body.login { display: flex; align-items: center; min-height: 100vh; }
 }
 .login form {
   border: 0;
-  border-radius: 22px;
-  box-shadow: var(--card-shadow);
-  padding: 24px;
+  border-radius: 24px;
+  box-shadow: var(--v18-shadow-hover);
+  padding: 26px;
 }
-.login label { font-weight: 600; color: var(--ink); }
-.login .forgetmenot { margin-bottom: 4px; }
-.login .forgetmenot label { font-weight: 400; }
-.login .submit .button-primary { float: none; width: 100%; min-height: 44px; margin-top: 16px; font-size: 15px; }
-.login .button.wp-hide-pw { background: transparent; min-height: 36px; }
-.login .button.wp-hide-pw .dashicons { color: var(--ink-soft); }
-.login #nav a, .login #backtoblog a { color: var(--ink-soft); }
-.login #nav a:hover, .login #backtoblog a:hover { color: var(--red); }
-.login .message, .login .notice, .login #login_error { border-radius: 12px; }
+.login label { font-weight: 600; color: var(--v18-ink); }
+.login .submit .button-primary {
+  float: none;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 16px;
+  font-size: 15px;
+  background: var(--v18-dock);
+  border-color: var(--v18-dock);
+}
+.login .submit .button-primary:hover {
+  background: var(--red);
+  border-color: var(--red);
+}
