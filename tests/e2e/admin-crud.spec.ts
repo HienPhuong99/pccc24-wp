@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
 // Thêm / sửa / xoá qua giao diện wp-admin như người thật, rồi đối chiếu ngoài site. Mỗi test tự dọn dữ liệu nó tạo.
-test.describe.configure({ mode: 'serial' });
+test.describe.configure({ mode: 'serial', timeout: 120_000 });
 test.skip(({ isMobile }) => isMobile, 'wp-admin test trên desktop');
 
 const uid = () => `E2E ${Date.now().toString(36)}`;

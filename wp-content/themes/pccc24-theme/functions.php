@@ -522,14 +522,79 @@ add_action('login_footer', function () {
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
 
-// wp-admin + trang đăng nhập dùng cùng phong cách iOS với site (assets/css/admin.css).
-add_action('admin_enqueue_scripts', fn() => wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '1'));
+// wp-admin + trang đăng nhập dùng phong cách Dashboard V18 (V18.mp4) trong assets/css/admin.css.
+add_action('admin_enqueue_scripts', fn() => wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '2'));
 add_action('login_enqueue_scripts', function () {
-    wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '1');
+    wp_enqueue_style('pccc24-admin', pccc24_theme_asset('css/admin.css'), [], '2');
     wp_add_inline_style('pccc24-admin', '.login h1 a{background-image:url(' . esc_url(pccc24_get_setting('logo', false)) . ')}');
 });
 add_filter('login_headerurl', fn() => home_url('/'));
 add_filter('login_headertext', fn() => 'PCCC24 - Hoàng Quân Phát');
+
+// Khối Bento Grid Dashboard V18 trên màn hình Bảng tin (/wp-admin/index.php)
+add_action('admin_notices', function () {
+    $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+    if (!$screen || $screen->id !== 'dashboard') {
+        return;
+    }
+    $prod_count = (int) (wp_count_posts('pccc_product')->publish ?? 0);
+    $post_count = (int) (wp_count_posts('post')->publish ?? 0);
+    $serv_count = (int) (wp_count_posts('pccc_service')->publish ?? 0);
+    $quote_obj  = wp_count_posts('pccc_quote');
+    $quote_cnt  = (int) (($quote_obj->private ?? 0) + ($quote_obj->publish ?? 0));
+    ?>
+    <div class="v18-bento-wrap">
+        <div class="v18-hero-card">
+            <div>
+                <span class="v18-hero-badge">● PCCC24 · DASHBOARD V18</span>
+                <h2 class="v18-hero-title">Hệ thống Quản trị PCCC Hoàng Quân Phát</h2>
+                <p class="v18-hero-sub">Quản lý toàn bộ danh mục thiết bị PCCC, dịch vụ thi công – bảo trì, bài viết kỹ thuật và yêu cầu báo giá của khách hàng.</p>
+            </div>
+            <div class="v18-hero-actions">
+                <a class="v18-btn-dark" href="<?= esc_url(admin_url('post-new.php?post_type=pccc_product')) ?>">+ Thêm sản phẩm mới</a>
+                <a class="v18-btn-glass" href="<?= esc_url(admin_url('options-general.php?page=pccc24')) ?>">Cài đặt PCCC24</a>
+                <a class="v18-btn-glass" href="<?= esc_url(home_url('/')) ?>" target="_blank" rel="noopener">Xem trang chủ ↗</a>
+            </div>
+        </div>
+
+        <a class="v18-stat-card" href="<?= esc_url(admin_url('edit.php?post_type=pccc_product')) ?>">
+            <div class="v18-stat-top">
+                <span class="v18-stat-label">Thiết bị PCCC</span>
+                <span class="v18-stat-icon">🧯</span>
+            </div>
+            <div class="v18-stat-value"><?= $prod_count ?></div>
+            <div class="v18-stat-trend">↗ Đang hiển thị trên катаlog</div>
+        </a>
+
+        <a class="v18-stat-card" href="<?= esc_url(admin_url('edit.php?post_type=pccc_quote')) ?>">
+            <div class="v18-stat-top">
+                <span class="v18-stat-label">Yêu cầu báo giá</span>
+                <span class="v18-stat-icon">📞</span>
+            </div>
+            <div class="v18-stat-value"><?= $quote_cnt ?></div>
+            <div class="v18-stat-trend">↗ Khách để lại SĐT gọi lại</div>
+        </a>
+
+        <a class="v18-stat-card" href="<?= esc_url(admin_url('edit.php')) ?>">
+            <div class="v18-stat-top">
+                <span class="v18-stat-label">Tin tức &amp; Kiến thức</span>
+                <span class="v18-stat-icon">📰</span>
+            </div>
+            <div class="v18-stat-value"><?= $post_count ?></div>
+            <div class="v18-stat-trend">↗ Bài viết chuẩn SEO</div>
+        </a>
+
+        <a class="v18-stat-card" href="<?= esc_url(admin_url('edit.php?post_type=pccc_service')) ?>">
+            <div class="v18-stat-top">
+                <span class="v18-stat-label">Dịch vụ &amp; Dự án</span>
+                <span class="v18-stat-icon">🛠️</span>
+            </div>
+            <div class="v18-stat-value"><?= $serv_count ?></div>
+            <div class="v18-stat-trend">↗ Thi công · Bảo trì · Dự án</div>
+        </a>
+    </div>
+    <?php
+});
 
 /**
  * Bản WebP thu nhỏ cho ảnh nằm trong nội dung bài (không phải ảnh đại diện nên không có -card/-hero).
