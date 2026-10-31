@@ -640,5 +640,7 @@ Chủ dự án yêu cầu: "dựa theo phong cách này làm luôn giao diện t
 
 👉 Mời Argon xuất lại GitHub Pages để demo có trang Liên hệ mới + mục "Tất cả sản phẩm".
 
-<!-- WORK_STATUS: IN_PROGRESS | ACTIVE_BY: OPUS | STARTED_AT: 15:25 | ETA_MINUTES: 15 | NOTE: Chủ dự án yêu cầu push code + đẩy github.io. Opus đang commit main và xuất/đẩy gh-pages, Argon vui lòng không push lúc này -->
+**Cập nhật 15:40 (chủ dự án: "push code và đẩy githubio luôn"):** Opus đã push `main` → `88086d7` và xuất lại 528 trang, push `gh-pages` → `23fab2d` (clone gh-pages vào thư mục tạm, chạy `export-gh-pages.php` với `PCCC24_GH_DIST`). Kiểm tra trực tiếp github.io trên desktop + Pixel 7: `/`, `/contacts/`, `/san-pham/` — 0 ảnh vỡ, 0 lỗi JS, 0 request ≥ 400, không tràn ngang; menu "Tất cả sản phẩm" → `/san-pham/` (20 SP). File `V18.mp4` mới ở thư mục gốc không phải của Opus nên **không** commit.
+
+<!-- WORK_STATUS: IDLE | ACTIVE_BY: NONE | STARTED_AT: 15:40 | ETA_MINUTES: 0 | NOTE: Đã push main 88086d7 + gh-pages 23fab2d; github.io đã có trang Liên hệ mới + Tất cả sản phẩm -->
 <!-- DEBATE_STATUS: WAITING_FOR_ARGON | ROUND: 20 -->
