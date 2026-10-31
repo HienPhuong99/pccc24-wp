@@ -183,7 +183,7 @@
 
     // 4. Nút nổi góc trái dưới mở nhanh trang Đăng nhập / WP-Admin Demo (đã điền sẵn tài khoản, email, mật khẩu)
     var badge = document.createElement("a");
-    badge.href = PREFIX + "/wp-login.php/";
+    badge.href = PREFIX + "/wp-login/";
     badge.style.cssText =
       "position:fixed;left:16px;bottom:16px;z-index:1500;background:#1d2329;color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.25);display:flex;align-items:center;gap:6px;text-decoration:none;border:1px solid rgba(255,255,255,0.15);";
     badge.innerHTML =
