@@ -1,26 +1,13 @@
 <?php
-/**
- * Sidebar Services (replicated from app/Views/services/left.php)
- */
+/** Sidebar dịch vụ. */
 defined('ABSPATH') || exit;
-
-$service_types = pccc24_get_service_types();
 ?>
-<div class="border-tab"></div>
-<div class="flex justify-between items-center">
-    <div class="w-full">
-        <label class="popular-label popular-label-icon w-full">
-            <i class="bx bx-cog"></i>
-            <span class="text">Dịch vụ</span>
-        </label>
-    </div>
+<div class="side-block">
+    <h2>Dịch vụ</h2>
+    <ul class="side-links">
+        <?php foreach (pccc24_get_service_types() as $st) : ?>
+            <li><a href="<?= esc_url($st->url) ?>"><?= esc_html($st->name) ?></a></li>
+        <?php endforeach; ?>
+    </ul>
 </div>
-<div class="mb-5 border p-2">
-    <?php foreach ($service_types as $st) : ?>
-        <a class="w-full flex gap-2 my-3" href="<?= esc_url($st->url) ?>">
-            <span class="limit-line limit-line-4 text-base">
-                <?= esc_html($st->name) ?>
-            </span>
-        </a>
-    <?php endforeach; ?>
-</div>
+<?php get_template_part('template-parts/quote-tag', null, ['title' => 'Khảo sát miễn phí', 'text' => 'Kỹ thuật viên đến tận nơi khảo sát và lập phương án PCCC theo quy định hiện hành.']); ?>

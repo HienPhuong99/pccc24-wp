@@ -1,18 +1,10 @@
 <?php
-/**
- * Template 404 Not Found
- */
-
+/** 404 */
 defined('ABSPATH') || exit;
-
 get_header();
 ?>
-<div class="py-12 text-center">
-    <h1 class="text-3xl font-semibold text-red-pccc mb-4">404 - Không tìm thấy trang</h1>
-    <p class="text-gray-600 mb-6">Trang bạn đang tìm kiếm không tồn tại hoặc đã được chuyển đi.</p>
-    <a href="<?php echo esc_url(home_url('/')); ?>" class="inline-block bg-red-pccc text-white px-6 py-2 rounded hover:opacity-90">
-        Quay về Trang chủ
-    </a>
+<div class="panel" style="max-width:640px;margin:40px auto">
+    <h1>Không có trang này</h1>
+    <p>Đường dẫn có thể đã đổi. Tìm thiết bị bằng ô tìm kiếm phía trên, xem <a href="<?= esc_url(home_url('/san-pham')) ?>">toàn bộ sản phẩm</a>, hoặc gọi <a href="<?= esc_url(pccc24_tel('phone_sale')) ?>"><?= pccc24_get_setting('phone_sale') ?></a>.</p>
 </div>
-<?php
-get_footer();
+<?php get_footer(); ?>

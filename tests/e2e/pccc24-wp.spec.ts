@@ -2,20 +2,22 @@ import { test, expect, Page } from '@playwright/test';
 
 const PRODUCT = '/san-pham/binh-chua-chay-goc-nuoc-cong-nghe-sinh-hoc-ecosafe/718';
 
-// Mỗi trang: không lỗi JS, không PHP warning/notice lọt ra HTML.
+// Mỗi trang: không lỗi JS, không PHP warning/notice lọt ra HTML, không cuộn ngang.
 async function visit(page: Page, url: string) {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   const res = await page.goto(url);
   const html = await page.content();
   expect(html).not.toMatch(/<b>(Warning|Notice|Deprecated|Fatal error)<\/b>/);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  expect(overflow).toBeLessThanOrEqual(0);
   return { res, errors };
 }
 
 test.describe('Trang công khai (URL gốc pccc24.com)', () => {
   const pages: [string, RegExp][] = [
     ['/', /HOÀNG QUÂN PHÁT/i],
-    ['/san-pham', /Sản phẩm|Bình/],
+    ['/san-pham', /Thiết bị phòng cháy chữa cháy/],
     ['/san-pham/binh-chua-chay', /Bình chữa cháy/],
     [PRODUCT, /Ecosafe/],
     ['/san-pham/tim-kiem?q=foam', /foam/i],
@@ -60,98 +62,103 @@ test.describe('Trang công khai (URL gốc pccc24.com)', () => {
 test.describe('Danh mục: phân trang & sắp xếp như CI4', () => {
   test('20 SP/trang và ?page=2 khác trang 1', async ({ page }) => {
     await page.goto('/san-pham');
-    const cards = page.locator('.previewProduct');
-    await expect(cards).toHaveCount(20);
-    const first = await page.locator('[onclick^="previewProduct("]').first().getAttribute('onclick');
+    const quick = page.locator('.grid-products [data-quick]');
+    await expect(quick).toHaveCount(20);
+    const first = await quick.first().getAttribute('data-quick');
     await page.goto('/san-pham?page=2');
-    expect(await page.locator('[onclick^="previewProduct("]').first().getAttribute('onclick')).not.toBe(first);
+    expect(await quick.first().getAttribute('data-quick')).not.toBe(first);
   });
 
-  test('chọn "Z -> A" trên giao diện -> ?sorted=2', async ({ page, isMobile }) => {
-    test.skip(isMobile, 'dropdown giống nhau, test 1 lần trên desktop');
+  test('chọn "Tên Z → A" trên giao diện -> ?sorted=2', async ({ page }) => {
     await page.goto('/san-pham/binh-chua-chay');
-    await page.locator('.pccc-sort-trigger').click();
-    await page.locator('.pccc-sort-item[data-sort-id="2"]').click();
+    await page.getByLabel('Sắp xếp').selectOption('2');
     await expect(page).toHaveURL(/sorted=2/);
+    await expect(page.getByLabel('Sắp xếp')).toHaveValue('2');
   });
 });
 
 test.describe('Tương tác người dùng', () => {
-  test('tìm kiếm từ ô search ở header', async ({ page, isMobile }) => {
-    test.skip(isMobile, 'ô search desktop');
+  test('tìm kiếm từ ô search ở header', async ({ page }) => {
     await page.goto('/');
-    const box = page.locator('header input[name="q"]').first();
+    const box = page.getByRole('searchbox', { name: 'Tìm thiết bị' });
     await box.fill('foam');
     await box.press('Enter');
     await expect(page).toHaveURL(/\/san-pham\/tim-kiem\?q=foam/);
-    await expect(page.locator('[onclick^="previewProduct("]')).not.toHaveCount(0); // nút chỉ hiện khi hover
+    await expect(page.locator('.grid-products .product')).not.toHaveCount(0);
+  });
+
+  test('bấm vào ô sản phẩm -> mở trang chi tiết', async ({ page }) => {
+    await page.goto('/san-pham/binh-chua-chay');
+    await page.locator('.product').first().click(); // giữa ô = vùng ảnh, nằm dưới lớp phủ link
+    await expect(page).toHaveURL(/\/san-pham\/[^/]+\/\d+$/);
+    await expect(page.locator('.product-detail h1')).toBeVisible();
   });
 
   test('xem nhanh sản phẩm (popup qua REST)', async ({ page }) => {
     await page.goto('/san-pham/binh-chua-chay');
-    await page.locator('[onclick^="previewProduct("]').first().evaluate((el: HTMLElement) => el.click());
-    await expect(page.locator('#preview-box')).toBeVisible();
-    await expect(page.locator('#ProductPreviewApp')).not.toContainText('Đang tải', { timeout: 15_000 });
-    // Nút "Thêm vào giỏ" trong popup phải bấm được thật (không bị widget nổi che).
-    await page.locator('#ProductPreviewApp [onclick^="addCart("]').first().click({ trial: true });
+    await page.getByRole('button', { name: 'Xem nhanh' }).first().click();
+    const dlg = page.locator('#quickview');
+    await expect(dlg).toBeVisible();
+    await expect(dlg.getByRole('link', { name: 'Xem chi tiết' })).toBeVisible({ timeout: 15_000 });
+    await expect(dlg.getByRole('link', { name: 'Gọi báo giá' })).toHaveAttribute('href', /^tel:\d{9,}/);
+    await page.keyboard.press('Escape');
+    await expect(dlg).toBeHidden();
   });
 
-  test('thêm vào giỏ -> đặt hàng -> đơn được lưu', async ({ page, request }) => {
-    await page.goto('/san-pham/binh-chua-chay');
-    await page.locator('[onclick^="addCart("]').first().evaluate((el: HTMLElement) => el.click());
-    const modal = page.locator('#pccc24-cart-modal');
-    await expect(modal).toBeVisible();
-    await expect(page.locator('.countCart').first()).not.toHaveText('0');
-
-    const name = `E2E ${test.info().project.name} ${Date.now()}`;
-    const form = page.locator('#pccc24-order-form');
-    await form.locator('[name="name"]').fill(name);
-    await form.locator('[name="phone"]').fill('0901234567');
-    await form.locator('[name="note"]').fill('Đơn kiểm thử tự động');
-    const [resp] = await Promise.all([
-      page.waitForResponse((r) => r.url().includes('/wp-json/pccc24/v1/orders')),
-      form.locator('button[type="submit"]').click(),
-    ]);
-    expect(resp.status()).toBe(200);
-    const order = await resp.json();
-    expect(order.items.length).toBeGreaterThan(0);
-    await expect(page.locator('.pccc24-custom-alert-overlay')).toContainText('thành công');
-    await expect(page.locator('.countCart').first()).toHaveText('0');
-    test.info().annotations.push({ type: 'order_id', description: String(order.id) });
+  test('không có giỏ hàng/thanh toán (giống pccc24.com), chỉ gọi/Zalo báo giá', async ({ page, request }) => {
+    await page.goto(PRODUCT);
+    await expect(page.locator('body')).not.toContainText(/giỏ hàng|đặt hàng|thanh toán/i);
+    const tag = page.getByRole('complementary', { name: 'Liên hệ báo giá' });
+    await expect(tag.locator('a[href^="tel:"]')).toHaveCount(2);
+    await expect(tag.locator('a[href^="https://zalo.me/"]')).toHaveCount(1);
+    for (const route of ['orders', 'carts']) {
+      const r = await request.post('/wp-json/pccc24/v1/' + route, { data: { name: 'x', phone: '0901234567' } });
+      expect(r.status()).toBe(404);
+    }
   });
 
-  test('đặt hàng thiếu SĐT bị từ chối (server-side)', async ({ request }) => {
-    const r = await request.post('/wp-json/pccc24/v1/orders', { data: { name: 'x', phone: 'abc' } });
-    expect(r.status()).toBe(400);
+  test('thanh gọi/Zalo cố định ở đáy màn hình mobile', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'chỉ mobile');
+    await page.goto('/san-pham');
+    const bar = page.locator('.float-contact');
+    await expect(bar.getByRole('link', { name: 'Gọi báo giá' })).toBeInViewport();
+    await expect(bar.getByRole('link', { name: 'Zalo' })).toBeInViewport();
   });
 
   test('menu mobile mở được', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'chỉ mobile');
     await page.goto('/');
-    await page.locator('.show-menu').first().click();
-    await expect(page.locator('.menu-mobile')).toBeVisible();
+    await page.getByRole('button', { name: 'Mở menu' }).click();
+    const drawer = page.locator('#drawer');
+    await expect(drawer).toBeVisible();
+    await drawer.getByText('Sản phẩm', { exact: true }).click();
+    await expect(drawer.getByRole('link', { name: 'Bình chữa cháy', exact: true })).toBeVisible();
+  });
+
+  test('menu "Sản phẩm" desktop mở danh mục', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'chỉ desktop');
+    await page.goto('/tin-tuc');
+    await page.locator('.nav-cats summary').click();
+    await page.locator('.nav-cats .cat-list > li > a').first().click();
+    await expect(page).toHaveURL(/\/san-pham\/[^/]+$/);
   });
 });
 
 test.describe('wp-admin', () => {
   test.skip(({ isMobile }) => isMobile, 'admin test trên desktop');
 
-  test('đăng nhập, xem đơn hàng, sửa metabox sản phẩm, cài đặt PCCC24', async ({ page }) => {
+  test('đăng nhập, sửa metabox sản phẩm, cài đặt PCCC24', async ({ page }) => {
     await page.goto('/wp-login.php');
     await page.fill('#user_login', 'admin');
     await page.fill('#user_pass', process.env.PCCC24_ADMIN_PASS || 'pccc24@admin2026');
     await page.click('#wp-submit');
     await expect(page).toHaveURL(/wp-admin/);
 
-    await page.goto('/wp-admin/edit.php?post_type=pccc_order');
-    await expect(page.locator('th#phone')).toBeVisible();
-
     await page.goto('/wp-admin/edit.php?post_type=pccc_product');
     await expect(page.locator('th#old_id')).toBeVisible();
     await expect(page.locator('#the-list tr')).toHaveCount(20);
 
     // Metabox sản phẩm: sửa giá rồi lưu, sau đó trả lại như cũ.
-    await page.goto('/wp-admin/edit.php?post_type=pccc_product');
     await page.locator('#the-list a.row-title').first().click();
     const price = page.locator('#pccc24_fields input[name="pccc24[price]"]');
     await expect(price).toBeVisible({ timeout: 20_000 });

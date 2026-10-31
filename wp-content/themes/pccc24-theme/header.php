@@ -1,6 +1,6 @@
 <?php
 /**
- * Header template (replicated 100% from app/Views/layouts/app.php)
+ * Header: SEO meta (giữ từ bản gốc) + thanh liên hệ, tìm kiếm, menu.
  */
 defined('ABSPATH') || exit;
 
@@ -137,144 +137,58 @@ $service_types = pccc24_get_service_types();
     <meta content="general" name="rating">
     <meta name="author" content="PCCC24" />
 
-    <link href="<?= esc_url(pccc24_theme_asset('css/app.css')) ?>" rel="stylesheet">
-    <link href="<?= esc_url(pccc24_theme_asset('static/boxicons/css/boxicons.min.css')) ?>" rel="stylesheet">
-
-    <script>
-    window.baseUrl = <?= wp_json_encode(trailingslashit(home_url())) ?>;
-    window.PCCC24_CONFIG = {
-        baseUrl: <?= wp_json_encode(trailingslashit(home_url())) ?>,
-        restUrl: <?= wp_json_encode(untrailingslashit(rest_url('pccc24/v1'))) ?>,
-        noImageUrl: <?= wp_json_encode(pccc24_no_image_url()) ?>,
-        supports: <?= wp_json_encode(pccc24_get_all_supports(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?>
-    };
-    </script>
-    <script src="<?= esc_url(pccc24_theme_asset('js/jquery-3.5.1.min.js')) ?>"></script>
-    <script src="<?= esc_url(pccc24_theme_asset('js/owl.carousel.min.js')) ?>"></script>
-    <script src="<?= esc_url(pccc24_theme_asset('js/theme-app.js')) ?>"></script>
-
-    <style>
-    table, table tbody, table tr, table th, table td, table p, table span, table div, table strong, table b {
-        background: transparent !important;
-        background-color: transparent !important;
-    }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="<?= esc_url(pccc24_theme_asset('css/site.css')) ?>?v=2" rel="stylesheet">
+    <script>window.PCCC24_CONFIG = <?= wp_json_encode(['restUrl' => untrailingslashit(rest_url('pccc24/v1')), 'noImageUrl' => pccc24_no_image_url()]) ?>;</script>
+    <script src="<?= esc_url(pccc24_theme_asset('js/site.js')) ?>?v=2" defer></script>
     <?php wp_head(); ?>
 </head>
 
-<body class="bg-slate-50">
-    <header class="header pt-2">
-        <div class="container-fluid mx-auto">
-            <div class="lg-g:flex xs-s:flex-wrap w-full justify-between">
-                <div class="logo lg-g:w-2/5 xs-s:w-full flex lg-g:justify-start xs-s:justify-center items-center" style="position: relative; min-height: 50px;">
-                    <button type="button" aria-label="Mở menu" class="show-menu navbar-toggler collapsed lg-g:hidden" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; z-index: 50; display: flex; align-items: center; justify-content: center; background: transparent; border: none; padding: 0; cursor: pointer;">
-                        <svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="20" height="2" fill="#00447C"></rect>
-                            <rect y="6" width="20" height="2" fill="#00447C"></rect>
-                            <rect y="12" width="20" height="2" fill="#00447C"></rect>
-                        </svg>
-                    </button>
-                    <a href="<?= esc_url(home_url('/')) ?>" class="flex items-center">
-                        <img src="<?= esc_url(pccc24_get_setting('logo', false)) ?>" alt="Logo" class="logo-desktop" />
-                    </a>
-                    <button type="button" onclick="openCartModal()" aria-label="Giỏ hàng" title="Giỏ hàng" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; z-index: 50; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer;">
-                        <i class="bx bx-cart text-2xl text-red-pccc"></i>
-                        <span class="countCart bg-amber-500 text-white text-xs rounded-full px-1.5 py-0.5 ml-0.5">0</span>
-                    </button>
-                </div>
-                <div class="lg-g:w-3/5 lg-g:block xs-s:hidden">
-                    <div class="flex justify-between gap-2">
-                        <div class="grid gap-0">
-                            <span class="text-sm text-gray-600">Hỗ trợ bán hàng</span>
-                            <span class="lg:text-xl md:text-lg xs-s:text-base text-red-pccc">
-                                <?= pccc24_get_setting('phone_sale') ?>
-                            </span>
-                        </div>
-                        <div class="grid gap-0">
-                            <span class="text-sm text-gray-600">Hỗ trợ kỹ thuật</span>
-                            <span class="lg:text-xl md:text-lg xs-s:text-base text-red-pccc">
-                                <?= pccc24_get_setting('phone_technique') ?>
-                            </span>
-                        </div>
-                        <div class="grid gap-0">
-                            <span class="text-sm text-gray-600">Email báo giá</span>
-                            <span class="lg:text-xl md:text-lg xs-s:text-base text-red-pccc">
-                                <?= pccc24_get_setting('email') ?>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="grid gap-0">
-                        <span class="text-lg text-gray-800"><?= pccc24_get_setting('company') ?></span>
-                        <span class="text-sm text-gray-600"><?= wp_kses_post(pccc24_get_setting('address', false)) ?></span>
-                    </div>
-                </div>
+<body>
+<a class="sr-only" href="#main">Bỏ qua menu</a>
+<header>
+    <div class="topbar">
+        <div class="wrap">
+            <span class="topbar-company"><?= pccc24_get_setting('company') ?> · GPKD <?= pccc24_get_setting('gpkd') ?></span>
+            <span class="topbar-phones">
+                <span>Bán hàng <a href="<?= esc_url(pccc24_tel('phone_sale')) ?>"><?= pccc24_get_setting('phone_sale') ?></a></span>
+                <span>Kỹ thuật <a href="<?= esc_url(pccc24_tel('phone_technique')) ?>"><?= pccc24_get_setting('phone_technique') ?></a></span>
+            </span>
+        </div>
+    </div>
+    <div class="masthead">
+        <div class="wrap">
+            <div style="display:flex;align-items:center;gap:4px">
+                <button type="button" class="menu-btn" data-open="drawer" aria-label="Mở menu"><?= pccc24_icon('menu') ?></button>
+                <a class="logo" href="<?= esc_url(home_url('/')) ?>"><img src="<?= esc_url(pccc24_get_setting('logo', false)) ?>" alt="PCCC24 - Hoàng Quân Phát" width="160" height="56"></a>
+            </div>
+            <form class="search" action="<?= esc_url(home_url('/san-pham/tim-kiem')) ?>" method="get" role="search">
+                <label class="sr-only" for="q">Tìm thiết bị</label>
+                <input id="q" type="search" name="q" value="<?= esc_attr(wp_unslash($_GET['q'] ?? '')) ?>" placeholder="Tìm bình chữa cháy, đầu báo khói, vòi chữa cháy…">
+                <button type="submit" aria-label="Tìm kiếm"><?= pccc24_icon('search') ?></button>
+            </form>
+            <div class="masthead-quote">
+                Gửi yêu cầu báo giá
+                <a href="mailto:<?= esc_attr(pccc24_get_setting('email', false)) ?>"><?= pccc24_get_setting('email') ?></a>
             </div>
         </div>
-
-        <div class="bg-red-pccc">
-            <div class="container-fluid mx-auto lg-g:block xs-s:hidden">
-                <div class="text-white flex gap-2 justify-between h-full">
-                    <div class="flex items-center">
-                        <div class="bg-rose-600 p-3 text-white flex items-center gap-1 relative has-dropdown">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
-                            </svg>
-                            <span class="uppercase">Danh mục sản phẩm</span>
-                            <ul class="dropdown-menu dropdown-menu-hide absolute shadow rounded bg-white text-slate-700">
-                                <?php foreach ($category_tree as $ct_root) : ?>
-                                <li class="dropdown-submenu nav-item-lv2">
-                                    <a class="af1" href="<?= esc_url($ct_root->url) ?>">
-                                        <span><?= esc_html($ct_root->name) ?></span>
-                                        <?php if (!empty($ct_root->childrens)) : ?>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                                        </svg>
-                                        <?php endif; ?>
-                                    </a>
-                                    <?php if (!empty($ct_root->childrens)) : ?>
-                                    <ul class="dropdown-menu dropdown-menu-hide bg-white shadow rounded border-2 border-orange-400">
-                                        <?php foreach ($ct_root->childrens as $ct_child) : ?>
-                                        <li>
-                                            <a class="af2" href="<?= esc_url($ct_child->url) ?>"><?= esc_html($ct_child->name) ?></a>
-                                        </li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                    <?php endif; ?>
-                                </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-
-                        <ul class="flex main-menu whitespace-nowrap">
-                            <?php foreach ($service_types as $st) : ?>
-                            <li>
-                                <a href="<?= esc_url($st->url) ?>"><?= esc_html($st->name) ?></a>
-                            </li>
-                            <?php endforeach; ?>
-                            <li>
-                                <a href="<?= esc_url(home_url('/tin-tuc')) ?>">Tin tức</a>
-                            </li>
-                            <li>
-                                <a href="<?= esc_url(home_url('/pages/gioi-thieu')) ?>">Về chúng tôi</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                        <form action="<?= esc_url(home_url('/san-pham/tim-kiem')) ?>" method="get" class="h-[46px] flex items-center px-2 py-1 w-[220px]">
-                            <div class="relative text-gray-500 rounded h-full w-full">
-                                <input type="text" name="q" value="<?= esc_attr(wp_unslash($_GET['q'] ?? '')) ?>" placeholder="Tìm kiếm" class="form-control pl-2 text-search h-full w-full rounded" />
-                                <button type="submit" aria-label="Tìm kiếm" class="absolute top-0 right-0 w-9 h-full text-xl text-gray-500 flex items-center justify-center">
-                                    <i class="bx bx-search"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    </div>
+    <nav class="nav" aria-label="Menu chính">
+        <div class="wrap">
+            <details class="nav-cats">
+                <summary><?= pccc24_icon('menu') ?> Sản phẩm</summary>
+                <?php get_template_part('template-parts/cat-list'); ?>
+            </details>
+            <?php foreach ($service_types as $st) : ?>
+                <a href="<?= esc_url($st->url) ?>"><?= esc_html($st->name) ?></a>
+            <?php endforeach; ?>
+            <a href="<?= esc_url(home_url('/tin-tuc')) ?>">Tin tức</a>
+            <a href="<?= esc_url(home_url('/pages/gioi-thieu')) ?>">Về chúng tôi</a>
+            <a href="<?= esc_url(home_url('/contacts')) ?>">Liên hệ</a>
         </div>
-    </header>
-
-    <main class="pb-5">
-        <div class="container-fluid mx-auto">
-            <div class="w-full">
+    </nav>
+</header>
+<main id="main">
+    <div class="wrap">

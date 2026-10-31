@@ -29,9 +29,6 @@ add_action('init', function () {
     $cpt('pccc_slider', 'Slider', 'dashicons-images-alt2', ['public' => false, 'show_ui' => true]);
     $cpt('pccc_policy', 'Chính sách', 'dashicons-shield', ['public' => false, 'show_ui' => true]);
     $cpt('pccc_support', 'Hỗ trợ viên', 'dashicons-phone', ['public' => false, 'show_ui' => true]);
-    $cpt('pccc_order', 'Đơn hàng', 'dashicons-clipboard', [
-        'public' => false, 'show_ui' => true, 'show_in_rest' => false, 'supports' => ['title', 'custom-fields'],
-    ]);
 
     $tax = fn($tax, $types, $name, $hier) => register_taxonomy($tax, $types, [
         'label' => $name, 'public' => true, 'hierarchical' => $hier, 'show_in_rest' => true,
@@ -223,52 +220,8 @@ add_action('rest_api_init', function () {
             'image_url' => get_the_post_thumbnail_url($p, 'full') ?: null, 'sorted' => $p->menu_order,
         ], get_posts(['post_type' => 'pccc_support', 'numberposts' => -1, 'orderby' => 'menu_order', 'order' => 'ASC']))],
     ]);
-    // Bản gốc khai báo POST v1/carts nhưng thiếu CartController; ở đây lưu đơn thành pccc_order.
-    foreach (['/orders', '/carts'] as $route) {
-        register_rest_route('pccc24/v1', $route, ['methods' => 'POST', 'permission_callback' => '__return_true', 'callback' => 'pccc24_create_order']);
-    }
+    // pccc24.com không bán hàng trực tuyến (route POST v1/carts gốc không có controller) -> không có API đặt hàng.
 });
-
-function pccc24_create_order(WP_REST_Request $req)
-{
-    $name = sanitize_text_field($req['name'] ?? '');
-    $phone = sanitize_text_field($req['phone'] ?? '');
-    if ($name === '' || !preg_match('/^[0-9 +().-]{8,20}$/', $phone)) {
-        return new WP_Error('invalid', 'Vui lòng nhập họ tên và số điện thoại hợp lệ', ['status' => 400]);
-    }
-    // Giá lấy từ DB, không tin giá client gửi lên.
-    $items = [];
-    $total = 0;
-    foreach (array_slice((array) $req['items'], 0, 100) as $it) {
-        $pid = pccc24_find_by_old_id('pccc_product', (int) ($it['id'] ?? 0));
-        $qty = max(1, min(9999, (int) ($it['quantity'] ?? $it['qty'] ?? 1)));
-        if (!$pid) {
-            continue;
-        }
-        $price = (int) get_post_meta($pid, '_pccc_price', true);
-        $items[] = ['id' => (int) $it['id'], 'name' => get_the_title($pid), 'price' => $price, 'quantity' => $qty];
-        $total += $price * $qty;
-    }
-    $order = wp_insert_post([
-        'post_type' => 'pccc_order', 'post_status' => 'private',
-        'post_title' => sprintf('%s - %s', $name, $phone),
-        'meta_input' => [
-            '_pccc_name' => $name, '_pccc_phone' => $phone,
-            '_pccc_email' => sanitize_email($req['email'] ?? ''),
-            '_pccc_address' => sanitize_text_field($req['address'] ?? ''),
-            '_pccc_note' => sanitize_textarea_field($req['note'] ?? ''),
-            '_pccc_items' => $items, '_pccc_total' => $total,
-        ],
-    ], true);
-    if (is_wp_error($order)) {
-        return $order;
-    }
-    $to = pccc24_setting('email');
-    if ($to) {
-        wp_mail($to, "Đơn hàng mới #$order", "Khách: $name - $phone\nTổng: " . number_format($total) . "đ\n" . admin_url("post.php?post=$order&action=edit"));
-    }
-    return ['id' => $order, 'total' => $total, 'items' => $items, 'message' => 'Đặt hàng thành công'];
-}
 
 /* ---------- wp-admin: metabox các meta _pccc_* ---------- */
 
@@ -293,7 +246,6 @@ add_action('add_meta_boxes', function () {
     foreach (array_keys(PCCC24_FIELDS) as $type) {
         add_meta_box('pccc24_fields', 'Thông tin PCCC24', 'pccc24_fields_box', $type, 'normal', 'high');
     }
-    add_meta_box('pccc24_order', 'Chi tiết đơn hàng', 'pccc24_order_box', 'pccc_order', 'normal', 'high');
 });
 
 function pccc24_fields_box($post)
@@ -338,32 +290,6 @@ add_action('save_post', function ($id, $post) {
     }
 }, 10, 2);
 
-function pccc24_order_box($post)
-{
-    $m = fn($k) => get_post_meta($post->ID, "_pccc_$k", true);
-    echo '<table class="widefat striped"><tbody>';
-    foreach (['name' => 'Họ tên', 'phone' => 'Điện thoại', 'email' => 'Email', 'address' => 'Địa chỉ', 'note' => 'Ghi chú'] as $k => $label) {
-        printf('<tr><th style="width:140px">%s</th><td>%s</td></tr>', esc_html($label), nl2br(esc_html($m($k))));
-    }
-    echo '</tbody></table><h4>Sản phẩm</h4><table class="widefat striped"><thead><tr><th>ID</th><th>Sản phẩm</th><th>SL</th><th>Đơn giá</th></tr></thead><tbody>';
-    foreach ((array) $m('items') as $it) {
-        $pid = pccc24_find_by_old_id('pccc_product', $it['id']);
-        printf('<tr><td>%d</td><td>%s</td><td>%d</td><td>%s</td></tr>', $it['id'],
-            $pid ? sprintf('<a href="%s" target="_blank">%s</a>', esc_url(get_permalink($pid)), esc_html($it['name'])) : esc_html($it['name']),
-            $it['quantity'], $it['price'] ? number_format($it['price'], 0, ',', '.') . 'đ' : 'Liên hệ');
-    }
-    printf('</tbody><tfoot><tr><th colspan="3">Tổng</th><th>%s</th></tr></tfoot></table>', $m('total') ? number_format($m('total'), 0, ',', '.') . 'đ' : 'Liên hệ');
-}
-
-add_filter('manage_pccc_order_posts_columns', fn($c) => array_slice($c, 0, 2) + ['phone' => 'Điện thoại', 'items' => 'Số SP', 'total' => 'Tổng'] + $c);
-add_action('manage_pccc_order_posts_custom_column', function ($col, $id) {
-    $v = get_post_meta($id, "_pccc_$col", true);
-    echo esc_html(match ($col) {
-        'items' => (string) array_sum(array_column((array) $v, 'quantity')),
-        'total' => $v ? number_format($v, 0, ',', '.') . 'đ' : 'Liên hệ',
-        default => (string) $v,
-    });
-}, 10, 2);
 add_filter('manage_pccc_product_posts_columns', fn($c) => array_slice($c, 0, 2) + ['old_id' => 'ID cũ', 'price' => 'Giá'] + $c);
 add_action('manage_pccc_product_posts_custom_column', function ($col, $id) {
     $v = (int) get_post_meta($id, "_pccc_$col", true);

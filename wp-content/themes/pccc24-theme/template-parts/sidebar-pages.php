@@ -1,6 +1,6 @@
 <?php
 /**
- * Sidebar cột trái cho Trang tĩnh & Nhóm trang (tương đương app/Views/pages/left.php)
+ * Sidebar nhóm trang (tương đương app/Views/pages/left.php)
  */
 
 defined('ABSPATH') || exit;
@@ -49,24 +49,12 @@ if ($page_type) {
 }
 ?>
 <?php if ($page_type) : ?>
-<div class="border-tab"></div>
-<div class="flex justify-between items-center">
-    <div class="w-full">
-        <label class="popular-label popular-label-icon w-full">
-            <i class="bx bx-cog"></i>
-            <span class="text">
-                <?php echo esc_html($page_type->name); ?>
-            </span>
-        </label>
-    </div>
-</div>
-<div class="mb-5 border p-2">
-    <?php foreach ($sidebar_pages as $sp) : ?>
-        <a class="w-full flex gap-2 my-3" href="<?php echo esc_url($sp->url); ?>">
-            <span class="limit-line limit-line-4 text-base">
-                <?php echo esc_html($sp->name); ?>
-            </span>
-        </a>
-    <?php endforeach; ?>
+<div class="side-block">
+    <h2><?= esc_html($page_type->name) ?></h2>
+    <ul class="side-links">
+        <?php foreach ($sidebar_pages as $sp) : ?>
+            <li><a href="<?= esc_url($sp->url) ?>"<?= is_page($sp->ID) ? " aria-current=\"page\"" : "" ?>><?= esc_html($sp->name) ?></a></li>
+        <?php endforeach; ?>
+    </ul>
 </div>
 <?php endif; ?>

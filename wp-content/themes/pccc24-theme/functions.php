@@ -92,6 +92,30 @@ function pccc24_get_setting(string $key, bool $escape = true): string
     return $val;
 }
 
+/** Link tel: từ một khoá setting số điện thoại. */
+function pccc24_tel(string $key = 'phone_sale'): string
+{
+    return 'tel:' . preg_replace('/[^0-9+]/', '', pccc24_get_setting($key, false));
+}
+
+function pccc24_zalo_url(): string
+{
+    return 'https://zalo.me/' . preg_replace('/[^0-9]/', '', pccc24_get_setting('zalo', false));
+}
+
+/** Vài icon nội tuyến (thay cho boxicons). */
+function pccc24_icon(string $name): string
+{
+    $paths = [
+        'search' => '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+        'menu'   => '<path d="M4 6h16M4 12h16M4 18h16"/>',
+        'phone'  => '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+        'chat'   => '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/>',
+        'right'  => '<path d="m9 6 6 6-6 6"/>',
+    ];
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . ($paths[$name] ?? '') . '</svg>';
+}
+
 /**
  * Định dạng tiền tệ chuẩn PCCC24 (tương đương priceFormat() bên CI4)
  */
@@ -398,7 +422,7 @@ add_action('init', function () {
         return;
     }
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    if ($path && preg_match('~^/v1/(categories|supports|products/\d+|carts|orders)/?$~', $path, $m)) {
+    if ($path && preg_match('~^/v1/(categories|supports|products/\d+)/?$~', $path, $m)) {
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         $req = new WP_REST_Request($method, '/pccc24/v1/' . $m[1]);
         if ($method === 'POST') {
@@ -460,3 +484,45 @@ function pccc24_render_pagination($wp_query = null): void
     }
     echo '</ul>';
 }
+
+/**
+ * Tự động điền sẵn Tài khoản, Email và Mật khẩu mặc định tại trang /wp-login.php để tiện kiểm thử
+ */
+add_action('login_footer', function () {
+    ?>
+    <script>
+    (function () {
+        var user = document.getElementById('user_login');
+        var pass = document.getElementById('user_pass');
+        var rem  = document.getElementById('rememberme');
+        if (user && !user.value) user.value = 'admin';
+        if (pass && !pass.value) pass.value = 'pccc24@admin2026';
+        if (rem) rem.checked = true;
+
+        var form = document.getElementById('loginform');
+        if (form) {
+            var box = document.createElement('div');
+            box.style.cssText = 'background:#f0f6fc;border:1px solid #72aee6;border-left:4px solid #2271b1;padding:10px 12px;margin:0 0 16px;border-radius:4px;font-size:13px;line-height:1.5;color:#1d2327;';
+            box.innerHTML =
+                '<strong>🔑 Tài khoản kiểm thử mặc định (Đã điền sẵn):</strong><br>' +
+                '• Tài khoản: <code>admin</code><br>' +
+                '• Email: <code>admin@pccc24.local</code><br>' +
+                '• Mật khẩu: <code>pccc24@admin2026</code><br>' +
+                '<div style="margin-top:6px;display:flex;gap:6px;">' +
+                '<button type="button" id="fill-user-btn" class="button button-small">Dùng Username (admin)</button>' +
+                '<button type="button" id="fill-email-btn" class="button button-small">Dùng Email (admin@pccc24.local)</button>' +
+                '</div>';
+            form.insertBefore(box, form.firstChild);
+            document.getElementById('fill-user-btn').addEventListener('click', function () {
+                if (user) user.value = 'admin';
+                if (pass) pass.value = 'pccc24@admin2026';
+            });
+            document.getElementById('fill-email-btn').addEventListener('click', function () {
+                if (user) user.value = 'admin@pccc24.local';
+                if (pass) pass.value = 'pccc24@admin2026';
+            });
+        }
+    })();
+    </script>
+    <?php
+});
