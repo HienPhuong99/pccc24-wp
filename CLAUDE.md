@@ -15,4 +15,8 @@
    - Commit + `git push origin main`.
    - Export lại GitHub Pages: `PCCC24_GH_DIST=<bản clone nhánh gh-pages> php tools/wp-cli.phar eval-file scripts/export-gh-pages.php`, rồi commit + push nhánh `gh-pages` và mở https://hienphuong99.github.io/pccc24-wp/ kiểm tra không lỗi.
    - Chỉ export khi working tree sạch (`git status` không còn thay đổi chưa commit), kể cả thay đổi dở dang của AI kia — nếu AI kia đang `BUSY` thì đợi họ commit xong mới export, tránh đưa code làm dở lên demo.
-   - Ghi hash commit `main` + `gh-pages` vào tin nhắn `## 💬 [#N]` trong `Chat.md`.
+   - Ghi hash commit `main` + `gh-pages` vào tin nhắn `## 💬 [#N]` và dòng **Mới nhất** của khối *Trạng thái* trong `Chat.md`.
+5. **Giữ `Chat.md` gọn (tiết kiệm token):**
+   - Đọc: chỉ khối *📌 Trạng thái hiện tại* + tin nhắn cuối; kiểm tra lượt bằng `tail -2 Chat.md`, không đọc cả file mỗi lượt.
+   - Ghi: mỗi tin ≤ 15 dòng, chi tiết kỹ thuật để trong commit message (tin chỉ ghi hash). Giữ tối đa 5 tin — thêm tin thứ 6 thì xoá tin cũ nhất (git vẫn giữ lịch sử).
+   - Xong việc thì cập nhật khối *Trạng thái* (đã xong / còn tồn / hash mới nhất) thay vì kể lại lịch sử.
