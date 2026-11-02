@@ -42,6 +42,10 @@ add_action('init', function () {
     $tax('pccc_page_type', 'page', 'Nhóm trang', false);
 
     pccc24_add_rewrites();
+    if (get_option('pccc24_flush_rewrites')) {
+        delete_option('pccc24_flush_rewrites');
+        flush_rewrite_rules(false); // WP tự hoãn tới wp_loaded, lúc đó rule đã có slug nhóm trang hiện tại
+    }
 });
 
 /* ---------- URL cũ (app/Config/Routes.php của bản CI4) ---------- */
@@ -85,8 +89,10 @@ function pccc24_find_by_old_id($type, $old_id)
 // Dịch query var tuỳ biến sang truy vấn WP chuẩn để theme dùng is_singular()/is_tax()/have_posts().
 add_filter('request', function ($q) {
     if (!empty($q['pccc_old_id'])) {
-        $id = pccc24_find_by_old_id($q['pccc_type'] ?? 'pccc_product', $q['pccc_old_id']);
-        return $id ? ['p' => $id, 'post_type' => $q['pccc_type']] : ['error' => '404'];
+        // pccc_type là query var công khai (?pccc_type=...): chỉ nhận 3 loại có URL cũ.
+        $type = in_array($q['pccc_type'] ?? '', ['pccc_product', 'pccc_service', 'post'], true) ? $q['pccc_type'] : 'pccc_product';
+        $id = pccc24_find_by_old_id($type, $q['pccc_old_id']);
+        return $id ? ['p' => $id, 'post_type' => $type] : ['error' => '404'];
     }
     foreach (['pccc_product_cat', 'pccc_service_type', 'pccc_page_type'] as $tax) {
         if (!empty($q[$tax])) {
@@ -180,7 +186,13 @@ register_activation_hook(__FILE__, function () {
     do_action('init');
     flush_rewrite_rules();
 });
-add_action('created_pccc_page_type', 'flush_rewrite_rules');
+// Thêm/sửa/xoá nhóm trang: flush ngay lúc đó vẫn dựng rule từ danh sách slug đọc lúc init (chưa có slug mới
+// -> /{slug-mới} bị 404). Đánh dấu để request sau flush, khi pccc24_add_rewrites() đã đọc slug hiện tại.
+foreach (['created', 'edited', 'delete'] as $ev) {
+    add_action("{$ev}_pccc_page_type", function () {
+        update_option('pccc24_flush_rewrites', 1);
+    });
+}
 
 /* ---------- REST API (tương đương /v1 của bản CI4) ---------- */
 
