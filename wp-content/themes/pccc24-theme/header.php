@@ -142,7 +142,7 @@ $cur_view = get_query_var('pccc_view');
     <link href="<?= esc_url(pccc24_theme_asset('css/site.css')) ?>?v=6" rel="stylesheet">
     <link href="<?= esc_url(pccc24_theme_asset('css/ios-sheet.css')) ?>?v=4" rel="stylesheet">
     <script>window.PCCC24_CONFIG = <?= wp_json_encode(['restUrl' => untrailingslashit(rest_url('pccc24/v1')), 'noImageUrl' => pccc24_no_image_url()]) ?>;</script>
-    <script src="<?= esc_url(pccc24_theme_asset('js/site.js')) ?>?v=4" defer></script>
+    <script src="<?= esc_url(pccc24_theme_asset('js/site.js')) ?>?v=5" defer></script>
     <script src="<?= esc_url(pccc24_theme_asset('js/ios-sheet.js')) ?>?v=4" defer></script>
     <?php wp_head(); ?>
 </head>

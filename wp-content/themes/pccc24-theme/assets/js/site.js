@@ -1,7 +1,8 @@
 // PCCC24 iOS Handoff + rossark-motion-skill living illustration & interface motion engine.
 (function () {
   var CFG = window.PCCC24_CONFIG || {};
-  var esc = function (s) { var d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; };
+  // innerHTML của text node không thoát dấu nháy: tên kiểu `Van 2"` sẽ phá thuộc tính alt/href khi ghép chuỗi.
+  var esc = function (s) { var d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML.replace(/"/g, '&quot;').replace(/'/g, '&#39;'); };
 
   // =========================================================================
   // 1. ROSSARK-MOTION-SKILL ENGINE (Web / SVG / Vanilla JS)
