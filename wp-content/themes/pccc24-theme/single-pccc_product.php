@@ -8,8 +8,9 @@ the_post();
 
 $id     = get_the_ID();
 $price  = (int) get_post_meta($id, '_pccc_price', true);
-$specs  = (array) get_post_meta($id, '_pccc_specs', true);
-$pids   = array_map('intval', (array) get_post_meta($id, '_pccc_policy_ids', true));
+// Meta chưa có trả '' -> (array) thành [''] -> bảng thông số rỗng + truy vấn chính sách ID 0: lọc bỏ.
+$specs  = array_filter((array) get_post_meta($id, '_pccc_specs', true), 'is_array');
+$pids   = array_filter(array_map('intval', (array) get_post_meta($id, '_pccc_policy_ids', true)));
 $policies = $pids ? get_posts([
     'post_type' => 'pccc_policy', 'numberposts' => -1, 'orderby' => 'menu_order', 'order' => 'ASC',
     'meta_query' => [['key' => '_pccc_old_id', 'value' => $pids, 'compare' => 'IN']],
