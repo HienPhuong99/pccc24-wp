@@ -295,13 +295,23 @@ $adapter_js = <<<'JS'
           var list = all.slice();
 
           if (isSearchPage) {
-            var qClean = qParam.trim().toLowerCase();
+            // Tách từ, đủ mọi từ (AND) như WP_Query 's'. Gõ không dấu ("binh bot") thì so khớp bỏ dấu;
+            // gõ có dấu thì giữ dấu để "bột" không ra lẫn "bọt".
+            var fold = !/[^\x00-\x7f]/.test(qParam);
+            var norm = function (s) {
+              s = String(s || "").normalize("NFC").toLowerCase();
+              return fold ? s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d") : s;
+            };
+            var words = norm(qParam).split(/\s+/).filter(Boolean);
             document.querySelectorAll('input[name="q"]').forEach(function (inp) {
               inp.value = qParam;
             });
-            if (qClean) {
+            if (words.length) {
               list = list.filter(function (p) {
-                return (p.name || "").toLowerCase().indexOf(qClean) !== -1;
+                var hay = norm(p.name) + (fold ? " " + String(p.slug || "").replace(/-/g, " ") : "");
+                return words.every(function (w) {
+                  return hay.indexOf(w) !== -1;
+                });
               });
             }
             var h1 = document.querySelector(".page-head h1");
