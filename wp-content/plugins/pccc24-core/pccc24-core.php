@@ -89,8 +89,10 @@ function pccc24_find_by_old_id($type, $old_id)
 // Dịch query var tuỳ biến sang truy vấn WP chuẩn để theme dùng is_singular()/is_tax()/have_posts().
 add_filter('request', function ($q) {
     if (!empty($q['pccc_old_id'])) {
-        $id = pccc24_find_by_old_id($q['pccc_type'] ?? 'pccc_product', $q['pccc_old_id']);
-        return $id ? ['p' => $id, 'post_type' => $q['pccc_type']] : ['error' => '404'];
+        // pccc_type là query var công khai (?pccc_type=...): chỉ nhận 3 loại có URL cũ.
+        $type = in_array($q['pccc_type'] ?? '', ['pccc_product', 'pccc_service', 'post'], true) ? $q['pccc_type'] : 'pccc_product';
+        $id = pccc24_find_by_old_id($type, $q['pccc_old_id']);
+        return $id ? ['p' => $id, 'post_type' => $type] : ['error' => '404'];
     }
     foreach (['pccc_product_cat', 'pccc_service_type', 'pccc_page_type'] as $tax) {
         if (!empty($q[$tax])) {
