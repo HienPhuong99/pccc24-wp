@@ -189,7 +189,9 @@ register_activation_hook(__FILE__, function () {
 // Thêm/sửa/xoá nhóm trang: flush ngay lúc đó vẫn dựng rule từ danh sách slug đọc lúc init (chưa có slug mới
 // -> /{slug-mới} bị 404). Đánh dấu để request sau flush, khi pccc24_add_rewrites() đã đọc slug hiện tại.
 foreach (['created', 'edited', 'delete'] as $ev) {
-    add_action("{$ev}_pccc_page_type", fn() => update_option('pccc24_flush_rewrites', 1));
+    add_action("{$ev}_pccc_page_type", function () {
+        update_option('pccc24_flush_rewrites', 1);
+    });
 }
 
 /* ---------- REST API (tương đương /v1 của bản CI4) ---------- */
