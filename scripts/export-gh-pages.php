@@ -68,6 +68,22 @@ function pccc24_transform_for_gh_pages(string $html, string $prefix): string
     // 4. Link trang chủ href="/"
     $html = preg_replace('~\bhref=(["\'])/\1~i', 'href=$1' . $prefix . '/$1', $html);
 
+    // 4b. Link chi tiết còn slug cũ (meta _pccc_url / nội dung từ CI4): WP tự 301 sang slug đúng theo ID,
+    //     GitHub Pages không có redirect nên 404 -> đổi sang slug hiện tại của đúng ID đó.
+    $slugs = $GLOBALS['pccc24_detail_slugs'] ?? [];
+    if ($slugs) {
+        $html = preg_replace_callback(
+            '~\b(href|data-href)=(["\'])' . preg_quote($prefix, '~') . '/(san-pham|dich-vu|tin-tuc)/([^/"\'?#]+)/(\d+)/?(?=["\'?#])~i',
+            function ($m) use ($slugs, $prefix) {
+                $slug = $slugs[strtolower($m[3])][(int) $m[5]] ?? null;
+                return $slug !== null && rawurldecode($m[4]) !== rawurldecode($slug)
+                    ? "{$m[1]}={$m[2]}{$prefix}/" . strtolower($m[3]) . "/{$slug}/{$m[5]}"
+                    : $m[0];
+            },
+            $html
+        );
+    }
+
     // 5. Nhúng script adapter Vanilla JS cho GitHub Pages trước </body>
     $adapter_tag = '<script src="' . $prefix . '/wp-content/themes/pccc24-theme/assets/js/gh-pages-demo.js"></script></body>';
     $html = str_replace('</body>', $adapter_tag, $html);
@@ -134,6 +150,14 @@ if (is_dir($uploads_src)) {
     }
 }
 WP_CLI::log('Copied theme assets and synced clean WebP uploads.');
+
+// ID cũ -> slug hiện tại cho bước 4b của pccc24_transform_for_gh_pages() (phải có trước lần transform đầu tiên).
+$GLOBALS['pccc24_detail_slugs'] = [];
+foreach (['san-pham' => 'pccc_product', 'dich-vu' => 'pccc_service', 'tin-tuc' => 'post'] as $base => $type) {
+    foreach (get_posts(['post_type' => $type, 'post_status' => 'publish', 'numberposts' => -1]) as $p) {
+        $GLOBALS['pccc24_detail_slugs'][$base][(int) pccc24_old_id($p)] = $p->post_name; // giống khoá $routes bên dưới
+    }
+}
 
 // 2. Xuất dữ liệu JSON tĩnh cho REST API (/wp-json/pccc24/v1/...)
 $products_all = [];
