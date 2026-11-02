@@ -42,6 +42,10 @@ add_action('init', function () {
     $tax('pccc_page_type', 'page', 'Nhóm trang', false);
 
     pccc24_add_rewrites();
+    if (get_option('pccc24_flush_rewrites')) {
+        delete_option('pccc24_flush_rewrites');
+        flush_rewrite_rules(false); // WP tự hoãn tới wp_loaded, lúc đó rule đã có slug nhóm trang hiện tại
+    }
 });
 
 /* ---------- URL cũ (app/Config/Routes.php của bản CI4) ---------- */
@@ -180,7 +184,11 @@ register_activation_hook(__FILE__, function () {
     do_action('init');
     flush_rewrite_rules();
 });
-add_action('created_pccc_page_type', 'flush_rewrite_rules');
+// Thêm/sửa/xoá nhóm trang: flush ngay lúc đó vẫn dựng rule từ danh sách slug đọc lúc init (chưa có slug mới
+// -> /{slug-mới} bị 404). Đánh dấu để request sau flush, khi pccc24_add_rewrites() đã đọc slug hiện tại.
+foreach (['created', 'edited', 'delete'] as $ev) {
+    add_action("{$ev}_pccc_page_type", fn() => update_option('pccc24_flush_rewrites', 1));
+}
 
 /* ---------- REST API (tương đương /v1 của bản CI4) ---------- */
 
