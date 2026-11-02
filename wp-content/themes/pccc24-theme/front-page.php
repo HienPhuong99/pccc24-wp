@@ -59,8 +59,8 @@ $lead     = array_shift($articles);
         <?php foreach ($cat_tree as $root) : ?>
             <a class="cat-chip" href="<?= esc_url($root->url) ?>">
                 <span><?= esc_html($root->name) ?></span>
-                <?php if (!empty($root->children)) : ?>
-                    <small><?= count($root->children) ?></small>
+                <?php if (!empty($root->childrens)) : ?>
+                    <small><?= count($root->childrens) ?></small>
                 <?php endif; ?>
             </a>
         <?php endforeach; ?>
