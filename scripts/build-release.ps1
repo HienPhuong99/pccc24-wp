@@ -25,7 +25,7 @@ New-Item -ItemType Directory -Force $site | Out-Null
 # 1. Mã nguồn: WP core + plugin/theme PCCC24 + uploads; bỏ công cụ dev, test, tài liệu, theme mặc định, file lộ phiên bản.
 $xd = 'tools', 'node_modules', 'tests', 'docs', 'scripts', 'playwright-report', 'test-results', 'design_handoff_pccc24_ios',
       '.git', '.claude', 'wp-content\themes\twentytwentyfive', 'wp-content\upgrade', 'wp-content\cache' | ForEach-Object { "$root\$_" }
-$xf = 'wp-config.php', 'wp-config-sample.php', 'readme.html', 'license.txt', 'start-server.bat', 'wp.bat', 'README.md', 'CLAUDE.md',
+$xf = 'wp-config.php', 'wp-config-sample.php', 'readme.html', 'license.txt', 'start-server.bat', 'wp.bat', 'dong-goi-website.bat','README.md', 'CLAUDE.md',
       'Chat.md', 'V18.mp4', 'package.json', 'package-lock.json', 'playwright.config.ts', '.gitignore', '.htaccess' | ForEach-Object { "$root\$_" }
 robocopy $root $site /E /NFL /NDL /NJH /NJS /NP /XD $xd $Out /XF $xf .DS_Store | Out-Null
 if ($LASTEXITCODE -ge 8) { throw 'robocopy failed' }

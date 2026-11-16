@@ -8,6 +8,8 @@ Yêu cầu hosting: PHP ≥ 8.1 (có `mysqli`, `zip`, `gd` hoặc `imagick`), My
 powershell -ExecutionPolicy Bypass -File scripts\build-release.ps1 -Domain https://pccc24.com -DbName <db> -DbUser <user> -DbPass <pass> [-DbHost localhost]
 ```
 
+Hoặc bấm đúp `dong-goi-website.bat` ở thư mục gốc: hỏi 3 thông tin DB rồi chạy lệnh trên (truyền qua biến môi trường `PCCC24_DB_*`, mật khẩu có `&` `%` `!` vẫn đúng).
+
 Ra thư mục `dist\` (không commit):
 
 | File | Dùng để |
