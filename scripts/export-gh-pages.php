@@ -427,10 +427,10 @@ $login_html = <<<'HTML'
     </div>
     <div class="login-card">
         <div class="prefill-box">
-            <strong>🔑 Tài khoản mặc định (Đã điền sẵn):</strong><br>
+            <strong>🔑 Bản demo tĩnh: bấm Đăng nhập để xem giao diện quản trị (không có mật khẩu thật).</strong><br>
             • Tài khoản: <code>admin</code><br>
             • Email: <code>admin@pccc24.local</code><br>
-            • Mật khẩu: <code>pccc24@admin2026</code>
+            • Mật khẩu: <code>demo</code>
             <div class="switch-btns">
                 <button type="button" onclick="fillCreds('admin')">Điền Username</button>
                 <button type="button" onclick="fillCreds('admin@pccc24.local')">Điền Email</button>
@@ -447,7 +447,7 @@ $login_html = <<<'HTML'
             </div>
             <div class="field">
                 <label for="user_pass_input">Mật khẩu</label>
-                <input type="text" id="user_pass_input" name="pwd" value="pccc24@admin2026" required>
+                <input type="text" id="user_pass_input" name="pwd" value="demo" required>
             </div>
             <div class="actions">
                 <label style="font-size:13px;display:flex;align-items:center;gap:6px;">
@@ -464,7 +464,7 @@ $login_html = <<<'HTML'
         function fillCreds(loginVal) {
             document.getElementById('user_login').value = loginVal;
             document.getElementById('user_email').value = 'admin@pccc24.local';
-            document.getElementById('user_pass_input').value = 'pccc24@admin2026';
+            document.getElementById('user_pass_input').value = 'demo';
         }
     </script>
 </body>
