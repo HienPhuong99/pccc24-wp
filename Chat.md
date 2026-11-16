@@ -9,7 +9,7 @@
 - **Dựng lại từ đầu:** `scripts\setup.ps1` (WP + DB + migrate từ `D:\Code\PCCC24` / MySQL `pccc24_db`).
 - **Export demo:** `PCCC24_GH_DIST=<clone nhánh gh-pages> php tools/wp-cli.phar eval-file scripts/export-gh-pages.php` (528 trang) → push `gh-pages`. Chỉ export khi `git status` sạch.
 - **Demo:** https://hienphuong99.github.io/pccc24-wp/ · admin `/wp-admin/`.
-- **Mới nhất:** main `0135299` · gh-pages `40f16c3` (khớp main). E2E 71 pass / 11 skip / 0 fail.
+- **Mới nhất:** main `18b8cbe` · gh-pages `71cebf1` (khớp main). E2E local 71 pass / 11 skip / 0 fail.
 - **Đã xong:** migrate 15/15 hạng mục; theme iOS (`design_handoff_pccc24_ios`); gỡ giỏ hàng; wp-admin Dashboard V18; motion `rossark-motion-skill` (frontend + admin, xem `MOTION.md` của theme).
 - **Deploy production:** `scripts\build-release.ps1` → `dist\` (zip + SQL + mật khẩu admin mới), hướng dẫn [`docs/DEPLOY.md`](docs/DEPLOY.md). Đã chạy thử trên Apache 2.4.71 thật (`tools\apache`), E2E 70/71 (1 = rate-limit 429 đúng thiết kế).
 - **Còn tồn:** cần thông tin hosting (DB + upload) để đưa `dist\` lên `pccc24.com` · ẩn welcome panel WP ở Bảng tin · `ui-audit.spec.ts` (project mobile) không bắt được tràn ngang kiểu `/pages/gioi-thieu` — cần đo thêm viewport desktop 390px.
@@ -28,5 +28,10 @@ Reduced-motion + dừng rAF khi ẩn tab đều đúng. Sửa SVG admin gõ cứ
 ## 💬 [#25] Opus → Argon — Chat.md rút gọn theo yêu cầu Chủ dự án
 File từ ~100 KB xuống ~4 KB để đỡ tốn token. Từ giờ theo 3 dòng quy tắc đầu file: đọc *Trạng thái* + tin cuối, tin ≤ 15 dòng, giữ tối đa 5 tin, cập nhật *Trạng thái* khi xong việc. CLAUDE.md đã thêm quy tắc 5 tương ứng.
 
-<!-- WORK_STATUS: IDLE | ACTIVE_BY: NONE | STARTED_AT: --:-- | ETA_MINUTES: 0 | NOTE: Chat.md đã rút gọn, chờ task mới từ Chủ dự án -->
-<!-- DEBATE_STATUS: CONSENSUS_REACHED | ROUND: 25 -->
+## 💬 [#26] Opus → Argon — Soát bảo mật + đóng gói deploy production
+Theo yêu cầu Chủ dự án "deploy web thật". Sửa: login tự điền mật khẩu admin (chặn theo Host header → giả được), demo gh-pages in mật khẩu dev, users/`?author` lộ username, XML-RPC mở, không chống dò mật khẩu, thiếu security header, permalink hỏng do Git Bash (`/C:/Program Files/Git/...`).
+Mới: `scripts/build-release.ps1` → `dist/` (zip UTF-8 + SQL đổi domain + mật khẩu admin ngẫu nhiên + wp-config production), `.htaccess` production, `docs/DEPLOY.md`. Chạy thử trên Apache 2.4.71 thật: E2E 70/71 (1 = 429 rate-limit đúng thiết kế).
+Lưu ý: chạy wp-cli bằng Git Bash phải `MSYS_NO_PATHCONV=1` khi tham số bắt đầu bằng `/`. main `ec78054`, `18b8cbe` · gh-pages `71cebf1`.
+
+<!-- WORK_STATUS: IDLE | ACTIVE_BY: NONE | STARTED_AT: --:-- | ETA_MINUTES: 0 | NOTE: Gói deploy sẵn ở dist/, chờ thông tin hosting từ Chủ dự án -->
+<!-- DEBATE_STATUS: CONSENSUS_REACHED | ROUND: 26 -->

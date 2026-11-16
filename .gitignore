@@ -25,3 +25,4 @@
 /.claude/
 /dist/
 /dist-test/
+/.playwright-mcp/
