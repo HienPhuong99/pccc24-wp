@@ -231,7 +231,7 @@ add_action('rest_api_init', function () {
             }
             $name  = mb_substr(sanitize_text_field((string) $req->get_param('name')), 0, 100);
             $phone = preg_replace('/[^0-9+]/', '', (string) $req->get_param('phone'));
-            $need  = sanitize_text_field((string) ($req->get_param('need') ?: 'Bình chữa cháy'));
+            $need  = mb_substr(sanitize_text_field((string) ($req->get_param('need') ?: 'Bình chữa cháy')), 0, 100);
             $note  = mb_substr(sanitize_textarea_field((string) $req->get_param('note')), 0, 1000);
             $url   = esc_url_raw((string) $req->get_param('source_url'));
             if ($name === '' || !preg_match('/^(0|\+84)\d{8,10}$/', $phone)) {
@@ -369,3 +369,64 @@ add_action('admin_init', fn() => register_setting('pccc24', 'pccc24_settings', [
     'type' => 'array',
     'sanitize_callback' => fn($v) => array_map('wp_kses_post', array_intersect_key((array) $v, PCCC24_SETTING_KEYS)),
 ]));
+
+/* ---------- Bảo mật khi chạy production ---------- */
+
+// XML-RPC: không dùng (không app/Jetpack) mà là cửa brute-force (system.multicall) + pingback DDoS.
+add_action('plugins_loaded', function () {
+    if (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST) {
+        status_header(403);
+        exit;
+    }
+});
+add_filter('wp_headers', function ($h) {
+    unset($h['X-Pingback']);
+    return $h;
+});
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'rsd_link');
+
+// Không lộ username đăng nhập cho khách: REST users, sitemap users, ?author=N.
+add_filter('rest_endpoints', function ($e) {
+    if (!is_user_logged_in()) {
+        foreach (array_keys($e) as $route) {
+            if (str_starts_with($route, '/wp/v2/users')) {
+                unset($e[$route]);
+            }
+        }
+    }
+    return $e;
+});
+add_filter('wp_sitemaps_add_provider', fn($p, $name) => $name === 'users' ? false : $p, 10, 2);
+add_action('template_redirect', function () {
+    if (is_author() && !is_user_logged_in()) {
+        wp_safe_redirect(home_url('/'), 301);
+        exit;
+    }
+}, 1); // trước redirect_canonical (10) - nó đổi ?author=1 thành /author/admin
+
+// Chống dò mật khẩu: sai 5 lần / 15 phút / IP thì khoá đăng nhập.
+// ponytail: khoá theo REMOTE_ADDR; sau Cloudflare/reverse proxy mọi khách chung IP proxy -> đọc IP thật từ header của proxy tin cậy.
+function pccc24_login_key(): string
+{
+    return 'pccc24_lf_' . md5((string) ($_SERVER['REMOTE_ADDR'] ?? ''));
+}
+add_action('wp_login_failed', function () {
+    $k = pccc24_login_key();
+    set_transient($k, (int) get_transient($k) + 1, 15 * MINUTE_IN_SECONDS);
+});
+add_filter('authenticate', fn($user) => (int) get_transient(pccc24_login_key()) >= 5
+    ? new WP_Error('too_many_attempts', '<strong>Lỗi:</strong> Sai mật khẩu quá nhiều lần. Vui lòng thử lại sau 15 phút.')
+    : $user, 99);
+add_action('wp_login', fn() => delete_transient(pccc24_login_key()));
+
+add_action('send_headers', function () {
+    header_remove('X-Powered-By');
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
+    if (is_ssl()) {
+        header('Strict-Transport-Security: max-age=31536000');
+    }
+});

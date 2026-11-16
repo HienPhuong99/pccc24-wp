@@ -1,0 +1,47 @@
+# PCCC24 - .htaccess production (Apache / LiteSpeed). scripts/build-release.ps1 chép file này thành .htaccess.
+Options -Indexes
+ServerSignature Off
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Ép HTTPS (bỏ qua khi host đã có SSL ở proxy và gửi X-Forwarded-Proto)
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Chặn file nhạy cảm / không dùng
+RewriteRule ^(xmlrpc\.php|wp-config\.php|wp-config-sample\.php|readme\.html|license\.txt|wp-admin/install\.php)$ - [F,L]
+RewriteRule (^|/)\.(?!well-known/) - [F,L]
+RewriteRule \.(sql|log|bak|ini|sh|zip)$ - [F,L,NC]
+# Không chạy PHP trong thư mục upload
+RewriteRule ^wp-content/uploads/.*\.(php|phtml|phar)$ - [F,L,NC]
+
+# BEGIN WordPress
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+# END WordPress
+</IfModule>
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header unset X-Powered-By
+</IfModule>
+
+# Cache tĩnh 30 ngày (asset theme có ?ver=)
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/webp "access plus 30 days"
+ExpiresByType image/png "access plus 30 days"
+ExpiresByType image/jpeg "access plus 30 days"
+ExpiresByType text/css "access plus 30 days"
+ExpiresByType application/javascript "access plus 30 days"
+</IfModule>
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>

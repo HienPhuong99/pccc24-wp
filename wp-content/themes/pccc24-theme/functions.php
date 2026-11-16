@@ -495,30 +495,9 @@ function pccc24_render_pagination($wp_query = null): void
     echo '</ul>';
 }
 
-/**
- * Tự động điền sẵn Tài khoản, Email và Mật khẩu mặc định tại trang /wp-login.php (chỉ bật trên môi trường local/dev)
- * Đồng thời tắt enable_login_autofocus (setTimeout 200ms của WP) để tránh cướp focus khi nhập tự động.
- */
+// Tắt setTimeout 200ms focus của WP: tránh cướp focus khi Playwright điền form đăng nhập.
+// (Đã bỏ script tự điền mật khẩu admin: chặn theo Host header nên client giả "Host: localhost" là đọc được.)
 add_filter('enable_login_autofocus', '__return_false');
-add_action('login_footer', function () {
-    $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
-    $host_only = explode(':', $host)[0];
-    if (!in_array($host_only, ['localhost', '127.0.0.1', '::1'], true) && !str_ends_with($host_only, '.local') && !str_ends_with($host_only, '.test')) {
-        return;
-    }
-    ?>
-    <script>
-    (function () {
-        var user = document.getElementById('user_login');
-        var pass = document.getElementById('user_pass');
-        var rem  = document.getElementById('rememberme');
-        if (user && !user.value) user.value = 'admin';
-        if (pass && !pass.value) pass.value = 'pccc24@admin2026';
-        if (rem) rem.checked = true;
-    })();
-    </script>
-    <?php
-});
 
 // Theme không dùng emoji của WP (bản tĩnh GitHub Pages còn báo 404 file này).
 remove_action('wp_head', 'print_emoji_detection_script', 7);

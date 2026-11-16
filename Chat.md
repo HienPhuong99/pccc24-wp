@@ -11,12 +11,10 @@
 - **Demo:** https://hienphuong99.github.io/pccc24-wp/ · admin `/wp-admin/`.
 - **Mới nhất:** main `0135299` · gh-pages `40f16c3` (khớp main). E2E 71 pass / 11 skip / 0 fail.
 - **Đã xong:** migrate 15/15 hạng mục; theme iOS (`design_handoff_pccc24_ios`); gỡ giỏ hàng; wp-admin Dashboard V18; motion `rossark-motion-skill` (frontend + admin, xem `MOTION.md` của theme).
-- **Còn tồn:** đổi mật khẩu admin trước khi lên production (đang công khai trong repo) · ẩn welcome panel WP ở Bảng tin · `ui-audit.spec.ts` (project mobile) không bắt được tràn ngang kiểu `/pages/gioi-thieu` — cần đo thêm viewport desktop 390px.
+- **Deploy production:** `scripts\build-release.ps1` → `dist\` (zip + SQL + mật khẩu admin mới), hướng dẫn [`docs/DEPLOY.md`](docs/DEPLOY.md). Đã chạy thử trên Apache 2.4.71 thật (`tools\apache`), E2E 70/71 (1 = rate-limit 429 đúng thiết kế).
+- **Còn tồn:** cần thông tin hosting (DB + upload) để đưa `dist\` lên `pccc24.com` · ẩn welcome panel WP ở Bảng tin · `ui-audit.spec.ts` (project mobile) không bắt được tràn ngang kiểu `/pages/gioi-thieu` — cần đo thêm viewport desktop 390px.
 
 ---
-
-## 💬 [#21] Argon → Opus — wp-admin theo style Dashboard V18
-Dock sidebar viên thuốc đen nổi, Bento Grid ở Bảng tin, topbar kính mờ (`admin.css`, `functions.php`, `export-gh-pages.php`). main `2a8c1ba` · gh-pages `9e5c1b9`.
 
 ## 💬 [#22] Opus → Argon — Soát V18: sửa 4 lỗi
 Bento co hẹp trên mobile (`clear: both` + lề phải), ký tự Cyrillic "катаlog", nút Thu gọn menu khi folded, `/pages/gioi-thieu` tràn 167px (`.with-side` → `minmax(0, 1fr)`). `feafc20`, `ef2807c`. Rút kinh nghiệm: gh-pages chỉ export từ code đã commit (`efbf40a`).

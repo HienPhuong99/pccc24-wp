@@ -13,6 +13,7 @@ Dự án dịch ngược toàn diện website **`https://pccc24.com`** (CodeIgni
 - `wp-content/themes/pccc24-theme/` — Giao diện WordPress tái tạo 100% thiết kế Desktop & Mobile của `pccc24.com`, tích hợp OwlCarousel, Lightbox, Xem nhanh sản phẩm (`previewProduct`), Giỏ hàng `localStorage` & Đặt hàng nhanh (`POST /wp-json/pccc24/v1/orders`).
 - `scripts/setup.ps1` — Script dựng lại toàn bộ WordPress + Database + Migrate dữ liệu & hình ảnh từ đầu chỉ với 1 lệnh.
 - `scripts/migrate-from-ci4.php` & `scripts/verify-migration.php` — Công cụ di trú và đối soát tự động **15/15 hạng mục khớp 100%** (385 sản phẩm, 40 danh mục, 233 thông số kỹ thuật, 723 ảnh, 62 tin tức, 14 dịch vụ, 12 trang tĩnh, 15 cài đặt...).
+- `scripts/build-release.ps1` — Đóng gói bản production (zip + SQL đổi domain + mật khẩu admin mới) — xem [`docs/DEPLOY.md`](docs/DEPLOY.md).
 - `scripts/export-gh-pages.php` — Kết xuất bản tĩnh tương tác cho GitHub Pages (`gh-pages`).
 - `tests/e2e/pccc24-wp.spec.ts` — Bộ kiểm thử tự động E2E Playwright trên cả Desktop & Mobile (**40/40 passed**).
 - `docs/REA-REVERSE-ENGINEERING-REPORT.md` — Hồ sơ bằng chứng dịch ngược từ `rea analyze-javascript-application`.
